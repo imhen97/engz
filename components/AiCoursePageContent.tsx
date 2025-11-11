@@ -12,111 +12,114 @@ const transition = { duration: 0.6, ease: "easeOut" };
 
 const comparisonRows = [
   {
-    app: "Shows only pronunciation score",
-    engz: "Sentence-level correction + alternative suggestions",
+    app: "발음 점수만 보여주는 앱",
+    engz: "문장 단위 교정과 대체 표현까지 제안",
   },
   {
-    app: "Displays only today’s session",
-    engz: "Weekly progress graph + Before→After report",
+    app: "오늘 학습 기록만 확인 가능",
+    engz: "주간 성장 그래프 + Before → After 리포트 제공",
   },
   {
-    app: "Many random topics, no structure",
-    engz: "AI-designed 4-week structured routine",
+    app: "주제가 랜덤하고 커리큘럼이 없음",
+    engz: "AI가 설계한 4주 집중 루틴",
   },
   {
-    app: "Hard to stay consistent alone",
-    engz: "Daily AI missions + optional human coach feedback",
+    app: "혼자 꾸준히 하기 어려움",
+    engz: "매일 AI 미션 + 선택형 코치 피드백",
   },
   {
-    app: "Feedback feels random",
-    engz: "Data-driven growth design",
+    app: "피드백 기준이 제각각",
+    engz: "데이터 기반 성장 설계",
   },
 ];
 
 const steps = [
   {
-    title: "Week 1 – AI Diagnosis",
-    description: "Pronunciation, grammar & fluency analysis to map your baseline.",
+    title: "Week 1 – AI 진단",
+    description:
+      "발음·문법·유창성을 정밀 분석해 현재 상태를 데이터로 기록합니다.",
   },
   {
-    title: "Weeks 2–3 – Daily Missions",
-    description: "Goal-based practice routines designed automatically for you.",
+    title: "Weeks 2–3 – 데일리 미션",
+    description: "목표에 맞춘 연습 루틴을 AI가 매일 자동으로 제시합니다.",
   },
   {
-    title: "Daily – AI Feedback",
-    description: "Sentence corrections, better expressions, and confidence boosts.",
+    title: "Daily – AI 피드백",
+    description:
+      "문장 교정, 더 나은 표현 추천으로 말하기 자신감을 키웁니다.",
   },
   {
-    title: "Week 4 – Growth Report",
-    description: "Visual Before vs After summary that proves your progress.",
+    title: "Week 4 – 성장 리포트",
+    description: "Before vs After가 한눈에 보이는 시각화 보고서를 받습니다.",
   },
   {
-    title: "Next Steps – AI Recommendation",
-    description: "New routine design for the next stage of your English growth.",
+    title: "Next Steps – 다음 루틴 제안",
+    description: "다음 4주를 위한 새로운 학습 로드맵을 다시 설계합니다.",
   },
 ];
 
 const courses = [
   {
-    title: "🎤 Slang Mastery",
-    description: "Master Netflix / YouTube slang with AI pronunciation correction.",
+    title: "🎤 슬랭 마스터리",
+    description:
+      "넷플릭스·유튜브 슬랭을 익히고 발음까지 AI로 교정하는 프로그램",
   },
   {
-    title: "🎶 Pop Lyrics Course",
-    description: "Improve grammar, rhythm, and expression through songs.",
+    title: "🎶 팝 가사 코스",
+    description: "노래 가사를 통해 문법·리듬·표현력을 동시에 끌어올립니다.",
   },
   {
-    title: "🧠 IELTS 4-Week Course",
-    description: "AI grading and model answer comparison tailored to your targets.",
+    title: "🧠 IELTS 4주 코스",
+    description: "AI 채점과 모범 답안 비교로 목표 점수 달성을 지원합니다.",
   },
   {
-    title: "💼 Business English",
-    description: "Meeting and presentation full-prep program for professionals.",
+    title: "💼 비즈니스 영어",
+    description: "회의·프레젠테이션을 위한 실전 시나리오 완전 대비 과정",
   },
   {
-    title: "💬 Small Talk Course",
-    description: "Daily conversation practice to sound natural and confident.",
+    title: "💬 스몰토크 코스",
+    description: "자연스러운 일상 대화를 위한 문장과 상황별 표현 연습",
   },
 ];
 
 const metrics = [
-  { label: "Pronunciation Accuracy", value: "76% → 93%" },
-  { label: "Expression Diversity", value: "+27%" },
-  { label: "Speaking Length", value: "+18 sec" },
+  { label: "발음 정확도", value: "76% → 93%" },
+  { label: "표현 다양성", value: "+27%" },
+  { label: "말하기 길이", value: "+18초" },
 ];
 
 const philosophy = [
-  { icon: "🧩", title: "AI designs your routine." },
-  { icon: "💬", title: "Feedback means understanding." },
-  { icon: "📈", title: "Growth is measured by data." },
+  { icon: "🧩", title: "AI가 학습 루틴을 설계합니다." },
+  { icon: "💬", title: "피드백은 단순 교정이 아닌 이해입니다." },
+  { icon: "📈", title: "성장은 감이 아닌 데이터로 측정합니다." },
 ];
 
 const quotes = [
-  "“By week 3, speaking English didn’t scare me anymore.”",
-  "“The AI report showed real improvement in my pronunciation.”",
-  "“Apps were repetition — ENGZ was growth.”",
+  "“3주차가 되니 영어로 말하는 두려움이 사라졌어요.”",
+  "“AI 리포트에서 발음이 실제로 좋아진 걸 확인했습니다.”",
+  "“앱은 반복이었고, ENGZ는 성장 그 자체였습니다.”",
 ];
 
 const pricing = [
   {
-    name: "🧩 Free Trial",
-    price: "Free",
-    details: "AI Diagnosis + 1-Day Mission",
+    name: "🧩 무료 체험",
+    price: "무료",
+    details: "AI 진단 + 1일 미션 제공",
   },
   {
-    name: "🎓 Single Course",
+    name: "🎓 단일 코스",
     price: "₩39,000",
-    details: "One 4-Week Intensive Course",
+    details: "4주 집중 코스 1개 이용",
   },
   {
-    name: "💼 All Access",
-    price: "₩99,000 / mo",
-    details: "All Courses + Unlimited Reports",
+    name: "💼 전체 이용",
+    price: "₩99,000 / 월",
+    details: "모든 코스 + 무제한 성장 리포트",
   },
   {
-    name: "👩‍🏫 Premium",
-    price: "₩159,000 / mo",
-    details: "All Access + 1:1 Coaching Sessions",
+    name: "👩‍🏫 프리미엄",
+    price: "₩159,000 / 월",
+    details: "전체 이용 + 1:1 코칭 세션 포함",
   },
 ];
 
@@ -134,21 +137,24 @@ export default function AiCoursePageContent() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white to-[#FFF5F3]" />
         <div className="grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[1fr_1.2fr_1fr]">
           <div className="hidden flex-col gap-4 rounded-3xl border border-gray-100 bg-gray-50/70 p-6 backdrop-blur-sm shadow-sm lg:flex">
-            <p className="text-sm font-semibold text-gray-500">App Learning Plateau</p>
+            <p className="text-sm font-semibold text-gray-500">
+              앱 학습 정체 구간
+            </p>
             <div className="h-48 rounded-2xl bg-gradient-to-t from-gray-200 via-gray-100 to-white" />
-            <p className="text-xs text-gray-500">The moment progress slows down.</p>
+            <p className="text-xs text-gray-500">
+              진도가 멈추는 순간을 의미합니다.
+            </p>
           </div>
 
           <div className="text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-[#F5472C]">
-              4-Week AI Intensive
+              4주 AI 집중 코스
             </p>
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
-              Beyond the limits of app learning — you’ll actually start speaking English.
+              앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
             </h1>
             <p className="mt-6 text-base text-gray-600 md:text-lg">
-              ENGZ AI analyzes your pronunciation, builds personalized sentences, and creates
-              your Before & After transformation in just 4 weeks.
+              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 Before & After 변화를 완성합니다.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
@@ -157,7 +163,7 @@ export default function AiCoursePageContent() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
               >
-                🎯 Start 4-Week Course →
+                🎯 4주 코스 시작하기 →
               </Link>
               <Link
                 href="https://open.kakao.com/o/sJDAeK6f"
@@ -165,7 +171,7 @@ export default function AiCoursePageContent() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
               >
-                💬 Get Free AI Level Test →
+                💬 무료 AI 레벨 테스트 →
               </Link>
             </div>
             <motion.p
@@ -174,19 +180,23 @@ export default function AiCoursePageContent() {
               transition={{ duration: 1.2, repeat: Infinity, repeatType: "mirror" }}
               className="mt-10 text-sm font-medium text-gray-500"
             >
-              Designing your AI routine…
+              AI 루틴을 설계하는 중…
             </motion.p>
           </div>
 
           <div className="hidden flex-col gap-4 rounded-3xl border border-[#F5472C]/30 bg-[#FFF0EC] p-6 backdrop-blur-sm shadow-sm lg:flex">
-            <p className="text-sm font-semibold text-[#F5472C]">ENGZ Progress</p>
+            <p className="text-sm font-semibold text-[#F5472C]">
+              ENGZ 성장 그래프
+            </p>
             <motion.div
               initial={{ scaleY: 0.4 }}
               animate={{ scaleY: 1 }}
               transition={{ duration: 1.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
               className="h-48 origin-bottom rounded-2xl bg-gradient-to-t from-[#F5472C] via-[#ff7a55] to-[#ffc3b3]"
             />
-            <p className="text-xs text-[#F5472C]">Growth engineered by ENGZ AI.</p>
+            <p className="text-xs text-[#F5472C]">
+              ENGZ AI가 설계한 성장 곡선입니다.
+            </p>
           </div>
         </div>
       </motion.section>
@@ -201,17 +211,22 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            Why your English doesn’t improve with apps — now you’ll know.
+            왜 앱으로는 영어가 늘지 않을까요?
           </h2>
           <div className="mt-10 overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
             <div className="grid grid-cols-2 bg-gray-50 text-sm font-semibold text-gray-600">
-              <div className="px-6 py-4">Traditional App Learning</div>
-              <div className="px-6 py-4 text-[#F5472C]">ENGZ 4-Week Course</div>
+              <div className="px-6 py-4">일반 앱 학습</div>
+              <div className="px-6 py-4 text-[#F5472C]">ENGZ 4주 코스</div>
             </div>
             <div className="divide-y divide-gray-100">
               {comparisonRows.map((row) => (
-                <div key={row.app} className="grid grid-cols-1 border-b border-gray-100 last:border-b-0 md:grid-cols-2">
-                  <div className="px-6 py-4 text-sm text-gray-600">{row.app}</div>
+                <div
+                  key={row.app}
+                  className="grid grid-cols-1 border-b border-gray-100 last:border-b-0 md:grid-cols-2"
+                >
+                  <div className="px-6 py-4 text-sm text-gray-600">
+                    {row.app}
+                  </div>
                   <div className="px-6 py-4 text-sm font-medium text-gray-800 md:border-l md:border-gray-100">
                     {row.engz}
                   </div>
@@ -220,7 +235,7 @@ export default function AiCoursePageContent() {
             </div>
           </div>
           <p className="mt-6 text-sm text-gray-500">
-            ENGZ isn’t an ‘app study.’ It’s an AI-engineered English growth system.
+            ENGZ는 ‘앱 공부’가 아닙니다. AI가 설계한 영어 성장 시스템입니다.
           </p>
         </div>
       </motion.section>
@@ -235,7 +250,7 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            Here’s how ENGZ AI designs your English growth over 4 weeks.
+            ENGZ AI가 4주 동안 당신의 영어를 설계하는 방법
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {steps.map((step) => (
@@ -243,7 +258,9 @@ export default function AiCoursePageContent() {
                 key={step.title}
                 className="rounded-3xl border border-white bg-white/80 p-6 shadow-sm backdrop-blur"
               >
-                <p className="text-sm font-semibold text-[#F5472C]">{step.title}</p>
+                <p className="text-sm font-semibold text-[#F5472C]">
+                  {step.title}
+                </p>
                 <p className="mt-3 text-sm text-gray-600">{step.description}</p>
               </div>
             ))}
@@ -255,7 +272,7 @@ export default function AiCoursePageContent() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
             >
-              🔍 Get My AI English Diagnosis →
+              🔍 AI 진단 먼저 받아보기 →
             </Link>
           </div>
         </div>
@@ -271,7 +288,7 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            AI-Designed Immersion Course Series
+            AI가 설계한 몰입형 4주 시리즈
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {courses.map((course) => (
@@ -279,7 +296,9 @@ export default function AiCoursePageContent() {
                 key={course.title}
                 className="flex h-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm"
               >
-                <h3 className="text-lg font-semibold text-gray-900">{course.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {course.title}
+                </h3>
                 <p className="flex-1 text-sm text-gray-600">{course.description}</p>
                 <Link
                   href="https://open.kakao.com/o/sJDAeK6f"
@@ -287,7 +306,7 @@ export default function AiCoursePageContent() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[#F5472C]"
                 >
-                  → Start Now
+                  → 지금 시작하기
                 </Link>
               </div>
             ))}
@@ -305,12 +324,12 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            Visible Growth, Not Just Practice
+            연습이 아니라 눈에 보이는 성장
           </h2>
           <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
             <div className="rounded-3xl border border-[#F5472C]/30 bg-white p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-[#F5472C]">
-                Pronunciation Waveform Comparison
+                발음 파형 비교 (Before / After)
               </h3>
               <div className="mt-6 grid grid-cols-2 gap-4 text-center text-sm text-gray-600">
                 <div>
@@ -325,15 +344,22 @@ export default function AiCoursePageContent() {
             </div>
             <div className="flex flex-col justify-center gap-4">
               {metrics.map((metric) => (
-                <div key={metric.label} className="rounded-2xl border border-white bg-white/80 p-4 shadow-sm">
-                  <p className="text-xs uppercase tracking-[0.2em] text-gray-500">{metric.label}</p>
-                  <p className="mt-2 text-xl font-semibold text-gray-900">{metric.value}</p>
+                <div
+                  key={metric.label}
+                  className="rounded-2xl border border-white bg-white/80 p-4 shadow-sm"
+                >
+                  <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                    {metric.label}
+                  </p>
+                  <p className="mt-2 text-xl font-semibold text-gray-900">
+                    {metric.value}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
           <p className="mt-8 text-sm text-gray-600">
-            ENGZ measures your English growth with data — not just feelings.
+            ENGZ는 감이 아닌 데이터로 영어 성장을 증명합니다.
           </p>
         </div>
       </motion.section>
@@ -348,7 +374,7 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            We’re not just a learning platform.
+            우리는 단순한 학습 플랫폼이 아닙니다.
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {philosophy.map((item) => (
@@ -357,12 +383,14 @@ export default function AiCoursePageContent() {
                 className="rounded-3xl border border-gray-100 bg-white p-6 text-center shadow-sm"
               >
                 <div className="text-3xl">{item.icon}</div>
-                <p className="mt-4 text-sm font-semibold text-gray-800">{item.title}</p>
+                <p className="mt-4 text-sm font-semibold text-gray-800">
+                  {item.title}
+                </p>
               </div>
             ))}
           </div>
           <p className="mt-6 text-sm text-gray-500">
-            Learning English with AI — that’s the ENGZ way.
+            ENGZ의 방식은 AI와 함께 진짜 영어 성장을 만드는 것입니다.
           </p>
         </div>
       </motion.section>
@@ -377,7 +405,7 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-5xl text-center">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            People who changed their English in just 4 weeks
+            단 4주 만에 영어가 달라진 사람들
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {quotes.map((quote) => (
@@ -401,14 +429,18 @@ export default function AiCoursePageContent() {
         className="bg-white px-6 py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Simple Plans</h2>
+          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+            누구나 시작할 수 있는 단순한 요금제
+          </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {pricing.map((plan) => (
               <div
                 key={plan.name}
                 className="flex h-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 text-center shadow-sm"
               >
-                <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {plan.name}
+                </h3>
                 <p className="text-2xl font-bold text-[#F5472C]">{plan.price}</p>
                 <p className="text-sm text-gray-600">{plan.details}</p>
               </div>
@@ -427,10 +459,10 @@ export default function AiCoursePageContent() {
       >
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-            In 4 weeks, your English will be completely different.
+            4주 뒤, 당신의 영어는 완전히 달라질 거예요.
           </h2>
           <p className="mt-4 text-sm text-gray-600">
-            Stop repetitive app learning. Experience real English transformation with AI.
+            반복적인 앱 학습을 멈추고, AI가 설계한 진짜 변화를 경험해 보세요.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
@@ -439,13 +471,15 @@ export default function AiCoursePageContent() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
             >
-              🧠 Start with Free AI Diagnosis →
+              🧠 무료 AI 진단부터 시작하기 →
             </Link>
             <Link
-              href="#"
+              href="https://open.kakao.com/o/sJDAeK6f"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
             >
-              🎯 Explore 4-Week Courses →
+              🎯 4주 집중 코스 살펴보기 →
             </Link>
           </div>
         </div>
