@@ -21,19 +21,31 @@ export default function TestimonialsPage() {
             ENGZ
           </a>
           <nav className="space-x-8 text-sm font-medium text-gray-700">
-            <a href="/#service" className="hover:text-[#F5472C] transition-colors">
+            <a
+              href="/#service"
+              className="hover:text-[#F5472C] transition-colors"
+            >
               서비스
             </a>
             <a href="/#ceo" className="hover:text-[#F5472C] transition-colors">
               소개
             </a>
-            <a href="/#pricing" className="hover:text-[#F5472C] transition-colors">
+            <a
+              href="/#pricing"
+              className="hover:text-[#F5472C] transition-colors"
+            >
               요금제
+            </a>
+            <a href="/coming-soon" className="hover:text-[#F5472C] transition-colors">
+              AI 플랫폼
             </a>
             <a href="/testimonials" className="text-[#F5472C] font-semibold">
               후기
             </a>
-            <a href="/#contact" className="hover:text-[#F5472C] transition-colors">
+            <a
+              href="/#contact"
+              className="hover:text-[#F5472C] transition-colors"
+            >
               문의
             </a>
           </nav>

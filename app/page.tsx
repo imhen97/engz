@@ -66,6 +66,12 @@ export default function EngzLandingFull() {
               요금제
             </a>
             <a
+              href="/coming-soon"
+              className="hover:text-[#F5472C] transition-colors"
+            >
+              AI 플랫폼
+            </a>
+            <a
               href="/testimonials"
               className="hover:text-[#F5472C] transition-colors"
             >
@@ -190,17 +196,17 @@ export default function EngzLandingFull() {
               가르쳐야 한다&apos;는 신념이 생겼습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
-              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백 명의
-              학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만, 영어로
-              말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를 겪는다는
-              것을 발견했습니다.
+              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백
+              명의 학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만,
+              영어로 말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를
+              겪는다는 것을 발견했습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
               그래서 저는 누구나 두려움 없이 영어를 배우고 말할 수 있도록 돕는
               학습 플랫폼{" "}
               <span className="font-semibold text-[#F5472C]">ENGZ</span>를
-              설립했습니다. 인공지능 기술과 사람의 피드백을 결합해 &apos;쉽고 지속
-              가능한 영어 학습&apos;을 만드는 것이 ENGZ의 철학입니다.
+              설립했습니다. 인공지능 기술과 사람의 피드백을 결합해 &apos;쉽고
+              지속 가능한 영어 학습&apos;을 만드는 것이 ENGZ의 철학입니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed">
               ENGZ는 대한민국을 넘어 글로벌 무대에서도 인정받는 영어 학습
