@@ -35,7 +35,10 @@ export default function PricingPage() {
             <a href="/level-test" className={navLinkClass}>
               AI 레벨 테스트
             </a>
-            <a href="https://www.eng-z.com/pricing" className="text-[#F5472C] font-semibold">
+            <a
+              href="https://www.eng-z.com/pricing"
+              className="text-[#F5472C] font-semibold"
+            >
               구독 플랜
             </a>
             <a href="/coming-soon" className={navLinkClass}>
@@ -66,11 +69,10 @@ export default function PricingPage() {
             Choose Your Plan — Start Learning with ENGZ AI
           </h1>
           <p className="mt-6 text-base text-gray-600 md:text-lg">
-            Flexible plans that grow with your English goals. Cancel anytime.
+            목표에 맞춰 성장하는 유연한 플랜을 선택하세요. 언제든지 취소할 수 있습니다.
           </p>
           <p className="mt-4 text-xs text-gray-500">
-            Start today with a 7-day free trial. Cancel anytime before the trial
-            ends to avoid charges.
+            7일 무료 체험으로 지금 시작해 보세요. 체험 종료 전 언제든지 취소하면 비용이 청구되지 않습니다.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
@@ -107,7 +109,7 @@ export default function PricingPage() {
                 Monthly Plan
               </h2>
               <p className="mt-2 text-sm text-gray-500">
-                Join 1,200+ learners improving with ENGZ AI.
+                1,200명 이상의 학습자가 ENGZ AI로 실력을 높이고 있습니다.
               </p>
               <p className="mt-6 text-3xl font-bold text-[#F5472C]">
                 ₩49,000
@@ -129,7 +131,7 @@ export default function PricingPage() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
               >
-                Start Monthly Plan →
+                월간 플랜 시작하기 →
               </a>
               <p className="mt-2 text-xs text-gray-400">
                 체험은 7일 동안 무료이며 종료 전 언제든 해지 가능합니다.
@@ -139,7 +141,7 @@ export default function PricingPage() {
             <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-lg">
               <h2 className="text-2xl font-bold text-gray-900">Annual Plan</h2>
               <p className="mt-2 text-sm text-gray-500">
-                Pay yearly and save 2 months compared to monthly billing.
+                1년 단위로 결제하면 월간 요금 대비 약 2개월을 절약할 수 있습니다.
               </p>
               <p className="mt-6 text-3xl font-bold text-[#F5472C]">
                 ₩490,000
@@ -159,7 +161,7 @@ export default function PricingPage() {
                 rel="noopener noreferrer"
                 className="mt-8 inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
               >
-                Start Annual Plan →
+                연간 플랜 시작하기 →
               </a>
               <p className="mt-2 text-xs text-gray-400">
                 7일 무료 체험 후 청구가 시작되며 언제든 취소할 수 있습니다.
@@ -169,16 +171,15 @@ export default function PricingPage() {
 
           <div className="mt-16 rounded-3xl border border-gray-100 bg-white p-8 text-center shadow">
             <p className="text-sm text-gray-600">
-              결제가 완료되면 자동으로 코스 대시보드로 이동하여 모든 ENGZ AI
-              학습 도구에 접근할 수 있습니다.
+              결제를 완료하면 자동으로 코스 대시보드로 이동하여 모든 ENGZ AI 학습 도구를 즉시 이용할 수 있습니다.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 text-xs text-gray-400 sm:flex-row">
-              <span>• Stripe Checkout를 통한 안전한 결제</span>
-              <span>• 체험 중 언제든 취소 가능</span>
+              <span>• Stripe Checkout으로 안전하게 결제</span>
+              <span>• 체험 기간 중 언제든 무료 취소 가능</span>
               <span>
-                • 지원이 필요하면{" "}
+                • 도움이 필요하시면{" "}
                 <Link href="/level-test" className="text-[#F5472C]">
-                  ENGZ 팀에 문의
+                  ENGZ 팀에 문의하세요
                 </Link>
               </span>
             </div>
