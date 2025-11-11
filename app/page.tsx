@@ -17,9 +17,10 @@ export default function EngzLandingFull() {
     };
   }, []);
 
-  const scrollProgress = typeof window !== "undefined" 
-    ? Math.min(scrollY / window.innerHeight, 1) 
-    : 0;
+  const scrollProgress =
+    typeof window !== "undefined"
+      ? Math.min(scrollY / window.innerHeight, 1)
+      : 0;
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -106,7 +107,7 @@ export default function EngzLandingFull() {
             Welcome to ENGZ
           </h1>
           <p className="mt-4 text-lg text-gray-600">
-            AI와 사람의 힘으로 언어의 한계를 넘다
+            AI기반 프리미엄 1:1 영어 코칭 브랜드
           </p>
         </div>
       </section>
@@ -189,8 +190,8 @@ export default function EngzLandingFull() {
               그래서 저는 누구나 두려움 없이 영어를 배우고 말할 수 있도록 돕는
               학습 플랫폼{" "}
               <span className="font-semibold text-[#F5472C]">ENGZ</span>를
-              설립했습니다. 인공지능 기술과 사람의 피드백을 결합해 &apos;쉽고 지속
-              가능한 영어 학습&apos;을 만드는 것이 ENGZ의 철학입니다.
+              설립했습니다. 인공지능 기술과 사람의 피드백을 결합해 &apos;쉽고
+              지속 가능한 영어 학습&apos;을 만드는 것이 ENGZ의 철학입니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed">
               ENGZ는 대한민국을 넘어 글로벌 무대에서도 인정받는 영어 학습
