@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
+import NavBar from "@/components/NavBar";
 import TestStep from "@/components/TestStep";
 import FeedbackPreview from "@/components/FeedbackPreview";
 import TrialModal from "@/components/TrialModal";
@@ -36,16 +37,9 @@ const quizQuestions = [
   },
 ];
 
-const purposes = [
-  "회화 집중",
-  "TOEIC 대비",
-  "IELTS 대비",
-  "비즈니스 영어",
-];
+const purposes = ["회화 집중", "TOEIC 대비", "IELTS 대비", "비즈니스 영어"];
 
 const totalInteractiveSteps = 4; // 정보, 퀴즈, 스피킹, 라이팅
-
-const navLinkClass = "hover:text-[#F5472C] transition-colors";
 
 export default function LevelTestPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -106,11 +100,14 @@ export default function LevelTestPage() {
     return undefined;
   }, [currentStep]);
 
-  useEffect(() => () => {
+  useEffect(
+    () => () => {
       if (recordingURLRef.current) {
         URL.revokeObjectURL(recordingURLRef.current);
       }
-    }, []);
+    },
+    []
+  );
 
   const resetTest = () => {
     setCurrentStep(0);
@@ -231,8 +228,12 @@ export default function LevelTestPage() {
       case 0:
         return (
           <TestStep>
-            <h3 className="text-xl font-semibold text-gray-900">어떤 목표로 영어를 학습하고 계신가요?</h3>
-            <p className="mt-2 text-sm text-gray-600">ENGZ AI가 목표에 맞춰 테스트 결과를 분석합니다.</p>
+            <h3 className="text-xl font-semibold text-gray-900">
+              어떤 목표로 영어를 학습하고 계신가요?
+            </h3>
+            <p className="mt-2 text-sm text-gray-600">
+              ENGZ AI가 목표에 맞춰 테스트 결과를 분석합니다.
+            </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {purposes.map((item) => (
                 <button
@@ -254,12 +255,21 @@ export default function LevelTestPage() {
       case 1:
         return (
           <TestStep>
-            <h3 className="text-xl font-semibold text-gray-900">5문항 퀴즈로 기초 실력을 진단해요</h3>
-            <p className="mt-2 text-sm text-gray-600">각 문항을 선택하면 자동으로 저장됩니다.</p>
+            <h3 className="text-xl font-semibold text-gray-900">
+              5문항 퀴즈로 기초 실력을 진단해요
+            </h3>
+            <p className="mt-2 text-sm text-gray-600">
+              각 문항을 선택하면 자동으로 저장됩니다.
+            </p>
             <div className="mt-6 space-y-6">
               {quizQuestions.map((item, index) => (
-                <div key={item.question} className="rounded-2xl border border-gray-100 p-5">
-                  <p className="text-sm font-medium text-gray-800">{index + 1}. {item.question}</p>
+                <div
+                  key={item.question}
+                  className="rounded-2xl border border-gray-100 p-5"
+                >
+                  <p className="text-sm font-medium text-gray-800">
+                    {index + 1}. {item.question}
+                  </p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-2">
                     {item.options.map((option) => (
                       <label
@@ -290,13 +300,17 @@ export default function LevelTestPage() {
       case 2:
         return (
           <TestStep>
-            <h3 className="text-xl font-semibold text-gray-900">음성으로 답변해 주세요</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              음성으로 답변해 주세요
+            </h3>
             <p className="mt-2 text-sm text-gray-600">
-              아래 질문에 대해 30초 동안 이야기해 보세요. 녹음이 어렵다면 음성 파일을 업로드해도 좋습니다.
+              아래 질문에 대해 30초 동안 이야기해 보세요. 녹음이 어렵다면 음성
+              파일을 업로드해도 좋습니다.
             </p>
             <div className="mt-6 space-y-4">
               <p className="rounded-2xl bg-[#FFF7F5] p-4 text-sm text-gray-700">
-                🌎 질문: 최근에 영어를 사용해야 했던 상황을 설명해 주세요. 무엇이 가장 어려웠고 어떻게 해결했나요?
+                🌎 질문: 최근에 영어를 사용해야 했던 상황을 설명해 주세요.
+                무엇이 가장 어려웠고 어떻게 해결했나요?
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 {!isRecording ? (
@@ -318,12 +332,19 @@ export default function LevelTestPage() {
                 )}
                 <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 px-5 py-2 text-xs font-medium text-gray-500 hover:border-[#F5472C]/60">
                   📁 음성 업로드
-                  <input type="file" accept="audio/*" className="hidden" onChange={handleUploadAudio} />
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    className="hidden"
+                    onChange={handleUploadAudio}
+                  />
                 </label>
               </div>
               {audioUrl && (
                 <div className="rounded-2xl border border-gray-100 p-4">
-                  <p className="text-xs font-medium text-gray-500">녹음 미리 듣기</p>
+                  <p className="text-xs font-medium text-gray-500">
+                    녹음 미리 듣기
+                  </p>
                   <audio controls className="mt-2 w-full">
                     <source src={audioUrl} type="audio/webm" />
                   </audio>
@@ -335,9 +356,12 @@ export default function LevelTestPage() {
       case 3:
         return (
           <TestStep>
-            <h3 className="text-xl font-semibold text-gray-900">짧은 글을 작성해 주세요</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              짧은 글을 작성해 주세요
+            </h3>
             <p className="mt-2 text-sm text-gray-600">
-              최근 영어 학습 경험과 가장 도움이 되었던 방법을 3~4문장으로 작성해 주세요.
+              최근 영어 학습 경험과 가장 도움이 되었던 방법을 3~4문장으로 작성해
+              주세요.
             </p>
             <textarea
               value={writing}
@@ -346,14 +370,20 @@ export default function LevelTestPage() {
               className="mt-4 w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 focus:border-[#F5472C] focus:outline-none"
               placeholder="예: 4주 동안 매일 아침 20분씩 영어 일기를 작성했습니다..."
             />
-            <p className="mt-2 text-xs text-gray-400">최소 40자 이상 작성해 주시면 AI 분석이 더 정확해집니다.</p>
+            <p className="mt-2 text-xs text-gray-400">
+              최소 40자 이상 작성해 주시면 AI 분석이 더 정확해집니다.
+            </p>
           </TestStep>
         );
       case 4:
         return (
           <TestStep>
-            <h3 className="text-xl font-semibold text-gray-900">AI가 결과를 분석 중입니다...</h3>
-            <p className="mt-2 text-sm text-gray-600">음성, 라이팅, 퀴즈 결과를 종합해 맞춤 리포트를 준비하고 있어요.</p>
+            <h3 className="text-xl font-semibold text-gray-900">
+              AI가 결과를 분석 중입니다...
+            </h3>
+            <p className="mt-2 text-sm text-gray-600">
+              음성, 라이팅, 퀴즈 결과를 종합해 맞춤 리포트를 준비하고 있어요.
+            </p>
             <div className="mt-6 h-3 w-full overflow-hidden rounded-full bg-gray-100">
               <div
                 className="h-full rounded-full bg-[#F5472C] transition-all"
@@ -380,39 +410,7 @@ export default function LevelTestPage() {
 
   return (
     <main className="min-h-screen bg-white text-black font-[Pretendard] overflow-x-hidden">
-      <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4">
-        <div className="max-w-6xl mx-auto flex justify-between items-center px-6">
-          <a href="/" className="text-xl font-bold text-[#F5472C] tracking-tight">
-            ENGZ
-          </a>
-          <nav className="space-x-8 text-sm font-medium text-gray-700">
-            <a href="/#service" className={navLinkClass}>
-              서비스
-            </a>
-            <a href="/#ceo" className={navLinkClass}>
-              소개
-            </a>
-            <a href="/#pricing" className={navLinkClass}>
-              요금제
-            </a>
-            <a href="/ai-course" className={navLinkClass}>
-              AI 집중코스
-            </a>
-            <a href="/level-test" className="text-[#F5472C] font-semibold">
-              AI 레벨 테스트
-            </a>
-            <a href="/coming-soon" className={navLinkClass}>
-              AI 플랫폼
-            </a>
-            <a href="/testimonials" className={navLinkClass}>
-              후기
-            </a>
-            <a href="/#contact" className={navLinkClass}>
-              문의
-            </a>
-          </nav>
-        </div>
-      </header>
+      <NavBar />
 
       <section className="relative flex min-h-[calc(100vh-120px)] items-center justify-center px-6 pt-32 pb-20">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white to-[#FFF5F3]" />
@@ -424,7 +422,8 @@ export default function LevelTestPage() {
             Discover Your Real English Level with AI
           </h1>
           <p className="mt-6 text-base text-gray-600 md:text-lg">
-            Take our smart 5-minute test designed by ENGZ AI and see how your English actually sounds.
+            Take our smart 5-minute test designed by ENGZ AI and see how your
+            English actually sounds.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
@@ -443,7 +442,8 @@ export default function LevelTestPage() {
             </button>
           </div>
           <p className="mt-4 text-xs text-gray-500">
-            The AI feedback summary will be unlocked after the test — start your free 7-day trial to view details.
+            The AI feedback summary will be unlocked after the test — start your
+            free 7-day trial to view details.
           </p>
         </div>
       </section>
@@ -453,7 +453,9 @@ export default function LevelTestPage() {
           <div className="rounded-3xl border border-gray-100 bg-white/90 p-6 shadow-xl backdrop-blur">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-gray-600">진행률</p>
-              <p className="text-sm font-semibold text-[#F5472C]">{progressPercent}%</p>
+              <p className="text-sm font-semibold text-[#F5472C]">
+                {progressPercent}%
+              </p>
             </div>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-100">
               <div
@@ -492,11 +494,17 @@ export default function LevelTestPage() {
 
       {metrics && (
         <div ref={feedbackRef}>
-          <FeedbackPreview metrics={metrics} onStartTrial={() => setShowTrialModal(true)} />
+          <FeedbackPreview
+            metrics={metrics}
+            onStartTrial={() => setShowTrialModal(true)}
+          />
         </div>
       )}
 
-      <TrialModal open={showTrialModal} onClose={() => setShowTrialModal(false)} />
+      <TrialModal
+        open={showTrialModal}
+        onClose={() => setShowTrialModal(false)}
+      />
 
       <footer className="bg-gray-900 text-gray-400 text-center text-xs py-6">
         © {new Date().getFullYear()} ENGZ. All rights reserved.

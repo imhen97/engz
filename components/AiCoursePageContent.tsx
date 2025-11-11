@@ -131,37 +131,32 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.4 }}
         variants={sectionVariants}
         transition={transition}
-        className="relative flex min-h-[calc(100vh-120px)] items-center justify-center px-6 py-32"
+        className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center px-6 pt-28 pb-20 text-center sm:pt-32"
       >
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white to-[#FFF5F3]" />
-        <div className="grid max-w-6xl grid-cols-1 gap-12 lg:grid-cols-[1fr_1.2fr_1fr]">
-          <div className="hidden flex-col gap-4 rounded-3xl border border-gray-100 bg-gray-50/70 p-6 backdrop-blur-sm shadow-sm lg:flex">
-            <p className="text-sm font-semibold text-gray-500">
-              앱 학습 정체 구간
-            </p>
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr_0.9fr]">
+          <div className="hidden flex-col gap-4 rounded-3xl border border-gray-100 bg-gray-50/70 p-6 shadow-sm backdrop-blur lg:flex">
+            <p className="text-sm font-semibold text-gray-500">앱 학습 정체 구간</p>
             <div className="h-48 rounded-2xl bg-gradient-to-t from-gray-200 via-gray-100 to-white" />
-            <p className="text-xs text-gray-500">
-              진도가 멈추는 순간을 의미합니다.
-            </p>
+            <p className="text-xs text-gray-500">진도가 멈추는 순간을 의미합니다.</p>
           </div>
 
-          <div className="text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#F5472C]">
+          <div className="flex flex-col items-center text-center">
+            <p className="text-xs uppercase tracking-[0.3em] text-[#F5472C] sm:text-sm">
               4주 AI 집중 코스
             </p>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
+            <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
               앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
             </h1>
-            <p className="mt-6 text-base text-gray-600 md:text-lg">
-              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 Before &
-              After 변화를 완성합니다.
+            <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
+              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 Before & After 변화를 완성합니다.
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="https://open.kakao.com/o/sJDAeK6f"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+                className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
               >
                 🎯 4주 코스 시작하기 →
               </Link>
@@ -169,7 +164,7 @@ export default function AiCoursePageContent() {
                 href="https://open.kakao.com/o/sJDAeK6f"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+                className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto sm:px-8"
               >
                 💬 무료 AI 레벨 테스트 →
               </Link>
@@ -177,35 +172,22 @@ export default function AiCoursePageContent() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                repeatType: "mirror",
-              }}
-              className="mt-10 text-sm font-medium text-gray-500"
+              transition={{ duration: 1.2, repeat: Infinity, repeatType: "mirror" }}
+              className="mt-8 text-xs font-medium text-gray-500 sm:text-sm"
             >
               AI 루틴을 설계하는 중…
             </motion.p>
           </div>
 
-          <div className="hidden flex-col gap-4 rounded-3xl border border-[#F5472C]/30 bg-[#FFF0EC] p-6 backdrop-blur-sm shadow-sm lg:flex">
-            <p className="text-sm font-semibold text-[#F5472C]">
-              ENGZ 성장 그래프
-            </p>
+          <div className="hidden flex-col gap-4 rounded-3xl border border-[#F5472C]/30 bg-[#FFF0EC] p-6 shadow-sm backdrop-blur lg:flex">
+            <p className="text-sm font-semibold text-[#F5472C]">ENGZ 성장 그래프</p>
             <motion.div
               initial={{ scaleY: 0.4 }}
               animate={{ scaleY: 1 }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut",
-              }}
+              transition={{ duration: 1.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
               className="h-48 origin-bottom rounded-2xl bg-gradient-to-t from-[#F5472C] via-[#ff7a55] to-[#ffc3b3]"
             />
-            <p className="text-xs text-[#F5472C]">
-              ENGZ AI가 설계한 성장 곡선입니다.
-            </p>
+            <p className="text-xs text-[#F5472C]">ENGZ AI가 설계한 성장 곡선입니다.</p>
           </div>
         </div>
       </motion.section>
@@ -216,16 +198,16 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="border-t border-gray-100 bg-white px-6 py-20"
+        className="border-t border-gray-100 bg-white px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             왜 앱으로는 영어가 늘지 않을까요?
           </h2>
-          <div className="mt-10 overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
-            <div className="grid grid-cols-2 bg-gray-50 text-sm font-semibold text-gray-600">
-              <div className="px-6 py-4">일반 앱 학습</div>
-              <div className="px-6 py-4 text-[#F5472C]">ENGZ 4주 코스</div>
+          <div className="mt-8 overflow-hidden rounded-3xl border border-gray-100 shadow-sm sm:mt-10">
+            <div className="grid grid-cols-2 bg-gray-50 text-xs font-semibold text-gray-600 sm:text-sm">
+              <div className="px-4 py-3 sm:px-6 sm:py-4">일반 앱 학습</div>
+              <div className="px-4 py-3 text-[#F5472C] sm:px-6 sm:py-4">ENGZ 4주 코스</div>
             </div>
             <div className="divide-y divide-gray-100">
               {comparisonRows.map((row) => (
@@ -233,10 +215,10 @@ export default function AiCoursePageContent() {
                   key={row.app}
                   className="grid grid-cols-1 border-b border-gray-100 last:border-b-0 md:grid-cols-2"
                 >
-                  <div className="px-6 py-4 text-sm text-gray-600">
+                  <div className="px-4 py-4 text-sm text-gray-600 sm:px-6">
                     {row.app}
                   </div>
-                  <div className="px-6 py-4 text-sm font-medium text-gray-800 md:border-l md:border-gray-100">
+                  <div className="px-4 py-4 text-sm font-medium text-gray-800 md:border-l md:border-gray-100 sm:px-6">
                     {row.engz}
                   </div>
                 </div>
@@ -255,31 +237,29 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF7F5] px-6 py-20"
+        className="bg-[#FFF7F5] px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             ENGZ AI가 4주 동안 당신의 영어를 설계하는 방법
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
             {steps.map((step) => (
               <div
                 key={step.title}
-                className="rounded-3xl border border-white bg-white/80 p-6 shadow-sm backdrop-blur"
+                className="rounded-3xl border border-white bg-white/80 p-5 shadow-sm backdrop-blur sm:p-6"
               >
-                <p className="text-sm font-semibold text-[#F5472C]">
-                  {step.title}
-                </p>
+                <p className="text-sm font-semibold text-[#F5472C]">{step.title}</p>
                 <p className="mt-3 text-sm text-gray-600">{step.description}</p>
               </div>
             ))}
           </div>
-          <div className="mt-12 flex justify-center">
+          <div className="mt-10 flex justify-center sm:mt-12">
             <Link
               href="https://open.kakao.com/o/sJDAeK6f"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
             >
               🔍 AI 진단 먼저 받아보기 →
             </Link>
@@ -293,24 +273,22 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-white px-6 py-20"
+        className="bg-white px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             AI가 설계한 몰입형 4주 시리즈
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-6">
             {courses.map((course) => (
               <div
                 key={course.title}
-                className="flex h-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm"
+                className="flex h-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-5 shadow-sm sm:p-6"
               >
                 <h3 className="text-lg font-semibold text-gray-900">
                   {course.title}
                 </h3>
-                <p className="flex-1 text-sm text-gray-600">
-                  {course.description}
-                </p>
+                <p className="flex-1 text-sm text-gray-600">{course.description}</p>
                 <Link
                   href="/pricing"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[#F5472C]"
@@ -329,18 +307,18 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF5F3] px-6 py-20"
+        className="bg-[#FFF5F3] px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             연습이 아니라 눈에 보이는 성장
           </h2>
-          <div className="mt-10 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-            <div className="rounded-3xl border border-[#F5472C]/30 bg-white p-6 shadow-sm">
+          <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+            <div className="rounded-3xl border border-[#F5472C]/30 bg-white p-5 shadow-sm sm:p-6">
               <h3 className="text-lg font-semibold text-[#F5472C]">
                 발음 파형 비교 (Before / After)
               </h3>
-              <div className="mt-6 grid grid-cols-2 gap-4 text-center text-sm text-gray-600">
+              <div className="mt-6 grid grid-cols-1 gap-4 text-center text-sm text-gray-600 sm:grid-cols-2">
                 <div>
                   <p className="font-semibold text-gray-700">Before</p>
                   <div className="mt-3 h-24 rounded-2xl bg-gradient-to-r from-gray-200 via-gray-100 to-white" />
@@ -355,7 +333,7 @@ export default function AiCoursePageContent() {
               {metrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-2xl border border-white bg-white/80 p-4 shadow-sm"
+                  className="rounded-2xl border border-white bg-white/80 p-4 shadow-sm sm:p-5"
                 >
                   <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
                     {metric.label}
@@ -379,17 +357,17 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-white px-6 py-20"
+        className="bg-white px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             우리는 단순한 학습 플랫폼이 아닙니다.
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
             {philosophy.map((item) => (
               <div
                 key={item.title}
-                className="rounded-3xl border border-gray-100 bg-white p-6 text-center shadow-sm"
+                className="rounded-3xl border border-gray-100 bg-white p-5 text-center shadow-sm sm:p-6"
               >
                 <div className="text-3xl">{item.icon}</div>
                 <p className="mt-4 text-sm font-semibold text-gray-800">
@@ -410,17 +388,17 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF7F5] px-6 py-20"
+        className="bg-[#FFF7F5] px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             단 4주 만에 영어가 달라진 사람들
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
             {quotes.map((quote) => (
               <div
                 key={quote}
-                className="rounded-3xl border border-white bg-white/80 p-6 text-sm text-gray-700 shadow-sm"
+                className="rounded-3xl border border-white bg-white/80 p-5 text-sm text-gray-700 shadow-sm sm:p-6"
               >
                 {quote}
               </div>
@@ -435,24 +413,20 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-white px-6 py-20"
+        className="bg-white px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             누구나 시작할 수 있는 단순한 요금제
           </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4 sm:gap-6">
             {pricing.map((plan) => (
               <div
                 key={plan.name}
-                className="flex h-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-6 text-center shadow-sm"
+                className="flex h-full flex-col gap-4 rounded-3xl border border-gray-100 bg-white p-5 text-center shadow-sm sm:p-6"
               >
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {plan.name}
-                </h3>
-                <p className="text-2xl font-bold text-[#F5472C]">
-                  {plan.price}
-                </p>
+                <h3 className="text-lg font-semibold text-gray-900">{plan.name}</h3>
+                <p className="text-2xl font-bold text-[#F5472C]">{plan.price}</p>
                 <p className="text-sm text-gray-600">{plan.details}</p>
               </div>
             ))}
@@ -466,21 +440,21 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF0EC] px-6 py-20"
+        className="bg-[#FFF0EC] px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
             4주 뒤, 당신의 영어는 완전히 달라질 거예요.
           </h2>
           <p className="mt-4 text-sm text-gray-600">
             반복적인 앱 학습을 멈추고, AI가 설계한 진짜 변화를 경험해 보세요.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <Link
               href="https://open.kakao.com/o/sJDAeK6f"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
             >
               🧠 무료 AI 진단부터 시작하기 →
             </Link>
@@ -488,7 +462,7 @@ export default function AiCoursePageContent() {
               href="https://open.kakao.com/o/sJDAeK6f"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+              className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto sm:px-8"
             >
               🎯 4주 집중 코스 살펴보기 →
             </Link>

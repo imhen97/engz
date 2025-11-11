@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import NavBar from "@/components/NavBar";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 
@@ -26,148 +27,78 @@ export default function EngzLandingFull() {
       ? Math.min(scrollY / window.innerHeight, 1)
       : 0;
 
-  const handleNavClick = (
-    e: React.MouseEvent<HTMLAnchorElement>,
-    targetId: string
-  ) => {
-    e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-white text-black font-[Pretendard] overflow-x-hidden scroll-smooth">
-      {/* ✅ 상단 네비게이션 바 */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4">
-        <div className="max-w-6xl mx-auto flex justify-between items-center px-6">
-          <h1 className="text-xl font-bold text-[#F5472C] tracking-tight">
-            ENGZ
+    <main className="min-h-screen overflow-x-hidden bg-white font-[Pretendard] scroll-smooth text-black">
+      <NavBar />
+
+      {/* Hero Section */}
+      <section className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center overflow-hidden bg-white px-6 pt-28 text-center sm:pt-32">
+        <div
+          className="hidden sm:block absolute left-0 top-0 h-full w-1/2 -translate-x-[calc(100%*var(--progress,0))] transform rounded-r-[40%] bg-gradient-to-r from-[#F5472C] to-[#ff6a3c] transition-transform duration-200 ease-out sm:w-1/2"
+          style={{ transform: `translateX(${ -100 * scrollProgress }%)` }}
+        />
+        <div
+          className="hidden sm:block absolute right-0 top-0 h-full w-1/2 translate-x-[calc(100%*var(--progress,0))] transform rounded-l-[40%] bg-gradient-to-l from-[#F5472C] to-[#ff6a3c] transition-transform duration-200 ease-out sm:w-1/2"
+          style={{ transform: `translateX(${ 100 * scrollProgress }%)` }}
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: fadeIn ? 1 : 0, y: fadeIn ? 0 : 10 }}
+          transition={{ duration: 1 }}
+          className="relative z-10 flex max-w-3xl flex-col items-center gap-4"
+        >
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+            Welcome to ENGZ
           </h1>
-          <nav className="space-x-8 text-sm font-medium text-gray-700">
+          <p className="text-sm text-gray-600 sm:text-base">
+            AI와 사람의 힘으로 언어의 한계를 넘다
+          </p>
+          <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
             <a
-              href="#service"
-              onClick={(e) => handleNavClick(e, "service")}
-              className="hover:text-[#F5472C] transition-colors"
+              href="/level-test"
+              className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03]"
             >
-              서비스
-            </a>
-            <a
-              href="#ceo"
-              onClick={(e) => handleNavClick(e, "ceo")}
-              className="hover:text-[#F5472C] transition-colors"
-            >
-              소개
+              무료 AI 레벨 테스트 체험하기 →
             </a>
             <a
               href="https://www.eng-z.com/pricing"
-              className="hover:text-[#F5472C] transition-colors"
+              className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
             >
-              구독 플랜
+              7일 무료 체험 시작하기 →
             </a>
-            <a
-              href="/ai-course"
-              className="hover:text-[#F5472C] transition-colors"
-            >
-              AI 집중코스
-            </a>
-            <a
-              href="/level-test"
-              className="hover:text-[#F5472C] transition-colors"
-            >
-              AI 레벨 테스트
-            </a>
-            <a
-              href="/coming-soon"
-              className="hover:text-[#F5472C] transition-colors"
-            >
-              AI 플랫폼
-            </a>
-            <a
-              href="/testimonials"
-              className="hover:text-[#F5472C] transition-colors"
-            >
-              후기
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, "contact")}
-              className="hover:text-[#F5472C] transition-colors"
-            >
-              문의
-            </a>
-          </nav>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-white">
-        <div
-          className="absolute left-0 top-0 w-1/2 h-full bg-gradient-to-r from-[#F5472C] to-[#ff6a3c]"
-          style={{
-            transform: `translateX(${-100 * scrollProgress}%)`,
-            transition: "transform 0.1s ease-out",
-            borderTopRightRadius: "40%",
-            borderBottomRightRadius: "40%",
-          }}
-        />
-        <div
-          className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-[#F5472C] to-[#ff6a3c]"
-          style={{
-            transform: `translateX(${100 * scrollProgress}%)`,
-            transition: "transform 0.1s ease-out",
-            borderTopLeftRadius: "40%",
-            borderBottomLeftRadius: "40%",
-          }}
-        />
-        <div
-          className={`relative z-10 text-center text-black transition-all duration-1000 ease-in-out ${
-            fadeIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-          }`}
-          style={{
-            opacity: (1 - scrollProgress * 1.5) * (fadeIn ? 1 : 0),
-            transform: `translateY(${scrollProgress * -30}px)`,
-          }}
-        >
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-3">
-            Welcome to ENGZ
-          </h1>
-          <p className="mt-4 text-lg text-gray-600">
-            AI기반 프리미엄 1:1 영어 코칭 브랜드
-          </p>
-        </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* 서비스 섹션 */}
-      <section id="service" className="py-24 bg-white text-center">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">ENGZ Core</h2>
-          <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-12">
+      <section id="service" className="bg-white px-6 py-16 text-center sm:py-20">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-6 text-3xl font-bold md:text-4xl">ENGZ Core</h2>
+          <p className="mb-12 text-sm leading-relaxed text-gray-600 md:text-base">
             ENGZ는 AI 분석과 1:1 코칭을 결합한 영어 학습 서비스로, 발음 · 문법 ·
             표현력까지 정밀하게 분석하고 피드백합니다.
-            <br />
+            <br className="hidden sm:block" />
             매주 성장 리포트를 통해 학습의 변화를 시각적으로 확인할 수 있습니다.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-semibold text-lg mb-2">1:1 맞춤 코칭</h3>
-              <p className="text-sm text-gray-600 leading-snug">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
+            <div className="rounded-2xl border border-gray-100 p-6 shadow-sm">
+              <h3 className="mb-2 text-lg font-semibold">1:1 맞춤 코칭</h3>
+              <p className="text-sm leading-snug text-gray-600">
                 개인 목표에 맞춘 주 1회 코칭 세션으로 발음, 문법, 스피킹을
                 정교하게 다듬습니다.
               </p>
             </div>
-            <div className="border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-semibold text-lg mb-2">AI 피드백 & 분석</h3>
-              <p className="text-sm text-gray-600 leading-snug">
+            <div className="rounded-2xl border border-gray-100 p-6 shadow-sm">
+              <h3 className="mb-2 text-lg font-semibold">AI 피드백 & 분석</h3>
+              <p className="text-sm leading-snug text-gray-600">
                 AI가 학습자의 음성·문법을 분석하고, 개선 포인트를 리포트 형태로
                 제공합니다.
               </p>
             </div>
-            <div className="border border-gray-100 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-semibold text-lg mb-2">주간 성장 리포트</h3>
-              <p className="text-sm text-gray-600 leading-snug">
+            <div className="rounded-2xl border border-gray-100 p-6 shadow-sm">
+              <h3 className="mb-2 text-lg font-semibold">주간 성장 리포트</h3>
+              <p className="text-sm leading-snug text-gray-600">
                 한 주의 학습 데이터를 시각화해, 발전 정도와 다음 단계의 학습
                 방향을 제시합니다.
               </p>
@@ -286,7 +217,8 @@ export default function EngzLandingFull() {
             무료 체험으로 ENGZ를 직접 경험해 보세요
           </h2>
           <p className="text-gray-600 text-sm mb-12">
-            7일 무료 체험으로 AI 집중코스와 레벨 테스트를 먼저 살펴본 뒤, 더 자세한 플랜은 상단의 구독 플랜 페이지에서 확인해 주세요.
+            7일 무료 체험으로 AI 집중코스와 레벨 테스트를 먼저 살펴본 뒤, 더
+            자세한 플랜은 상단의 구독 플랜 페이지에서 확인해 주세요.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
