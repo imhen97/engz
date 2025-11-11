@@ -66,6 +66,12 @@ export default function EngzLandingFull() {
               요금제
             </a>
             <a
+              href="/ai-course"
+              className="hover:text-[#F5472C] transition-colors"
+            >
+              AI 집중코스
+            </a>
+            <a
               href="/coming-soon"
               className="hover:text-[#F5472C] transition-colors"
             >

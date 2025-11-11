@@ -36,7 +36,13 @@ export default function TestimonialsPage() {
             >
               요금제
             </a>
-            <a href="/coming-soon" className="hover:text-[#F5472C] transition-colors">
+            <a href="/ai-course" className="hover:text-[#F5472C] transition-colors">
+              AI 집중코스
+            </a>
+            <a
+              href="/coming-soon"
+              className="hover:text-[#F5472C] transition-colors"
+            >
               AI 플랫폼
             </a>
             <a href="/testimonials" className="text-[#F5472C] font-semibold">
