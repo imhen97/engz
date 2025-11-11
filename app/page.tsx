@@ -256,12 +256,12 @@ export default function EngzLandingFull() {
           <div className="flex flex-col md:flex-row justify-center gap-6 mt-8">
             {[
               {
-                href: "https://open.kakao.com/o/simhen97",
+                href: "https://open.kakao.com/o/sJDAeK6f",
                 label: "카카오톡",
                 icon: "💬",
               },
               {
-                href: "https://instagram.com/engz_kr",
+                href: "https://open.kakao.com/o/sJDAeK6f",
                 label: "인스타그램",
                 icon: "📷",
               },
