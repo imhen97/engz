@@ -5,14 +5,30 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions);
+  let session;
+  try {
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    console.error("세션 가져오기 실패:", error);
+    redirect("/signup?callbackUrl=/dashboard");
+  }
 
   if (!session?.user) {
     redirect("/signup?callbackUrl=/dashboard");
   }
 
-  const { plan, trialActive, trialEndsAt, subscriptionActive, name } =
+  const { plan, trialActive, trialEndsAtRaw, subscriptionActive, name } =
     session.user;
+
+  // trialEndsAt이 Date 객체인지 확인하고 안전하게 처리
+  let trialEndsAt: Date | null = null;
+  if (trialEndsAtRaw) {
+    if (trialEndsAtRaw instanceof Date) {
+      trialEndsAt = trialEndsAtRaw;
+    } else if (typeof trialEndsAtRaw === "string") {
+      trialEndsAt = new Date(trialEndsAtRaw);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#FFF8F5] text-black">
@@ -45,8 +61,8 @@ export default async function DashboardPage() {
             <ul className="mt-4 space-y-2 text-sm text-gray-600">
               <li>• 무료 체험 상태: {trialActive ? "진행 중" : "종료"}</li>
               <li>• 구독 활성화: {subscriptionActive ? "예" : "아니요"}</li>
-              {trialActive && trialEndsAt && (
-                <li>• 체험 종료일: {trialEndsAt.toLocaleDateString()}</li>
+              {trialActive && trialEndsAt && !isNaN(trialEndsAt.getTime()) && (
+                <li>• 체험 종료일: {trialEndsAt.toLocaleDateString("ko-KR")}</li>
               )}
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">

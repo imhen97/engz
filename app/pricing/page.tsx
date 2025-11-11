@@ -38,15 +38,32 @@ const plans = [
 ];
 
 export default async function PricingPage() {
-  const session = await getServerSession(authOptions);
+  let session;
+  try {
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    console.error("세션 가져오기 실패:", error);
+    session = null;
+  }
+
   const activePlan = session?.user?.plan ?? "free";
   const trialActive = session?.user?.trialActive ?? false;
-  const trialEndsAt = session?.user?.trialEndsAt ?? null;
+  const trialEndsAtRaw = session?.user?.trialEndsAt ?? null;
   const subscriptionActive = session?.user?.subscriptionActive ?? false;
 
+  // trialEndsAt이 Date 객체인지 확인하고 안전하게 처리
+  let trialEndsAt: Date | null = null;
+  if (trialEndsAtRaw) {
+    if (trialEndsAtRaw instanceof Date) {
+      trialEndsAt = trialEndsAtRaw;
+    } else if (typeof trialEndsAtRaw === "string") {
+      trialEndsAt = new Date(trialEndsAtRaw);
+    }
+  }
+
   const trialMessage = trialActive
-    ? trialEndsAt
-      ? `무료 체험이 ${trialEndsAt.toLocaleDateString()}까지 남아 있습니다. 체험 기간이 끝나기 전에 언제든지 취소할 수 있습니다.`
+    ? trialEndsAt && !isNaN(trialEndsAt.getTime())
+      ? `무료 체험이 ${trialEndsAt.toLocaleDateString("ko-KR")}까지 남아 있습니다. 체험 기간이 끝나기 전에 언제든지 취소할 수 있습니다.`
       : "무료 체험이 진행 중입니다. 체험이 끝나기 전에 언제든지 취소할 수 있습니다."
     : "체험을 시작해도 오늘은 결제되지 않으며, 7일 동안 모두 무료로 이용할 수 있습니다.";
 

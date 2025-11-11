@@ -51,14 +51,19 @@ if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
 
 async function enrichToken(token: any) {
   if (!token?.userId) return token;
-  const user = await prisma.user.findUnique({
-    where: { id: token.userId as string },
-  });
-  if (!user) return token;
-  token.plan = user.plan;
-  token.trialActive = user.trialActive;
-  token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
-  token.subscriptionActive = user.subscriptionActive;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: token.userId as string },
+    });
+    if (!user) return token;
+    token.plan = user.plan;
+    token.trialActive = user.trialActive;
+    token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
+    token.subscriptionActive = user.subscriptionActive;
+  } catch (error) {
+    console.error("토큰 보강 중 오류:", error);
+    // 오류 발생 시 기존 토큰 값 유지
+  }
   return token;
 }
 
