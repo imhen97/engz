@@ -256,17 +256,17 @@ export default function EngzLandingFull() {
             {[
               {
                 href: "https://open.kakao.com/o/simhen97",
-                label: "카카오톡으로 문의하기",
+                label: "카카오톡",
                 icon: "💬",
               },
               {
                 href: "https://instagram.com/engz_kr",
-                label: "인스타그램 문의",
+                label: "인스타그램",
                 icon: "📷",
               },
               {
                 href: "mailto:hena.k@eng-z.com",
-                label: "이메일 문의",
+                label: "이메일",
                 icon: "✉️",
               },
             ].map((btn, i) => (
