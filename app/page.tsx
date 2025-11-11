@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
+import { testimonials } from "@/data/testimonials";
 
 // 상단 메뉴바 + 통일된 문의 버튼 컬러 버전
 export default function EngzLandingFull() {
@@ -41,9 +43,7 @@ export default function EngzLandingFull() {
           <h1 className="text-xl font-bold text-[#F5472C] tracking-tight">
             ENGZ
           </h1>
-          <nav
-            className="space-x-8 text-sm font-medium text-gray-700"
-          >
+          <nav className="space-x-8 text-sm font-medium text-gray-700">
             <a
               href="#service"
               onClick={(e) => handleNavClick(e, "service")}
@@ -190,22 +190,51 @@ export default function EngzLandingFull() {
               가르쳐야 한다&apos;는 신념이 생겼습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
-              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백
-              명의 학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만,
-              영어로 말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를
-              겪는다는 것을 발견했습니다.
+              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백 명의
+              학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만, 영어로
+              말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를 겪는다는
+              것을 발견했습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
               그래서 저는 누구나 두려움 없이 영어를 배우고 말할 수 있도록 돕는
               학습 플랫폼{" "}
               <span className="font-semibold text-[#F5472C]">ENGZ</span>를
-              설립했습니다. 인공지능 기술과 사람의 피드백을 결합해 &apos;쉽고
-              지속 가능한 영어 학습&apos;을 만드는 것이 ENGZ의 철학입니다.
+              설립했습니다. 인공지능 기술과 사람의 피드백을 결합해 &apos;쉽고 지속
+              가능한 영어 학습&apos;을 만드는 것이 ENGZ의 철학입니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed">
               ENGZ는 대한민국을 넘어 글로벌 무대에서도 인정받는 영어 학습
               브랜드로 성장하는 것을 목표로 합니다.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 후기 하이라이트 섹션 */}
+      <section className="py-24 bg-white border-t border-gray-100">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm uppercase tracking-[0.3em] text-[#F5472C]">
+              Success Stories
+            </p>
+            <h2 className="mt-4 text-3xl md:text-4xl font-bold">
+              수강생이 전하는 ENGZ의 변화
+            </h2>
+            <p className="mt-4 text-sm md:text-base text-gray-600 leading-relaxed">
+              프리미엄 1:1 영어 코칭을 통해 실제 성장을 경험한 수강생들의 생생한
+              후기입니다.
+            </p>
+          </div>
+
+          <TestimonialCarousel testimonials={testimonials} />
+
+          <div className="mt-12 flex justify-center">
+            <a
+              href="/testimonials"
+              className="inline-flex items-center gap-2 rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+            >
+              후기 더 보기 →
+            </a>
           </div>
         </div>
       </section>
