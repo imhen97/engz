@@ -13,10 +13,7 @@ const renderStars = (score: number) => {
   const stars = [];
   for (let i = 0; i < 5; i += 1) {
     stars.push(
-      <span
-        key={i}
-        className={i < score ? "text-[#F5472C]" : "text-gray-200"}
-      >
+      <span key={i} className={i < score ? "text-[#F5472C]" : "text-gray-200"}>
         ★
       </span>
     );
@@ -42,10 +39,8 @@ export default function TestimonialCard({
         </div>
         <div className="flex flex-col gap-1">
           <p className="text-sm text-gray-600">
-            수업 시작 <strong className="text-gray-900">{testimonial.startPeriod}</strong>
-          </p>
-          <p className="text-sm text-gray-600">
-            월 수업료 <strong className="text-gray-900">{testimonial.monthlyFee}</strong>
+            수업 시작{" "}
+            <strong className="text-gray-900">{testimonial.startPeriod}</strong>
           </p>
         </div>
       </header>
@@ -62,18 +57,6 @@ export default function TestimonialCard({
       <p className="flex-1 text-sm leading-relaxed text-gray-700">
         {testimonial.review}
       </p>
-
-      {testimonial.response && (
-        <div className="rounded-2xl border border-gray-100 bg-gray-50 p-4 text-sm text-gray-600">
-          <p className="mb-2 font-semibold text-[#F5472C]">
-            {testimonial.response.author}
-          </p>
-          <p className="leading-relaxed">{testimonial.response.message}</p>
-          <p className="mt-3 text-xs text-gray-400">
-            {testimonial.response.date.replace(/-/g, ".")}
-          </p>
-        </div>
-      )}
     </article>
   );
 }

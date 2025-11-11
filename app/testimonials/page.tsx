@@ -16,7 +16,10 @@ export default function TestimonialsPage() {
     <main className="min-h-screen bg-white text-black font-[Pretendard] overflow-x-hidden">
       <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center px-6">
-          <a href="/" className="text-xl font-bold text-[#F5472C] tracking-tight">
+          <a
+            href="/"
+            className="text-xl font-bold text-[#F5472C] tracking-tight"
+          >
             ENGZ
           </a>
           <nav className="space-x-8 text-sm font-medium text-gray-700">
@@ -52,27 +55,6 @@ export default function TestimonialsPage() {
             해나쌤의 맞춤 피드백을 확인해보세요. 실제 변화와 성장의 순간들이
             담겨 있습니다.
           </p>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-              <p className="text-sm text-gray-500">후기</p>
-              <p className="mt-2 text-4xl font-bold text-[#F5472C]">
-                {testimonialSummary.total}건
-              </p>
-              <p className="mt-2 text-sm text-gray-600">
-                실제 수강생이 남긴 신뢰도 높은 후기입니다.
-              </p>
-            </div>
-            <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-              <p className="text-sm text-gray-500">성사 대비 후기 등록률</p>
-              <p className="mt-2 text-4xl font-bold text-[#F5472C]">
-                {testimonialSummary.conversionRate}
-              </p>
-              <p className="mt-2 text-sm text-gray-600">
-                마음을 움직인 ENGZ의 맞춤형 코칭 경험을 확인하세요.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
