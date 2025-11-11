@@ -35,24 +35,24 @@ const comparisonRows = [
 
 const steps = [
   {
-    title: "Week 1 – AI 진단",
+    title: "1주차 – AI 진단",
     description:
       "발음·문법·유창성을 정밀 분석해 현재 상태를 데이터로 기록합니다.",
   },
   {
-    title: "Weeks 2–3 – 데일리 미션",
+    title: "2~3주차 – 데일리 미션",
     description: "목표에 맞춘 연습 루틴을 AI가 매일 자동으로 제시합니다.",
   },
   {
-    title: "Daily – AI 피드백",
+    title: "매일 – AI 피드백",
     description: "문장 교정, 더 나은 표현 추천으로 말하기 자신감을 키웁니다.",
   },
   {
-    title: "Week 4 – 성장 리포트",
-    description: "Before vs After가 한눈에 보이는 시각화 보고서를 받습니다.",
+    title: "4주차 – 성장 리포트",
+    description: "전후 변화가 한눈에 보이는 시각화 보고서를 받습니다.",
   },
   {
-    title: "Next Steps – 다음 루틴 제안",
+    title: "그다음 – 새로운 루틴 제안",
     description: "다음 4주를 위한 새로운 학습 로드맵을 다시 설계합니다.",
   },
 ];
@@ -153,8 +153,7 @@ export default function AiCoursePageContent() {
               앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
             </h1>
             <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
-              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 Before &
-              After 변화를 완성합니다.
+              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 전후 변화를 완성합니다.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
@@ -334,15 +333,15 @@ export default function AiCoursePageContent() {
           <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
             <div className="rounded-3xl border border-[#F5472C]/30 bg-white p-5 shadow-sm sm:p-6">
               <h3 className="text-lg font-semibold text-[#F5472C]">
-                발음 파형 비교 (Before / After)
+                발음 파형 비교 (전 / 후)
               </h3>
               <div className="mt-6 grid grid-cols-1 gap-4 text-center text-sm text-gray-600 sm:grid-cols-2">
                 <div>
-                  <p className="font-semibold text-gray-700">Before</p>
+                  <p className="font-semibold text-gray-700">전</p>
                   <div className="mt-3 h-24 rounded-2xl bg-gradient-to-r from-gray-200 via-gray-100 to-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-[#F5472C]">After</p>
+                  <p className="font-semibold text-[#F5472C]">후</p>
                   <div className="mt-3 h-24 rounded-2xl bg-gradient-to-r from-[#F5472C] via-[#ff8a6c] to-[#ffd3c6]" />
                 </div>
               </div>

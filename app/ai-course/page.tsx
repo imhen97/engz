@@ -4,9 +4,9 @@ import NavBar from "@/components/NavBar";
 import AiCoursePageContent from "@/components/AiCoursePageContent";
 
 export const metadata: Metadata = {
-  title: "ENGZ AI 4-Week Intensive Course | Speak Confident English",
+  title: "ENGZ AI 4주 집중 코스 | 자신 있게 말하는 영어",
   description:
-    "ENGZ AI 4-Week Intensive Course delivers personalized missions, AI feedback, and measurable growth so you actually start speaking English in 4 weeks.",
+    "ENGZ AI 4주 집중 코스는 개인 맞춤 미션과 AI 피드백으로 4주 안에 자신 있게 말하는 경험을 제공합니다.",
 };
 
 export default function AiCoursePage() {

@@ -21,10 +21,10 @@ export default function PricingPage() {
           className="max-w-3xl"
         >
           <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C] sm:text-sm">
-            Pricing
+            요금제 안내
           </p>
           <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            Choose Your Plan — Start Learning with ENGZ AI
+            ENGZ AI와 함께할 요금제를 선택해 보세요
           </h1>
           <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
             목표에 맞춰 성장하는 유연한 플랜을 선택하세요. 언제든지 취소할 수
@@ -62,10 +62,10 @@ export default function PricingPage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-6 md:grid md:grid-cols-2">
           <div className="rounded-3xl border border-[#F5472C]/30 bg-[#FFF5F3] p-6 shadow-lg sm:p-8">
             <p className="text-xs uppercase tracking-[0.25em] text-[#F5472C] sm:text-sm">
-              Most Popular
+              가장 많이 선택한 플랜
             </p>
             <h2 className="mt-4 text-2xl font-bold text-gray-900">
-              Monthly Plan
+              월간 플랜
             </h2>
             <p className="mt-2 text-sm text-gray-500">
               1,200명 이상의 학습자가 ENGZ AI로 실력을 높이고 있습니다.
@@ -74,7 +74,7 @@ export default function PricingPage() {
               ₩49,000
               <span className="text-base font-medium text-gray-500">
                 {" "}
-                / month
+                / 월
               </span>
             </p>
             <ul className="mt-6 space-y-3 text-sm text-gray-600">
@@ -98,7 +98,7 @@ export default function PricingPage() {
           </div>
 
           <div className="rounded-3xl border border-gray-100 bg-white p-6 shadow-lg sm:p-8">
-            <h2 className="text-2xl font-bold text-gray-900">Annual Plan</h2>
+            <h2 className="text-2xl font-bold text-gray-900">연간 플랜</h2>
             <p className="mt-2 text-sm text-gray-500">
               1년 단위로 결제하면 월간 요금 대비 약 2개월을 절약할 수 있습니다.
             </p>
@@ -106,11 +106,11 @@ export default function PricingPage() {
               ₩39,000
               <span className="text-base font-medium text-gray-500">
                 {" "}
-                / month
+                / 월
               </span>
             </p>
             <ul className="mt-6 space-y-3 text-sm text-gray-600">
-              <li>• Monthly Plan의 모든 혜택 포함</li>
+              <li>• 월간 플랜의 모든 혜택 포함</li>
               <li>• 우선 순위 AI 지원</li>
               <li>• 신규 기능 베타 프로그램 우선 참여</li>
             </ul>
@@ -134,7 +134,7 @@ export default function PricingPage() {
             도구를 즉시 이용할 수 있습니다.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-2 text-xs text-gray-400 sm:flex-row sm:gap-4">
-            <span>• Stripe Checkout으로 안전하게 결제</span>
+            <span>• Stripe 결제로 안전하게 결제</span>
             <span>• 체험 기간 중 언제든 무료 취소 가능</span>
             <span>
               • 도움이 필요하시면{" "}

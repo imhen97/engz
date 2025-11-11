@@ -82,30 +82,34 @@ export default function TestimonialCarousel({
     <div className="relative">
       <div className="relative min-h-[620px] w-full overflow-hidden">
         <AnimatePresence mode="wait" initial={false}>
-          {slides.map((slide, index) => (
-            index === activeIndex && (
-              <motion.div
-                key={slide[0]?.id ?? index}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="absolute inset-0"
-              >
-                <div
-                  className="grid h-full gap-6"
-                  style={{
-                    gridTemplateColumns: `repeat(${slide.length}, minmax(0, 1fr))`,
-                  }}
+          {slides.map(
+            (slide, index) =>
+              index === activeIndex && (
+                <motion.div
+                  key={slide[0]?.id ?? index}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="absolute inset-0"
                 >
-                  {slide.map((testimonial) => (
-                    <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-                  ))}
-                </div>
-              </motion.div>
-            )
-          ))}
+                  <div
+                    className="grid h-full gap-6"
+                    style={{
+                      gridTemplateColumns: `repeat(${slide.length}, minmax(0, 1fr))`,
+                    }}
+                  >
+                    {slide.map((testimonial) => (
+                      <TestimonialCard
+                        key={testimonial.id}
+                        testimonial={testimonial}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )
+          )}
         </AnimatePresence>
       </div>
 
@@ -115,7 +119,7 @@ export default function TestimonialCarousel({
             type="button"
             onClick={() => handleNavigate(activeIndex - 1)}
             className="pointer-events-auto rounded-full border border-gray-200 bg-white p-3 text-gray-500 shadow-sm transition hover:border-[#F5472C] hover:text-[#F5472C]"
-            aria-label="Previous testimonial"
+            aria-label="이전 후기"
           >
             ←
           </button>
@@ -123,7 +127,7 @@ export default function TestimonialCarousel({
             type="button"
             onClick={() => handleNavigate(activeIndex + 1)}
             className="pointer-events-auto rounded-full border border-gray-200 bg-white p-3 text-gray-500 shadow-sm transition hover:border-[#F5472C] hover:text-[#F5472C]"
-            aria-label="Next testimonial"
+            aria-label="다음 후기"
           >
             →
           </button>

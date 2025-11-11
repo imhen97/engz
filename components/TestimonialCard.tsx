@@ -24,7 +24,7 @@ export default function TestimonialCard({
     >
       <header className="flex flex-col gap-2">
         <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C]">
-          Success Story
+          성장 스토리
         </p>
         <h3 className="text-lg font-semibold text-gray-900">
           {testimonial.name} · {testimonial.role} · {testimonial.city}

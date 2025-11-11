@@ -48,7 +48,7 @@ export default function EngzLandingFull() {
           className="relative z-10 flex max-w-3xl flex-col items-center gap-4"
         >
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-            Welcome to ENGZ
+            ENGZ에 오신 것을 환영합니다
           </h1>
           <p className="text-sm text-gray-600 sm:text-base">
             AI와 사람의 힘으로 언어의 한계를 넘다
@@ -76,7 +76,7 @@ export default function EngzLandingFull() {
         className="bg-white px-6 py-16 text-center sm:py-20"
       >
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-6 text-3xl font-bold md:text-4xl">ENGZ Core</h2>
+          <h2 className="mb-6 text-3xl font-bold md:text-4xl">ENGZ 핵심 서비스</h2>
           <p className="mb-12 text-sm leading-relaxed text-gray-600 md:text-base">
             ENGZ는 AI 분석과 1:1 코칭을 결합한 영어 학습 서비스로, 발음 · 문법 ·
             표현력까지 정밀하게 분석하고 피드백합니다.
@@ -147,7 +147,7 @@ export default function EngzLandingFull() {
               대표가 직접 관리하고 코칭하는 밀착케어 프로그램
             </motion.p>
             <p className="text-sm tracking-[0.18em] text-gray-500 mb-2">
-              CEO · FOUNDER
+              대표 · 설립자
             </p>
             <h2 className="text-2xl md:text-3xl font-bold leading-snug mb-4">
               김해나 (Hena Kim)
@@ -185,14 +185,14 @@ export default function EngzLandingFull() {
       <section className="bg-white px-6 py-20" id="success">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C]">
-              Success Stories
+            <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C]">
+              성공 후기
             </p>
             <h2 className="mt-4 text-3xl font-bold text-gray-900 md:text-4xl">
-              ENGZ Learners Who Transformed Their English
+              ENGZ 수강생의 성장 여정
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-gray-600 md:text-base">
-              Real growth stories from professionals, students, and leaders who experienced the ENGZ method.
+              ENGZ 코칭을 통해 커리어와 일상을 바꾼 수강생들의 실제 이야기를 확인해 보세요.
             </p>
           </div>
 

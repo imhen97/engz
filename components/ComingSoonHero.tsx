@@ -13,16 +13,16 @@ export default function ComingSoonHero() {
         className="max-w-3xl text-center"
       >
         <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C] sm:text-sm">
-          Coming Soon
+          곧 공개됩니다
         </p>
         <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-          Engz AI English Learning Platform
+          ENGZ AI 영어 학습 플랫폼
         </h1>
         <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
-          Experience smart, personalized English learning powered by AI.
+          AI가 설계한 맞춤 영어 학습 경험을 곧 만나보세요.
         </p>
         <p className="mt-3 text-xs text-gray-500 sm:text-sm">
-          Launching Soon 🚀 Stay tuned for early access.
+          곧 오픈 예정입니다 🚀 사전 안내를 신청하고 가장 먼저 소식을 받아보세요.
         </p>
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:mt-10 sm:flex-row">
@@ -32,13 +32,13 @@ export default function ComingSoonHero() {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:px-8"
           >
-            Notify Me
+            사전 안내 받기
           </a>
           <Link
             href="/#service"
             className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:px-8"
           >
-            Learn More
+            서비스 자세히 보기
           </Link>
         </div>
 
@@ -57,7 +57,7 @@ export default function ComingSoonHero() {
         </div>
 
         <p className="mt-4 text-[0.72rem] text-gray-400 sm:text-xs">
-          Join the waitlist to be the first to experience the ENGZ AI platform.
+          웨이팅 리스트에 등록하면 ENGZ AI 플랫폼을 가장 먼저 체험하실 수 있습니다.
         </p>
       </motion.div>
     </section>

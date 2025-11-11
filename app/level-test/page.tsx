@@ -416,14 +416,13 @@ export default function LevelTestPage() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white to-[#FFF5F3]" />
         <div className="max-w-3xl text-center">
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-[#F5472C]">
-            AI Level Test
+            AI 레벨 테스트
           </p>
           <h1 className="mt-5 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
-            Discover Your Real English Level with AI
+            AI가 진짜 영어 실력을 진단해 드립니다
           </h1>
           <p className="mt-6 text-base text-gray-600 md:text-lg">
-            Take our smart 5-minute test designed by ENGZ AI and see how your
-            English actually sounds.
+            ENGZ AI가 설계한 5분 테스트로 발음, 문장력, 유창성을 한 번에 점검해 보세요.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
@@ -431,19 +430,18 @@ export default function LevelTestPage() {
               onClick={handleHeroStart}
               className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
             >
-              Start Free AI Level Test →
+              무료 AI 레벨 테스트 시작하기 →
             </button>
             <button
               type="button"
               onClick={handleViewSample}
               className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
             >
-              View Sample Feedback →
+              샘플 피드백 살펴보기 →
             </button>
           </div>
           <p className="mt-4 text-xs text-gray-500">
-            The AI feedback summary will be unlocked after the test — start your
-            free 7-day trial to view details.
+            테스트 이후 AI 요약 리포트가 공개되며, 자세한 분석은 7일 무료 체험으로 확인하실 수 있습니다.
           </p>
         </div>
       </section>

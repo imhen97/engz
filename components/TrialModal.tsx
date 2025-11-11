@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function TrialModal({
   open,
@@ -9,7 +9,7 @@ export default function TrialModal({
   open: boolean;
   onClose: () => void;
 }) {
-  const checkoutUrl = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || '#';
+  const checkoutUrl = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "#";
 
   return (
     <AnimatePresence>
@@ -31,8 +31,9 @@ export default function TrialModal({
               7일 무료 체험을 시작하세요
             </h3>
             <p className="mt-4 text-sm text-gray-600">
-              카드 인증 후 바로 체험이 시작되며, 언제든지 체험 종료 전에 취소하실 수 있습니다.
-              체험이 끝나면 자동으로 정기 구독이 진행됩니다.
+              카드 인증 후 바로 체험이 시작되며, 언제든지 체험 종료 전에
+              취소하실 수 있습니다. 체험이 끝나면 자동으로 정기 구독이
+              진행됩니다.
             </p>
 
             <div className="mt-6 space-y-3 text-left text-sm text-gray-500">
@@ -47,9 +48,11 @@ export default function TrialModal({
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
             >
-              Stripe Checkout로 이동 →
+              Stripe 결제 페이지로 이동 →
             </a>
-            <p className="mt-2 text-xs text-gray-400">체험 종료 전 언제든 취소 가능합니다.</p>
+            <p className="mt-2 text-xs text-gray-400">
+              체험 종료 전 언제든 취소 가능합니다.
+            </p>
 
             <button
               type="button"
