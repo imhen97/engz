@@ -65,7 +65,7 @@ export default function EngzLandingFull() {
               onClick={(e) => handleNavClick(e, "pricing")}
               className="hover:text-[#F5472C] transition-colors"
             >
-              요금제
+              구독 플랜
             </a>
             <a
               href="/ai-course"
@@ -287,7 +287,8 @@ export default function EngzLandingFull() {
             요금제 안내는 곧 업데이트됩니다
           </h2>
           <p className="text-gray-600 text-sm mb-12">
-            자세한 플랜은 상단의 AI 집중코스 또는 AI 레벨 테스트에서 확인해 주세요.
+            자세한 플랜은 상단의 AI 집중코스 또는 AI 레벨 테스트에서 확인해
+            주세요.
           </p>
         </div>
       </section>

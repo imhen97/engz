@@ -34,12 +34,18 @@ export default function TestimonialsPage() {
               href="/#pricing"
               className="hover:text-[#F5472C] transition-colors"
             >
-              요금제
+              구독 플랜
             </a>
-            <a href="/ai-course" className="hover:text-[#F5472C] transition-colors">
+            <a
+              href="/ai-course"
+              className="hover:text-[#F5472C] transition-colors"
+            >
               AI 집중코스
             </a>
-            <a href="/level-test" className="hover:text-[#F5472C] transition-colors">
+            <a
+              href="/level-test"
+              className="hover:text-[#F5472C] transition-colors"
+            >
               AI 레벨 테스트
             </a>
             <a

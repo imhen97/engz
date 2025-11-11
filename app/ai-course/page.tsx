@@ -29,7 +29,7 @@ export default function AiCoursePage() {
               소개
             </a>
             <a href="/#pricing" className={navLinkClass}>
-              요금제
+              구독 플랜
             </a>
             <a href="/ai-course" className="text-[#F5472C] font-semibold">
               AI 집중코스

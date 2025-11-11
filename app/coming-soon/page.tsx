@@ -29,7 +29,7 @@ export default function ComingSoonPage() {
               소개
             </a>
             <a href="/#pricing" className={navLinkClass}>
-              요금제
+              구독 플랜
             </a>
             <a href="/ai-course" className={navLinkClass}>
               AI 집중코스
