@@ -41,7 +41,9 @@ export default function EngzLandingFull() {
           <h1 className="text-xl font-bold text-[#F5472C] tracking-tight">
             ENGZ
           </h1>
-          <nav className="space-x-8 text-sm font-medium text-gray-700">
+          <nav
+            className="space-x-8 text-sm font-medium text-gray-700"
+          >
             <a
               href="#service"
               onClick={(e) => handleNavClick(e, "service")}
@@ -62,6 +64,12 @@ export default function EngzLandingFull() {
               className="hover:text-[#F5472C] transition-colors"
             >
               요금제
+            </a>
+            <a
+              href="/testimonials"
+              className="hover:text-[#F5472C] transition-colors"
+            >
+              후기
             </a>
             <a
               href="#contact"
