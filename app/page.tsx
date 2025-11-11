@@ -167,7 +167,7 @@ export default function EngzLandingFull() {
           </div>
 
           <div>
-            <p className="text-[11px] tracking-[0.18em] text-gray-500 mb-2">
+            <p className="text-sm tracking-[0.18em] text-gray-500 mb-2">
               CEO · FOUNDER
             </p>
             <h2 className="text-2xl md:text-3xl font-bold leading-snug mb-4">
@@ -182,10 +182,10 @@ export default function EngzLandingFull() {
               가르쳐야 한다&apos;는 신념이 생겼습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
-              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백 명의
-              학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만, 영어로
-              말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를 겪는다는
-              것을 발견했습니다.
+              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백
+              명의 학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만,
+              영어로 말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를
+              겪는다는 것을 발견했습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
               그래서 저는 누구나 두려움 없이 영어를 배우고 말할 수 있도록 돕는
