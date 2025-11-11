@@ -261,7 +261,7 @@ export default function EngzLandingFull() {
                 icon: "💬",
               },
               {
-                href: "https://open.kakao.com/o/sJDAeK6f",
+                href: "https://www.instagram.com/engz_kr?igsh=MWNsemFkNGN5MWpwYw%3D%3D&utm_source=qr",
                 label: "인스타그램",
                 icon: "📷",
               },
