@@ -35,7 +35,7 @@ export default function PricingPage() {
             <a href="/level-test" className={navLinkClass}>
               AI 레벨 테스트
             </a>
-            <a href="/pricing" className="text-[#F5472C] font-semibold">
+            <a href="https://www.eng-z.com/pricing" className="text-[#F5472C] font-semibold">
               구독 플랜
             </a>
             <a href="/coming-soon" className={navLinkClass}>

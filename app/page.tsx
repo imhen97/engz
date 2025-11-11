@@ -61,8 +61,7 @@ export default function EngzLandingFull() {
               소개
             </a>
             <a
-              href="#pricing"
-              onClick={(e) => handleNavClick(e, "pricing")}
+              href="https://www.eng-z.com/pricing"
               className="hover:text-[#F5472C] transition-colors"
             >
               구독 플랜

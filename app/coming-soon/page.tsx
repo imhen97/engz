@@ -28,7 +28,7 @@ export default function ComingSoonPage() {
             <a href="/#ceo" className={navLinkClass}>
               소개
             </a>
-            <a href="/#pricing" className={navLinkClass}>
+            <a href="https://www.eng-z.com/pricing" className={navLinkClass}>
               구독 플랜
             </a>
             <a href="/ai-course" className={navLinkClass}>
