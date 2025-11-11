@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 
@@ -203,6 +204,15 @@ export default function EngzLandingFull() {
           </div>
 
           <div>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+              className="text-lg font-medium text-[#F5472C] md:text-xl"
+            >
+              9년 경력 영어컨설팅 대표가 직접 관리하고 코칭하는 밀착케어
+            </motion.p>
             <p className="text-sm tracking-[0.18em] text-gray-500 mb-2">
               CEO · FOUNDER
             </p>
