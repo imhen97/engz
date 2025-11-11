@@ -45,8 +45,7 @@ const steps = [
   },
   {
     title: "Daily – AI 피드백",
-    description:
-      "문장 교정, 더 나은 표현 추천으로 말하기 자신감을 키웁니다.",
+    description: "문장 교정, 더 나은 표현 추천으로 말하기 자신감을 키웁니다.",
   },
   {
     title: "Week 4 – 성장 리포트",
@@ -154,7 +153,8 @@ export default function AiCoursePageContent() {
               앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
             </h1>
             <p className="mt-6 text-base text-gray-600 md:text-lg">
-              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 Before & After 변화를 완성합니다.
+              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 Before &
+              After 변화를 완성합니다.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
@@ -177,7 +177,11 @@ export default function AiCoursePageContent() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1.2, repeat: Infinity, repeatType: "mirror" }}
+              transition={{
+                duration: 1.2,
+                repeat: Infinity,
+                repeatType: "mirror",
+              }}
               className="mt-10 text-sm font-medium text-gray-500"
             >
               AI 루틴을 설계하는 중…
@@ -191,7 +195,12 @@ export default function AiCoursePageContent() {
             <motion.div
               initial={{ scaleY: 0.4 }}
               animate={{ scaleY: 1 }}
-              transition={{ duration: 1.2, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+              transition={{
+                duration: 1.2,
+                repeat: Infinity,
+                repeatType: "mirror",
+                ease: "easeInOut",
+              }}
               className="h-48 origin-bottom rounded-2xl bg-gradient-to-t from-[#F5472C] via-[#ff7a55] to-[#ffc3b3]"
             />
             <p className="text-xs text-[#F5472C]">
@@ -299,11 +308,11 @@ export default function AiCoursePageContent() {
                 <h3 className="text-lg font-semibold text-gray-900">
                   {course.title}
                 </h3>
-                <p className="flex-1 text-sm text-gray-600">{course.description}</p>
+                <p className="flex-1 text-sm text-gray-600">
+                  {course.description}
+                </p>
                 <Link
-                  href="https://open.kakao.com/o/sJDAeK6f"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/pricing"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[#F5472C]"
                 >
                   → 지금 시작하기
@@ -441,7 +450,9 @@ export default function AiCoursePageContent() {
                 <h3 className="text-lg font-semibold text-gray-900">
                   {plan.name}
                 </h3>
-                <p className="text-2xl font-bold text-[#F5472C]">{plan.price}</p>
+                <p className="text-2xl font-bold text-[#F5472C]">
+                  {plan.price}
+                </p>
                 <p className="text-sm text-gray-600">{plan.details}</p>
               </div>
             ))}
