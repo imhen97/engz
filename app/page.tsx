@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 
@@ -165,6 +166,15 @@ export default function EngzLandingFull() {
                 방향을 제시합니다.
               </p>
             </div>
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <Link
+              href="/ai-course"
+              className="inline-flex items-center gap-2 rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+            >
+              더 알아보기 →
+            </Link>
           </div>
         </div>
       </section>
