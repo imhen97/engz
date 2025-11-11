@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 
 import TestimonialCarousel from "@/components/TestimonialCarousel";
-import { testimonialSummary, testimonials } from "@/data/testimonials";
+import { testimonials } from "@/data/testimonials";
 
 export const metadata: Metadata = {
   title: "ENGZ 후기 모음 | 수강생 성공 이야기",
   description:
     "ENGZ의 프리미엄 1:1 영어 코칭을 경험한 수강생들의 실제 후기를 확인하세요. 지속 가능한 성장과 목표 달성 이야기를 만나보세요.",
 };
-
-const navLinkClass = "hover:text-[#F5472C] transition-colors";
 
 export default function TestimonialsPage() {
   return (
@@ -23,19 +21,19 @@ export default function TestimonialsPage() {
             ENGZ
           </a>
           <nav className="space-x-8 text-sm font-medium text-gray-700">
-            <a href="/#service" className={navLinkClass}>
+            <a href="/#service" className="hover:text-[#F5472C] transition-colors">
               서비스
             </a>
-            <a href="/#ceo" className={navLinkClass}>
+            <a href="/#ceo" className="hover:text-[#F5472C] transition-colors">
               소개
             </a>
-            <a href="/#pricing" className={navLinkClass}>
+            <a href="/#pricing" className="hover:text-[#F5472C] transition-colors">
               요금제
             </a>
             <a href="/testimonials" className="text-[#F5472C] font-semibold">
               후기
             </a>
-            <a href="/#contact" className={navLinkClass}>
+            <a href="/#contact" className="hover:text-[#F5472C] transition-colors">
               문의
             </a>
           </nav>
@@ -61,24 +59,6 @@ export default function TestimonialsPage() {
       <section className="pb-20">
         <div className="max-w-5xl mx-auto px-6">
           <TestimonialCarousel testimonials={testimonials} />
-
-          <div className="mt-12 flex flex-col items-center gap-4 rounded-3xl border border-gray-100 bg-gradient-to-br from-white to-[#FFF7F5] p-10 text-center shadow-sm">
-            <h2 className="text-2xl font-semibold text-gray-900">
-              당신의 경험도 다른 누군가에게 큰 용기가 됩니다
-            </h2>
-            <p className="text-sm text-gray-600">
-              수업 후기 또는 상담을 남기고 싶으시다면 언제든지 ENGZ와 연결해
-              주세요.
-            </p>
-            <a
-              href="https://open.kakao.com/o/sJDAeK6f"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
-            >
-              💬 카카오톡으로 후기 남기기
-            </a>
-          </div>
         </div>
       </section>
 
