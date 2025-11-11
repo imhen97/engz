@@ -158,17 +158,13 @@ export default function AiCoursePageContent() {
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                href="https://open.kakao.com/o/sJDAeK6f"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/pricing"
                 className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
               >
                 🎯 4주 코스 시작하기 →
               </Link>
               <Link
-                href="https://open.kakao.com/o/sJDAeK6f"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/level-test"
                 className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto sm:px-8"
               >
                 💬 무료 AI 레벨 테스트 →
@@ -278,9 +274,7 @@ export default function AiCoursePageContent() {
           </div>
           <div className="mt-10 flex justify-center sm:mt-12">
             <Link
-              href="https://open.kakao.com/o/sJDAeK6f"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/level-test"
               className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
             >
               🔍 AI 진단 먼저 받아보기 →
@@ -448,17 +442,13 @@ export default function AiCoursePageContent() {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <Link
-              href="https://open.kakao.com/o/sJDAeK6f"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/level-test"
               className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
             >
               🧠 무료 AI 진단부터 시작하기 →
             </Link>
             <Link
-              href="https://open.kakao.com/o/sJDAeK6f"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/pricing"
               className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto sm:px-8"
             >
               🎯 4주 집중 코스 살펴보기 →
