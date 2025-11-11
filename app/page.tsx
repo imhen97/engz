@@ -182,7 +182,7 @@ export default function EngzLandingFull() {
               가르쳐야 한다&apos;는 신념이 생겼습니다.
             </p>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
-              이후 20대 내내 영어 강사로 활동하며, 10대부터 60대까지 수백 명의
+              이후 20대 내내 영어 강사로 활동하며, 10대~60대 전연령층의 수백 명의
               학생들을 만나 왔습니다. 모두가 영어에 대한 열망은 있었지만, 영어로
               말하는 순간 느끼는 두려움과 장벽 때문에 성장에 한계를 겪는다는
               것을 발견했습니다.
