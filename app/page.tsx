@@ -160,17 +160,7 @@ export default function EngzLandingFull() {
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
-                onLoad={(e) => {
-                  const parent = e.currentTarget.parentElement;
-                  if (parent) {
-                    const span = parent.querySelector("span");
-                    if (span) {
-                      span.style.display = "none";
-                    }
-                  }
-                }}
               />
-              <span className="z-10">HK</span>
             </div>
           </div>
 
