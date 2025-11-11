@@ -31,7 +31,7 @@ export const testimonials: Testimonial[] = [
     teaching: 5,
     preparation: 5,
     punctuality: 5,
-    startPeriod: "2025년 3분기",
+    startPeriod: "수강 기간 6개월",
     monthlyFee: "월 480,000원",
     review:
       "과외는 정해진 정규수업이 아닌 각 학생에 맞춘 1:1 맞춤 수업입니다. 해나쌤은 매 수업마다 제 수준에 맞춘 단어집과 회화 자료를 정성껏 준비해 주셨고 덕분에 눈에 띄게 실력이 성장했습니다. 가르침과 준비, 시간 준수까지 모든 것이 완벽했고 해나쌤을 만난 것이 큰 행운이었습니다.",
@@ -53,7 +53,7 @@ export const testimonials: Testimonial[] = [
     teaching: 5,
     preparation: 5,
     punctuality: 5,
-    startPeriod: "2025년 2분기",
+    startPeriod: "수강 기간 4개월",
     monthlyFee: "월 360,000원",
     review:
       "영어 수업을 시작했을 때는 말이 잘 안 나왔지만 다양한 수업 방식과 세심한 지도 덕분에 지금은 먼저 말을 꺼낼 수 있게 됐어요. 수업이 부담스럽지 않고 매번 기대가 됩니다. 온라인 수업이지만 실시간 자료 공유 덕분에 대면처럼 느껴졌고 긍정적인 에너지를 받았습니다.",
@@ -75,7 +75,7 @@ export const testimonials: Testimonial[] = [
     teaching: 5,
     preparation: 5,
     punctuality: 5,
-    startPeriod: "2025년 2분기",
+    startPeriod: "수강 기간 5개월",
     monthlyFee: "월 660,000원",
     review:
       "아이엘츠를 단기간에 준비해야 했는데 라이팅, 스피킹 등 전 영역을 체계적으로 잡아주셔서 목표 점수를 달성했습니다. 숙제 피드백이 꼼꼼했고 수업 분위기도 따뜻해서 부담 없이 꾸준히 배울 수 있었습니다.",
@@ -97,7 +97,7 @@ export const testimonials: Testimonial[] = [
     teaching: 5,
     preparation: 5,
     punctuality: 5,
-    startPeriod: "2025년 3분기",
+    startPeriod: "수강 기간 3개월",
     monthlyFee: "월 120,000원",
     review:
       "토익스피킹 수업 두 번만에 IM에서 IH까지 올랐습니다. 실제 시험과 유사한 피드백을 받아 유용했고 부담 없는 분위기 덕분에 영어가 재미있어졌어요. 온라인 수업이지만 실시간 시트 공유로 대면처럼 느껴졌습니다.",
@@ -119,7 +119,7 @@ export const testimonials: Testimonial[] = [
     teaching: 5,
     preparation: 5,
     punctuality: 5,
-    startPeriod: "2025년 2분기",
+    startPeriod: "수강 기간 6개월",
     monthlyFee: "월 240,000원",
     review:
       "영어 회화 수업을 찾다가 해나쌤을 만나게 되었는데 회화 중심 수업과 다양한 과제 덕분에 실력이 크게 향상됐습니다. 자연스럽게 토익스피킹이나 오픽 준비도 욕심이 생겼어요. 집중력 있는 수업과 맞춤형 커리큘럼을 강력 추천합니다.",
@@ -141,7 +141,7 @@ export const testimonials: Testimonial[] = [
     teaching: 5,
     preparation: 5,
     punctuality: 5,
-    startPeriod: "2024년 3분기",
+    startPeriod: "수강 기간 5개월",
     monthlyFee: "월 650,000원",
     review:
       "오랜 기간 학습을 쉬었던 아이가 다시 공부하려니 걱정이 많았지만 선생님께서 잘 이끌어주셔서 열심히 따라가고 있습니다. 학원으로 이동하게 되어 마무리했지만 끝까지 좋은 말씀해 주셔서 감사합니다.",
