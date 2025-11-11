@@ -34,6 +34,9 @@ export default function ComingSoonPage() {
             <a href="/ai-course" className={navLinkClass}>
               AI 집중코스
             </a>
+            <a href="/level-test" className={navLinkClass}>
+              AI 레벨 테스트
+            </a>
             <a href="/testimonials" className={navLinkClass}>
               후기
             </a>

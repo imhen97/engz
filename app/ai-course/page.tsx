@@ -15,7 +15,10 @@ export default function AiCoursePage() {
     <main className="min-h-screen bg-white text-black font-[Pretendard] overflow-x-hidden">
       <header className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center px-6">
-          <a href="/" className="text-xl font-bold text-[#F5472C] tracking-tight">
+          <a
+            href="/"
+            className="text-xl font-bold text-[#F5472C] tracking-tight"
+          >
             ENGZ
           </a>
           <nav className="space-x-8 text-sm font-medium text-gray-700">
@@ -30,6 +33,9 @@ export default function AiCoursePage() {
             </a>
             <a href="/ai-course" className="text-[#F5472C] font-semibold">
               AI 집중코스
+            </a>
+            <a href="/level-test" className={navLinkClass}>
+              AI 레벨 테스트
             </a>
             <a href="/coming-soon" className={navLinkClass}>
               AI 플랫폼

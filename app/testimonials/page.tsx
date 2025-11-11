@@ -39,6 +39,9 @@ export default function TestimonialsPage() {
             <a href="/ai-course" className="hover:text-[#F5472C] transition-colors">
               AI 집중코스
             </a>
+            <a href="/level-test" className="hover:text-[#F5472C] transition-colors">
+              AI 레벨 테스트
+            </a>
             <a
               href="/coming-soon"
               className="hover:text-[#F5472C] transition-colors"
