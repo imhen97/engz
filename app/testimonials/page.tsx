@@ -24,7 +24,8 @@ export default function TestimonialsPage() {
             ENGZ Learners Who Transformed Their English
           </h1>
           <p className="mt-6 text-sm leading-relaxed text-gray-600 md:text-base">
-            Real growth stories from professionals, students, and leaders who experienced the ENGZ method.
+            Real growth stories from professionals, students, and leaders who
+            experienced the ENGZ method.
           </p>
         </div>
       </section>
@@ -32,6 +33,15 @@ export default function TestimonialsPage() {
       <section className="px-6 pb-20">
         <div className="mx-auto max-w-5xl">
           <TestimonialCarousel testimonials={testimonials} />
+        </div>
+
+        <div className="mx-auto mt-16 max-w-5xl text-center">
+          <a
+            href="https://www.eng-z.com/pricing"
+            className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+          >
+            나도 수업 받으러 가기 →
+          </a>
         </div>
       </section>
 
