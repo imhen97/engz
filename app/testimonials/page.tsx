@@ -24,7 +24,8 @@ export default function TestimonialsPage() {
             ENGZ 수강생이 증명한 성장 이야기
           </h1>
           <p className="mt-6 text-sm leading-relaxed text-gray-600 md:text-base">
-            ENGZ 코칭을 통해 영어 실력을 바꾼 직장인, 학생, 리더들의 실제 경험을 만나보세요.
+            ENGZ 코칭을 통해 영어 실력을 바꾼 직장인, 학생, 리더들의 실제 경험을
+            만나보세요.
           </p>
         </div>
       </section>

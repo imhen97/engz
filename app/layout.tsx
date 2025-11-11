@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ChatWidget from "@/components/ChatWidget";
+import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,8 +33,10 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
-        <ChatWidget />
+        <SessionProviderWrapper>
+          {children}
+          <ChatWidget />
+        </SessionProviderWrapper>
       </body>
     </html>
   );

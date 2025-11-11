@@ -153,7 +153,8 @@ export default function AiCoursePageContent() {
               앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
             </h1>
             <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
-              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 전후 변화를 완성합니다.
+              ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 전후
+              변화를 완성합니다.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link

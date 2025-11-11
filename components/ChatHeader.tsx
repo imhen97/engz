@@ -8,9 +8,7 @@ export default function ChatHeader({ onClose }: ChatHeaderProps) {
   return (
     <div className="flex items-center justify-between rounded-t-3xl bg-[#F5472C] px-5 py-4 text-white">
       <div>
-        <p className="text-sm font-semibold tracking-tight">
-          ENGZ 상담봇 💬
-        </p>
+        <p className="text-sm font-semibold tracking-tight">ENGZ 상담봇 💬</p>
         <p className="text-xs text-white/80">무엇을 도와드릴까요?</p>
       </div>
       <button

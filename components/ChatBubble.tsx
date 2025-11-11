@@ -9,7 +9,9 @@ export default function ChatBubble({ sender, message }: ChatBubbleProps) {
   const isUser = sender === "user";
 
   return (
-    <div className={`w-full ${isUser ? "flex justify-end" : "flex justify-start"}`}>
+    <div
+      className={`w-full ${isUser ? "flex justify-end" : "flex justify-start"}`}
+    >
       <div
         className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
           isUser

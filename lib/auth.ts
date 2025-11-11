@@ -1,0 +1,114 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import type { AuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import KakaoProvider from "next-auth/providers/kakao";
+
+import prisma from "./prisma";
+
+const providers = [] as AuthOptions["providers"]; // ensure typing
+
+if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
+  providers.push(
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    })
+  );
+} else {
+  console.warn("GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다.");
+}
+
+if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
+  providers.push(
+    KakaoProvider({
+      clientId: process.env.KAKAO_ID,
+      clientSecret: process.env.KAKAO_SECRET,
+    })
+  );
+} else {
+  console.warn("KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다.");
+}
+
+if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
+  try {
+    const EmailProvider = (
+      eval("require")(
+        "next-auth/providers/email"
+      ) as typeof import("next-auth/providers/email")
+    ).default;
+    providers.push(
+      EmailProvider({
+        server: process.env.EMAIL_SERVER,
+        from: process.env.EMAIL_FROM,
+      })
+    );
+  } catch (error) {
+    console.error("이메일 제공자를 로드하지 못했습니다:", error);
+  }
+} else {
+  console.warn("EMAIL_SERVER 또는 EMAIL_FROM 환경 변수가 설정되지 않았습니다.");
+}
+
+async function enrichToken(token: any) {
+  if (!token?.userId) return token;
+  const user = await prisma.user.findUnique({
+    where: { id: token.userId as string },
+  });
+  if (!user) return token;
+  token.plan = user.plan;
+  token.trialActive = user.trialActive;
+  token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
+  token.subscriptionActive = user.subscriptionActive;
+  return token;
+}
+
+export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: "jwt",
+  },
+  providers,
+  pages: {
+    signIn: "/signup",
+  },
+  events: {
+    async createUser({ user }) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          trialActive: true,
+          trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          subscriptionActive: false,
+        },
+      });
+    },
+  },
+  callbacks: {
+    async jwt({ token, user, trigger }) {
+      if (user) {
+        token.userId = user.id;
+        token.plan = user.plan;
+        token.trialActive = user.trialActive;
+        token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
+        token.subscriptionActive = user.subscriptionActive;
+        return token;
+      }
+      if (trigger === "update") {
+        return enrichToken(token);
+      }
+      return enrichToken(token);
+    },
+    async session({ session, token }) {
+      if (session.user && token?.userId) {
+        session.user.id = token.userId as string;
+        session.user.plan = (token.plan as string) ?? "free";
+        session.user.trialActive = Boolean(token.trialActive);
+        session.user.trialEndsAt = token.trialEndsAt
+          ? new Date(token.trialEndsAt as string)
+          : null;
+        session.user.subscriptionActive = Boolean(token.subscriptionActive);
+      }
+      return session;
+    },
+  },
+};

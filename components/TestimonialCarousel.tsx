@@ -80,7 +80,7 @@ export default function TestimonialCarousel({
 
   return (
     <div className="relative">
-      <div className="relative min-h-[620px] w-full overflow-hidden">
+      <div className="relative min-h-[360px] w-full overflow-hidden">
         <AnimatePresence mode="wait" initial={false}>
           {slides.map(
             (slide, index) =>
@@ -97,7 +97,10 @@ export default function TestimonialCarousel({
                   <div
                     className="grid h-full gap-6"
                     style={{
-                      gridTemplateColumns: `repeat(${slide.length}, minmax(0, 1fr))`,
+                      gridTemplateColumns: `repeat(${Math.min(
+                        3,
+                        slide.length
+                      )}, minmax(0, 1fr))`,
                     }}
                   >
                     {slide.map((testimonial) => (

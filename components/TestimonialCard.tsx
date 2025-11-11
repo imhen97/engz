@@ -20,10 +20,10 @@ export default function TestimonialCard({
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="flex h-full flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-8 text-left shadow-md"
+      className="flex h-full min-h-[300px] flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-6 text-left shadow-md"
     >
       <header className="flex flex-col gap-2">
-        <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C]">
+        <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C]">
           성장 스토리
         </p>
         <h3 className="text-lg font-semibold text-gray-900">
@@ -43,7 +43,7 @@ export default function TestimonialCard({
         </span>
       </div>
 
-      <p className="mt-4 text-sm leading-relaxed text-gray-700">
+      <p className="mt-2 text-sm leading-relaxed text-gray-700">
         {testimonial.story}
       </p>
     </motion.article>

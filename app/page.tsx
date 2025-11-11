@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import NavBar from "@/components/NavBar";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
@@ -11,6 +12,7 @@ import { testimonials } from "@/data/testimonials";
 export default function EngzLandingFull() {
   const [scrollY, setScrollY] = useState(0);
   const [fadeIn, setFadeIn] = useState(false);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -53,20 +55,64 @@ export default function EngzLandingFull() {
           <p className="text-sm text-gray-600 sm:text-base">
             AI와 사람의 힘으로 언어의 한계를 넘다
           </p>
-          <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">
-            <a
-              href="/level-test"
-              className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03]"
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={
+                status === "loading"
+                  ? "loading"
+                  : !session?.user
+                  ? "guest"
+                  : session.user.subscriptionActive
+                  ? "subscribed"
+                  : "nosub"
+              }
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="mt-6 flex flex-col items-center gap-3 sm:flex-row"
             >
-              무료 AI 레벨 테스트 체험하기 →
-            </a>
-            <a
-              href="https://www.eng-z.com/pricing"
-              className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
-            >
-              7일 무료 체험 시작하기 →
-            </a>
-          </div>
+              {status === "loading" && (
+                <div className="rounded-full border border-white/60 px-6 py-3 text-sm text-white/80">
+                  AI 학습 환경을 확인하고 있습니다…
+                </div>
+              )}
+              {status !== "loading" && !session?.user && (
+                <>
+                  <Link
+                    href="/signup"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03] sm:w-auto"
+                  >
+                    무료 AI 레벨 테스트 체험하기 →
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto"
+                  >
+                    7일 무료 체험 시작하기 →
+                  </Link>
+                </>
+              )}
+              {status !== "loading" &&
+                session?.user &&
+                !session.user.subscriptionActive && (
+                  <Link
+                    href="/pricing"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03] sm:w-auto"
+                  >
+                    플랜 구독하기 →
+                  </Link>
+                )}
+              {status !== "loading" && session?.user?.subscriptionActive && (
+                <Link
+                  href="/dashboard"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-[1.03] sm:w-auto"
+                >
+                  AI 학습 룸 이동하기 →
+                </Link>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </motion.div>
       </section>
 
@@ -76,7 +122,9 @@ export default function EngzLandingFull() {
         className="bg-white px-6 py-16 text-center sm:py-20"
       >
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-6 text-3xl font-bold md:text-4xl">ENGZ 핵심 서비스</h2>
+          <h2 className="mb-6 text-3xl font-bold md:text-4xl">
+            ENGZ 핵심 서비스
+          </h2>
           <p className="mb-12 text-sm leading-relaxed text-gray-600 md:text-base">
             ENGZ는 AI 분석과 1:1 코칭을 결합한 영어 학습 서비스로, 발음 · 문법 ·
             표현력까지 정밀하게 분석하고 피드백합니다.
@@ -144,13 +192,13 @@ export default function EngzLandingFull() {
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="text-lg font-medium text-[#F5472C] md:text-xl"
             >
-              대표가 직접 관리하고 코칭하는 밀착케어 프로그램
+              9년차 현직 영어 강사가 직접 만든 영어교육 플랫폼
             </motion.p>
             <p className="text-sm tracking-[0.18em] text-gray-500 mb-2">
               대표 · 설립자
             </p>
             <h2 className="text-2xl md:text-3xl font-bold leading-snug mb-4">
-              김해나 (Hena Kim)
+              김해나 (KIM HAE NA)
             </h2>
             <p className="text-lg font-semibold text-[#F5472C] mb-6 italic">
               &ldquo;언어의 장벽을 허물고, 세상과 연결되는 힘을 만든다.&rdquo;
@@ -192,7 +240,8 @@ export default function EngzLandingFull() {
               ENGZ 수강생의 성장 여정
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-gray-600 md:text-base">
-              ENGZ 코칭을 통해 커리어와 일상을 바꾼 수강생들의 실제 이야기를 확인해 보세요.
+              ENGZ 코칭을 통해 커리어와 일상을 바꾼 수강생들의 실제 이야기를
+              확인해 보세요.
             </p>
           </div>
 

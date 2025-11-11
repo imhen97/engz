@@ -4,6 +4,13 @@ const nextConfig = {
   images: {
     unoptimized: false,
   },
+  experimental: {
+    serverComponentsExternalPackages: [
+      "@prisma/client",
+      "prisma",
+      "nodemailer",
+    ],
+  },
 };
 
 module.exports = nextConfig;

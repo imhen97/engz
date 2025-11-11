@@ -35,11 +35,14 @@ export default function ChatWidget() {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, isOpen]);
 
-  useEffect(() => () => {
+  useEffect(
+    () => () => {
       if (pendingBotMessage.current) {
         window.clearTimeout(pendingBotMessage.current.timeout);
       }
-    }, []);
+    },
+    []
+  );
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);

@@ -422,7 +422,8 @@ export default function LevelTestPage() {
             AI가 진짜 영어 실력을 진단해 드립니다
           </h1>
           <p className="mt-6 text-base text-gray-600 md:text-lg">
-            ENGZ AI가 설계한 5분 테스트로 발음, 문장력, 유창성을 한 번에 점검해 보세요.
+            ENGZ AI가 설계한 5분 테스트로 발음, 문장력, 유창성을 한 번에 점검해
+            보세요.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
@@ -441,7 +442,8 @@ export default function LevelTestPage() {
             </button>
           </div>
           <p className="mt-4 text-xs text-gray-500">
-            테스트 이후 AI 요약 리포트가 공개되며, 자세한 분석은 7일 무료 체험으로 확인하실 수 있습니다.
+            테스트 이후 AI 요약 리포트가 공개되며, 자세한 분석은 7일 무료
+            체험으로 확인하실 수 있습니다.
           </p>
         </div>
       </section>
