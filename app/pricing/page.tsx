@@ -27,10 +27,12 @@ export default function PricingPage() {
             Choose Your Plan — Start Learning with ENGZ AI
           </h1>
           <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
-            목표에 맞춰 성장하는 유연한 플랜을 선택하세요. 언제든지 취소할 수 있습니다.
+            목표에 맞춰 성장하는 유연한 플랜을 선택하세요. 언제든지 취소할 수
+            있습니다.
           </p>
           <p className="mt-4 text-xs text-gray-500 sm:text-sm">
-            7일 무료 체험으로 지금 시작해 보세요. 체험 종료 전 언제든지 취소하면 비용이 청구되지 않습니다.
+            7일 무료 체험으로 지금 시작해 보세요. 체험 종료 전 언제든지 취소하면
+            비용이 청구되지 않습니다.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
@@ -62,16 +64,23 @@ export default function PricingPage() {
             <p className="text-xs uppercase tracking-[0.25em] text-[#F5472C] sm:text-sm">
               Most Popular
             </p>
-            <h2 className="mt-4 text-2xl font-bold text-gray-900">Monthly Plan</h2>
+            <h2 className="mt-4 text-2xl font-bold text-gray-900">
+              Monthly Plan
+            </h2>
             <p className="mt-2 text-sm text-gray-500">
               1,200명 이상의 학습자가 ENGZ AI로 실력을 높이고 있습니다.
             </p>
             <p className="mt-6 text-3xl font-bold text-[#F5472C]">
               ₩49,000
-              <span className="text-base font-medium text-gray-500"> / month</span>
+              <span className="text-base font-medium text-gray-500">
+                {" "}
+                / month
+              </span>
             </p>
             <ul className="mt-6 space-y-3 text-sm text-gray-600">
-              <li>• AI 코스 전체 이용 (슬랭, 팝가사, IELTS, 비즈니스, 스몰토크)</li>
+              <li>
+                • AI 코스 전체 이용 (슬랭, 팝가사, IELTS, 비즈니스, 스몰토크)
+              </li>
               <li>• 주간 AI 피드백 리포트 제공</li>
               <li>• 언제든지 취소 가능</li>
             </ul>
@@ -94,8 +103,11 @@ export default function PricingPage() {
               1년 단위로 결제하면 월간 요금 대비 약 2개월을 절약할 수 있습니다.
             </p>
             <p className="mt-6 text-3xl font-bold text-[#F5472C]">
-              ₩490,000
-              <span className="text-base font-medium text-gray-500"> / year</span>
+              ₩39,000
+              <span className="text-base font-medium text-gray-500">
+                {" "}
+                / month
+              </span>
             </p>
             <ul className="mt-6 space-y-3 text-sm text-gray-600">
               <li>• Monthly Plan의 모든 혜택 포함</li>
@@ -118,7 +130,8 @@ export default function PricingPage() {
 
         <div className="mx-auto mt-16 max-w-6xl rounded-3xl border border-gray-100 bg-white p-6 text-center shadow sm:p-8">
           <p className="text-sm text-gray-600">
-            결제를 완료하면 자동으로 코스 대시보드로 이동하여 모든 ENGZ AI 학습 도구를 즉시 이용할 수 있습니다.
+            결제를 완료하면 자동으로 코스 대시보드로 이동하여 모든 ENGZ AI 학습
+            도구를 즉시 이용할 수 있습니다.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-2 text-xs text-gray-400 sm:flex-row sm:gap-4">
             <span>• Stripe Checkout으로 안전하게 결제</span>
