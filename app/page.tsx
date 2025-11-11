@@ -211,7 +211,7 @@ export default function EngzLandingFull() {
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="text-lg font-medium text-[#F5472C] md:text-xl"
             >
-              9년 경력 영어컨설팅 대표가 직접 관리하고 코칭하는 밀착케어
+              대표가 직접 관리하고 코칭하는 밀착케어 프로그램
             </motion.p>
             <p className="text-sm tracking-[0.18em] text-gray-500 mb-2">
               CEO · FOUNDER
