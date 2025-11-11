@@ -17,16 +17,14 @@ export default function TestimonialsPage() {
 
       <section className="px-6 pt-28 pb-20 sm:pt-32">
         <div className="mx-auto max-w-5xl text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-[#F5472C]">
+          <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C]">
             Success Stories
           </p>
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 md:text-5xl">
-            ENGZ 수강생의 진짜 성장 후기
+            ENGZ Learners Who Transformed Their English
           </h1>
           <p className="mt-6 text-sm leading-relaxed text-gray-600 md:text-base">
-            프리미엄 1:1 영어 코칭으로 목표를 달성한 수강생들의 생생한 후기와
-            해나쌤의 맞춤 피드백을 확인해보세요. 실제 변화와 성장의 순간들이
-            담겨 있습니다.
+            Real growth stories from professionals, students, and leaders who experienced the ENGZ method.
           </p>
         </div>
       </section>

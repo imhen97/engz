@@ -35,11 +35,11 @@ export default function EngzLandingFull() {
       <section className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center overflow-hidden bg-white px-6 pt-28 text-center sm:pt-32">
         <div
           className="hidden sm:block absolute left-0 top-0 h-full w-1/2 -translate-x-[calc(100%*var(--progress,0))] transform rounded-r-[40%] bg-gradient-to-r from-[#F5472C] to-[#ff6a3c] transition-transform duration-200 ease-out sm:w-1/2"
-          style={{ transform: `translateX(${ -100 * scrollProgress }%)` }}
+          style={{ transform: `translateX(${-100 * scrollProgress}%)` }}
         />
         <div
           className="hidden sm:block absolute right-0 top-0 h-full w-1/2 translate-x-[calc(100%*var(--progress,0))] transform rounded-l-[40%] bg-gradient-to-l from-[#F5472C] to-[#ff6a3c] transition-transform duration-200 ease-out sm:w-1/2"
-          style={{ transform: `translateX(${ 100 * scrollProgress }%)` }}
+          style={{ transform: `translateX(${100 * scrollProgress}%)` }}
         />
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -71,7 +71,10 @@ export default function EngzLandingFull() {
       </section>
 
       {/* 서비스 섹션 */}
-      <section id="service" className="bg-white px-6 py-16 text-center sm:py-20">
+      <section
+        id="service"
+        className="bg-white px-6 py-16 text-center sm:py-20"
+      >
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-6 text-3xl font-bold md:text-4xl">ENGZ Core</h2>
           <p className="mb-12 text-sm leading-relaxed text-gray-600 md:text-base">
@@ -179,31 +182,21 @@ export default function EngzLandingFull() {
       </section>
 
       {/* 후기 하이라이트 섹션 */}
-      <section className="py-24 bg-white border-t border-gray-100">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#F5472C]">
+      <section className="bg-white px-6 py-20" id="success">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C]">
               Success Stories
             </p>
-            <h2 className="mt-4 text-3xl md:text-4xl font-bold">
-              수강생이 전하는 ENGZ의 변화
+            <h2 className="mt-4 text-3xl font-bold text-gray-900 md:text-4xl">
+              ENGZ Learners Who Transformed Their English
             </h2>
-            <p className="mt-4 text-sm md:text-base text-gray-600 leading-relaxed">
-              프리미엄 1:1 영어 코칭을 통해 실제 성장을 경험한 수강생들의 생생한
-              후기입니다.
+            <p className="mt-4 text-sm leading-relaxed text-gray-600 md:text-base">
+              Real growth stories from professionals, students, and leaders who experienced the ENGZ method.
             </p>
           </div>
 
           <TestimonialCarousel testimonials={testimonials} />
-
-          <div className="mt-12 flex justify-center">
-            <a
-              href="/testimonials"
-              className="inline-flex items-center gap-2 rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
-            >
-              후기 더 보기 →
-            </a>
-          </div>
         </div>
       </section>
 
