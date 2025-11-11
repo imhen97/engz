@@ -283,12 +283,25 @@ export default function EngzLandingFull() {
       >
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            요금제 안내는 곧 업데이트됩니다
+            무료 체험으로 ENGZ를 직접 경험해 보세요
           </h2>
           <p className="text-gray-600 text-sm mb-12">
-            자세한 플랜은 상단의 AI 집중코스 또는 AI 레벨 테스트에서 확인해
-            주세요.
+            7일 무료 체험으로 AI 집중코스와 레벨 테스트를 먼저 살펴본 뒤, 더 자세한 플랜은 상단의 구독 플랜 페이지에서 확인해 주세요.
           </p>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="https://www.eng-z.com/pricing"
+              className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+            >
+              구독 플랜 확인하기 →
+            </a>
+            <a
+              href="/level-test"
+              className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-8 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+            >
+              AI 레벨 테스트 체험하기 →
+            </a>
+          </div>
         </div>
       </section>
 
