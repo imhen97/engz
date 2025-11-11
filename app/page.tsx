@@ -118,8 +118,9 @@ export default function EngzLandingFull() {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">ENGZ Core</h2>
           <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-12">
             ENGZ는 AI 분석과 1:1 코칭을 결합한 영어 학습 서비스로, 발음 · 문법 ·
-            표현력까지 정밀하게 분석하고 피드백합니다. 매주 성장 리포트를 통해
-            학습의 변화를 시각적으로 확인할 수 있습니다.
+            표현력까지 정밀하게 분석하고 피드백합니다.
+            <br />
+            매주 성장 리포트를 통해 학습의 변화를 시각적으로 확인할 수 있습니다.
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
