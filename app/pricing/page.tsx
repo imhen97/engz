@@ -69,7 +69,8 @@ export default function PricingPage() {
             Flexible plans that grow with your English goals. Cancel anytime.
           </p>
           <p className="mt-4 text-xs text-gray-500">
-            Start today with a 7-day free trial. Cancel anytime before the trial ends to avoid charges.
+            Start today with a 7-day free trial. Cancel anytime before the trial
+            ends to avoid charges.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
@@ -168,8 +169,7 @@ export default function PricingPage() {
 
           <div className="mt-16 rounded-3xl border border-gray-100 bg-white p-8 text-center shadow">
             <p className="text-sm text-gray-600">
-              결제가 완료되면 자동으로 코스 대시보드로 이동하여 모든 ENGZ AI
-              학습 도구에 접근할 수 있습니다.
+              결제가 완료되면 자동으로 코스 대시보드로 이동하여 모든 ENGZ AI 학습 도구에 접근할 수 있습니다.
             </p>
             <div className="mt-6 flex flex-col items-center justify-center gap-3 text-xs text-gray-400 sm:flex-row">
               <span>• Stripe Checkout를 통한 안전한 결제</span>
