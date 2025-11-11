@@ -283,36 +283,12 @@ export default function EngzLandingFull() {
         className="py-24 bg-white text-center border-t border-gray-100"
       >
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">요금제</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8">
+            요금제 안내는 곧 업데이트됩니다
+          </h2>
           <p className="text-gray-600 text-sm mb-12">
-            당신의 학습 스타일과 목표에 맞는 요금제를 선택하세요.
+            자세한 플랜은 상단의 AI 집중코스 또는 AI 레벨 테스트에서 확인해 주세요.
           </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="border border-gray-100 rounded-2xl p-6">
-              <h3 className="font-semibold mb-2">Starter</h3>
-              <p className="text-gray-500 text-sm mb-3">월 19만 9천원</p>
-              <p className="text-xs text-gray-600 leading-snug">
-                주 1회 코칭 + 기본 AI 리포트 제공. 영어 공부를 처음 시작하는
-                분들에게 적합합니다.
-              </p>
-            </div>
-            <div className="border border-gray-200 rounded-2xl p-6 bg-black text-white">
-              <h3 className="font-semibold mb-2">Standard</h3>
-              <p className="text-gray-300 text-sm mb-3">월 24만 9천원</p>
-              <p className="text-xs text-gray-300 leading-snug">
-                주 1회 코칭 + 상세 리포트 + 주 2회 과제 피드백. 꾸준한 학습
-                루틴을 만들고 싶은 분들을 위한 플랜.
-              </p>
-            </div>
-            <div className="border border-gray-100 rounded-2xl p-6">
-              <h3 className="font-semibold mb-2">Pro</h3>
-              <p className="text-gray-500 text-sm mb-3">월 29만 9천원</p>
-              <p className="text-xs text-gray-600 leading-snug">
-                맞춤형 자료, 무제한 피드백, AI 심층 분석까지 포함된 집중 코칭
-                플랜입니다.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
