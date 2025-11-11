@@ -12,7 +12,7 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     id: "testimonial-sungmin",
-    name: "류성민",
+    name: "류ㅇㅇ",
     role: "파일럿",
     city: "서울",
     course: "비즈니스 영어 인텐시브",
@@ -23,7 +23,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-hayley",
-    name: "김혜리",
+    name: "김ㅇㅇ",
     role: "호텔 총지배인",
     city: "부산",
     course: "프레젠테이션 코칭",
@@ -34,7 +34,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-minjun",
-    name: "박민준",
+    name: "박ㅇㅇ",
     role: "대학교 4학년",
     city: "대전",
     course: "IELTS 스피킹 집중",
@@ -45,7 +45,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-ari",
-    name: "정아리",
+    name: "정ㅇㅇ",
     role: "마케팅 이사",
     city: "싱가포르",
     course: "비즈니스 영어 인텐시브",
@@ -56,7 +56,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-daon",
-    name: "최다온",
+    name: "최ㅇㅇ",
     role: "항공 승무원",
     city: "인천",
     course: "데일리 회화 마스터",
@@ -67,7 +67,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-wooju",
-    name: "서우주",
+    name: "서ㅇㅇ",
     role: "CFO & 공동 창업자",
     city: "서울",
     course: "투자자 피치 랩",
@@ -78,7 +78,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-sofia",
-    name: "이소피아",
+    name: "이ㅇㅇ",
     role: "고등학교 교사",
     city: "대구",
     course: "TOEIC Speaking Pro",
@@ -89,7 +89,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "testimonial-hannah",
-    name: "유한나",
+    name: "유ㅇㅇ",
     role: "기업 변호사",
     city: "뉴욕",
     course: "어드밴스드 협상 영어",
