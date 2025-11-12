@@ -31,28 +31,62 @@ export default function SignInForm() {
     setError(null);
     setLoadingProvider(providerId);
     try {
-      // OAuth의 경우 NextAuth가 자동으로 리다이렉트 처리
-      // redirect: true로 설정하면 카카오/구글 로그인 페이지로 이동
+      console.log(`[${providerId}] 로그인 시작, callbackUrl:`, callbackUrl);
+      
+      // redirect: false로 설정하여 에러를 확인
       const result = await signIn(providerId, {
         callbackUrl,
-        redirect: true,
+        redirect: false,
       });
-      
-      // redirect: true일 때는 여기 도달하지 않지만, 
-      // 혹시 에러가 발생하면 처리
+
+      console.log(`[${providerId}] 로그인 결과:`, result);
+
       if (result?.error) {
-        console.error("로그인 오류:", result.error);
-        setError(
-          result.error === "Configuration"
-            ? "로그인 설정에 문제가 있습니다. 관리자에게 문의해 주세요."
-            : result.error === "AccessDenied"
-            ? "로그인이 거부되었습니다."
-            : "로그인 중 오류가 발생했습니다. 다시 시도해 주세요."
-        );
+        console.error(`[${providerId}] 로그인 오류:`, result.error);
+        let errorMessage = "로그인 중 오류가 발생했습니다. 다시 시도해 주세요.";
+        
+        if (result.error === "Configuration") {
+          errorMessage = "로그인 설정에 문제가 있습니다. 카카오 개발자 콘솔과 환경변수를 확인해 주세요.";
+        } else if (result.error === "AccessDenied") {
+          errorMessage = "로그인이 거부되었습니다.";
+        } else if (result.error === "OAuthSignin") {
+          errorMessage = "카카오 로그인 페이지로 이동하지 못했습니다. Redirect URI를 확인해 주세요.";
+        } else if (result.error === "OAuthCallback") {
+          errorMessage = "카카오 로그인 콜백 처리 중 오류가 발생했습니다.";
+        } else if (result.error === "OAuthCreateAccount") {
+          errorMessage = "계정 생성 중 오류가 발생했습니다.";
+        } else if (result.error === "EmailCreateAccount") {
+          errorMessage = "이메일 계정 생성 중 오류가 발생했습니다.";
+        } else if (result.error === "Callback") {
+          errorMessage = "로그인 콜백 처리 중 오류가 발생했습니다.";
+        } else if (result.error === "OAuthAccountNotLinked") {
+          errorMessage = "이 이메일로 이미 다른 방법으로 가입된 계정이 있습니다.";
+        } else if (result.error === "EmailSignin") {
+          errorMessage = "이메일 로그인 링크 전송에 실패했습니다.";
+        } else if (result.error === "CredentialsSignin") {
+          errorMessage = "로그인 정보가 올바르지 않습니다.";
+        } else if (result.error === "SessionRequired") {
+          errorMessage = "로그인이 필요합니다.";
+        }
+        
+        setError(errorMessage);
+        setLoadingProvider(null);
+      } else if (result?.ok) {
+        // 성공 시 리다이렉트
+        console.log(`[${providerId}] 로그인 성공, 리다이렉트:`, callbackUrl);
+        window.location.href = callbackUrl;
+      } else if (result?.url) {
+        // OAuth의 경우 URL이 반환되면 리다이렉트
+        console.log(`[${providerId}] OAuth 리다이렉트:`, result.url);
+        window.location.href = result.url;
+      } else {
+        // 예상치 못한 경우
+        console.warn(`[${providerId}] 예상치 못한 결과:`, result);
+        setError("로그인 처리 중 예상치 못한 오류가 발생했습니다.");
         setLoadingProvider(null);
       }
     } catch (err) {
-      console.error("로그인 예외:", err);
+      console.error(`[${providerId}] 로그인 예외:`, err);
       setError("예상치 못한 오류가 발생했습니다. 다시 시도해 주세요.");
       setLoadingProvider(null);
     }
