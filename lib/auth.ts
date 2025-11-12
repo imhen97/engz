@@ -89,6 +89,17 @@ export const authOptions: AuthOptions = {
     },
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // 모든 로그인 허용
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      // callbackUrl이 있으면 그대로 사용
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // 외부 URL이면 baseUrl로
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
     async jwt({ token, user, trigger }) {
       if (user) {
         token.userId = user.id;

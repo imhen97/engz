@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/lib/auth";
+import prisma from "@/lib/prisma";
+import NavBar from "@/components/NavBar";
 
 export default async function DashboardPage() {
   let session;
@@ -17,12 +19,38 @@ export default async function DashboardPage() {
     redirect("/signup?callbackUrl=/dashboard");
   }
 
-  const { plan, trialActive, trialEndsAt, subscriptionActive, name } =
+  const { plan, trialActive, trialEndsAt, subscriptionActive, name, id } =
     session.user;
+
+  // 사용자의 현재 코스 정보 가져오기
+  const user = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      currentCourse: {
+        include: {
+          lessons: {
+            orderBy: [{ week: "asc" }, { day: "asc" }],
+          },
+        },
+      },
+      enrollments: {
+        where: { isCompleted: false },
+        include: {
+          course: true,
+        },
+        orderBy: { startedAt: "desc" },
+        take: 1,
+      },
+    },
+  });
+
+  const currentEnrollment = user?.enrollments[0];
+  const currentCourse = user?.currentCourse;
 
   return (
     <main className="min-h-screen bg-[#FFF8F5] text-black">
-      <div className="mx-auto w-full max-w-5xl px-6 py-16">
+      <NavBar />
+      <div className="mx-auto w-full max-w-5xl px-6 pt-28 pb-16">
         <div className="flex flex-col gap-4">
           <p className="text-sm font-medium tracking-[0.3em] text-[#F5472C]">
             MY ENGZ BOARD
@@ -69,24 +97,46 @@ export default async function DashboardPage() {
 
           <section className="rounded-3xl border border-gray-100 bg-white p-6 shadow-lg">
             <h2 className="text-xl font-semibold text-gray-900">오늘의 학습</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              AI가 준비한 오늘의 미션을 시작해 보세요. 첫 수업은 Week 1 Day
-              1부터 자동으로 열립니다.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/level-test"
-                className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:scale-105"
-              >
-                AI 레벨 테스트 보기 →
-              </Link>
-              <Link
-                href="/ai-course"
-                className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-5 py-2 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
-              >
-                4주 코스 이어하기 →
-              </Link>
-            </div>
+            {currentEnrollment && currentCourse ? (
+              <div className="mt-4 space-y-3">
+                <div className="rounded-xl bg-[#FFF7F0] p-4">
+                  <p className="text-sm font-semibold text-gray-900">
+                    {currentCourse.title}
+                  </p>
+                  <p className="mt-1 text-xs text-gray-600">
+                    Week {currentEnrollment.currentWeek} · Day{" "}
+                    {currentEnrollment.currentDay}
+                  </p>
+                </div>
+                <Link
+                  href={`/courses/${currentCourse.slug}/week/${currentEnrollment.currentWeek}/day/${currentEnrollment.currentDay}`}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-5 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+                >
+                  오늘의 수업 시작하기 →
+                </Link>
+              </div>
+            ) : (
+              <>
+                <p className="mt-2 text-sm text-gray-600">
+                  AI가 준비한 오늘의 미션을 시작해 보세요. 첫 수업은 Week 1 Day
+                  1부터 자동으로 열립니다.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    href="/level-test"
+                    className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+                  >
+                    AI 레벨 테스트 보기 →
+                  </Link>
+                  <Link
+                    href="/ai-course"
+                    className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-5 py-2 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+                  >
+                    4주 코스 시작하기 →
+                  </Link>
+                </div>
+              </>
+            )}
           </section>
         </div>
       </div>

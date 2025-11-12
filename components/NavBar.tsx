@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSession, signOut } from "next-auth/react";
 
 const menuItems = [
   { label: "서비스", href: "/#service" },
@@ -22,10 +23,15 @@ const navLinkClass =
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   const handleAnchorClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -78,6 +84,34 @@ export default function NavBar() {
               </Link>
             );
           })}
+          {status === "loading" ? (
+            <div className="h-8 w-20 animate-pulse rounded-full bg-gray-200" />
+          ) : session?.user ? (
+            <>
+              <Link
+                href="/dashboard"
+                className={`${navLinkClass} ${
+                  pathname === "/dashboard" ? "font-semibold text-[#F5472C]" : ""
+                }`}
+              >
+                대시보드
+              </Link>
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="rounded-full border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:border-[#F5472C] hover:text-[#F5472C]"
+              >
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/signup"
+              className="rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105"
+            >
+              로그인
+            </Link>
+          )}
         </nav>
         <button
           type="button"
@@ -121,6 +155,32 @@ export default function NavBar() {
                 </Link>
               );
             })}
+            {status === "loading" ? (
+              <div className="h-12 w-full animate-pulse rounded-2xl bg-gray-200" />
+            ) : session?.user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm"
+                >
+                  대시보드
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm"
+                >
+                  로그아웃
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/signup"
+                className="rounded-2xl bg-[#F5472C] px-4 py-3 text-sm font-semibold text-white shadow-sm"
+              >
+                로그인
+              </Link>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
