@@ -33,6 +33,14 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
     KakaoProvider({
       clientId: process.env.KAKAO_ID,
       clientSecret: process.env.KAKAO_SECRET,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.kakao_account?.profile?.nickname || profile.kakao_account?.name || profile.properties?.nickname || null,
+          email: profile.kakao_account?.email || null,
+          image: profile.kakao_account?.profile?.profile_image_url || profile.properties?.profile_image || null,
+        };
+      },
     })
   );
 } else {
