@@ -8,22 +8,22 @@ import NavBar from "@/components/NavBar";
 const LEVELS = [
   {
     id: "beginner",
-    label: "Beginner",
-    description: "I can handle simple daily expressions",
+    label: "비기너 (Beginner)",
+    description: "기초 표현과 인사말 위주로 대화를 이어갈 수 있어요.",
     emoji: "🟢",
     color: "from-green-400 to-green-600",
   },
   {
     id: "intermediate",
-    label: "Intermediate",
-    description: "I can express ideas but make grammar mistakes",
+    label: "인터미디엇 (Intermediate)",
+    description: "내 생각을 말할 수 있지만 문법 실수가 자주 나와요.",
     emoji: "🟠",
     color: "from-orange-400 to-orange-600",
   },
   {
     id: "advanced",
-    label: "Advanced",
-    description: "I can discuss complex topics in English",
+    label: "어드밴스드 (Advanced)",
+    description: "다양한 주제에 대해 영어로 깊이 있게 토론할 수 있어요.",
     emoji: "🔵",
     color: "from-blue-400 to-blue-600",
   },
@@ -82,13 +82,13 @@ export default function LevelTestStartPage() {
           className="text-center"
         >
           <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C] sm:text-sm">
-            AI LEVEL TEST
+          AI 레벨 테스트
           </p>
           <h1 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl">
-            Which best describes your current English level?
+          지금의 영어 실력은 어느 단계인가요?
           </h1>
           <p className="mt-4 text-sm text-gray-600 sm:text-base">
-            Choose your level to start a personalized assessment
+          내 수준에 맞는 레벨을 선택하면 AI가 맞춤 평가를 준비해 드려요.
           </p>
         </motion.div>
 
