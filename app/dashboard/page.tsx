@@ -52,7 +52,9 @@ export default async function DashboardPage() {
               <li>• 무료 체험 상태: {trialActive ? "진행 중" : "종료"}</li>
               <li>• 구독 활성화: {subscriptionActive ? "예" : "아니요"}</li>
               {trialActive && trialEndsAt && !isNaN(trialEndsAt.getTime()) && (
-                <li>• 체험 종료일: {trialEndsAt.toLocaleDateString("ko-KR")}</li>
+                <li>
+                  • 체험 종료일: {trialEndsAt.toLocaleDateString("ko-KR")}
+                </li>
               )}
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">
