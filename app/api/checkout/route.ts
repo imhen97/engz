@@ -48,8 +48,8 @@ export async function POST(request: NextRequest) {
     if (!token?.userId) {
       console.log("❌ Checkout 요청: 인증되지 않은 사용자", { 
         hasToken: !!token,
-        hasSessionToken: !!sessionToken,
-        cookieNames: Array.from(cookies.getAll().map(c => c.name)),
+        foundCookieName,
+        cookieNames,
       });
       return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
     }
