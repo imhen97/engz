@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
 
@@ -9,14 +8,20 @@ const MONTHLY_PRICE = process.env.STRIPE_PRICE_MONTHLY_ID;
 const ANNUAL_PRICE = process.env.STRIPE_PRICE_ANNUAL_ID;
 const APP_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    // Next.js 13+ App Router에서는 getToken을 사용하여 쿠키에서 토큰을 읽습니다
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
 
-    if (!session?.user?.id) {
-      console.log("❌ Checkout 요청: 인증되지 않은 사용자");
+    if (!token?.userId) {
+      console.log("❌ Checkout 요청: 인증되지 않은 사용자", { hasToken: !!token });
       return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
     }
+
+    const userId = token.userId as string;
 
     const body = (await request.json().catch(() => null)) as {
       plan?: string;
@@ -54,10 +59,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await prisma.user.findUnique({ where: { id: session.user.id } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user || !user.email) {
-      console.error("❌ Checkout 요청: 사용자 정보 없음", { userId: session.user.id });
+      console.error("❌ Checkout 요청: 사용자 정보 없음", { userId });
       return NextResponse.json(
         { error: "사용자 정보를 확인할 수 없습니다. 다시 로그인해 주세요." },
         { status: 400 }
@@ -99,12 +104,12 @@ export async function POST(request: Request) {
         subscription_data: {
           trial_period_days: 7,
           metadata: {
-            userId: user.id,
+            userId,
             plan,
           },
         },
         metadata: {
-          userId: user.id,
+          userId,
           plan,
         },
         allow_promotion_codes: true,
