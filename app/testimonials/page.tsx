@@ -15,30 +15,30 @@ export default function TestimonialsPage() {
     <main className="min-h-screen overflow-x-hidden bg-white font-[Pretendard] text-black">
       <NavBar />
 
-      <section className="px-6 pt-28 pb-20 sm:pt-32">
+      <section className="px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10 lg:pb-20">
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C]">
             성공 후기
           </p>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 md:text-5xl">
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-gray-900 sm:mt-4 sm:text-3xl md:text-4xl lg:text-5xl">
             ENGZ 수강생이 증명한 성장 이야기
           </h1>
-          <p className="mt-6 text-sm leading-relaxed text-gray-600 md:text-base">
+          <p className="mt-4 text-xs leading-relaxed text-gray-600 sm:mt-6 sm:text-sm md:text-base">
             ENGZ 코칭을 통해 영어 실력을 바꾼 직장인, 학생, 리더들의 실제 경험을
             만나보세요.
           </p>
         </div>
       </section>
 
-      <section className="px-6 pb-20">
+      <section className="px-4 pb-12 sm:px-6 sm:pb-16 md:px-8 lg:px-10 lg:pb-20">
         <div className="mx-auto max-w-5xl">
           <TestimonialCarousel testimonials={testimonials} />
         </div>
 
-        <div className="mx-auto mt-16 max-w-5xl text-center">
+        <div className="mx-auto mt-10 max-w-5xl text-center sm:mt-12 md:mt-16">
           <a
             href="https://www.eng-z.com/pricing"
-            className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+            className="inline-flex w-full max-w-xs items-center justify-center rounded-full bg-[#F5472C] px-6 py-2.5 text-xs font-semibold text-white shadow-md transition hover:scale-105 sm:max-w-none sm:w-auto sm:px-8 sm:py-3 sm:text-sm"
           >
             나도 수업 받으러 가기 →
           </a>

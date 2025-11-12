@@ -131,7 +131,7 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.4 }}
         variants={sectionVariants}
         transition={transition}
-        className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center px-6 pt-28 pb-20 text-center sm:pt-32"
+        className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center px-4 pt-24 pb-16 text-center sm:px-6 sm:pt-28 sm:pb-20 md:px-8 lg:px-10 lg:pt-32"
       >
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white to-[#FFF5F3]" />
         <div className="grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr_0.9fr]">
@@ -149,23 +149,23 @@ export default function AiCoursePageContent() {
             <p className="text-xs uppercase tracking-[0.3em] text-[#F5472C] sm:text-sm">
               4주 AI 집중 코스
             </p>
-            <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+            <h1 className="mt-4 text-2xl font-bold tracking-tight text-gray-900 sm:mt-6 sm:text-3xl md:text-4xl lg:text-5xl">
               앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
             </h1>
-            <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
+            <p className="mt-4 text-xs text-gray-600 sm:mt-6 sm:text-sm md:text-base lg:text-lg">
               ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 전후
               변화를 완성합니다.
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row md:mt-10">
               <Link
                 href="/pricing"
-                className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
+                className="inline-flex w-full max-w-xs items-center justify-center rounded-full bg-[#F5472C] px-5 py-2.5 text-xs font-semibold text-white shadow-md transition hover:scale-105 sm:max-w-none sm:w-auto sm:px-6 sm:py-3 sm:text-sm md:px-8"
               >
                 🎯 4주 코스 시작하기 →
               </Link>
               <Link
                 href="/level-test"
-                className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto sm:px-8"
+                className="inline-flex w-full max-w-xs items-center justify-center rounded-full border border-[#F5472C] px-5 py-2.5 text-xs font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:max-w-none sm:w-auto sm:px-6 sm:py-3 sm:text-sm md:px-8"
               >
                 💬 무료 AI 레벨 테스트 →
               </Link>
@@ -212,10 +212,10 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="border-t border-gray-100 bg-white px-6 py-16 sm:py-20"
+        className="border-t border-gray-100 bg-white px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             왜 앱으로는 영어가 늘지 않을까요?
           </h2>
           <div className="mt-8 overflow-hidden rounded-3xl border border-gray-100 shadow-sm sm:mt-10">
@@ -253,10 +253,10 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF7F5] px-6 py-16 sm:py-20"
+        className="bg-[#FFF7F5] px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             ENGZ AI가 4주 동안 당신의 영어를 설계하는 방법
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">

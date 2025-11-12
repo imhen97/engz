@@ -15,21 +15,21 @@ export default function SignupPage() {
   return (
     <main className="min-h-screen bg-[#FFF8F5] text-black">
       <NavBar />
-      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-10 px-6 pt-28 pb-16 lg:flex-row lg:items-center lg:gap-16">
-        <section className="flex-1 rounded-3xl bg-gradient-to-br from-[#F5472C] via-[#FF7A55] to-[#FFC3B3] p-10 text-white shadow-2xl">
-          <div className="max-w-lg space-y-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/80">
+      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-6 px-4 pt-24 pb-12 sm:gap-8 sm:px-6 sm:pt-28 sm:pb-16 md:gap-10 md:px-8 lg:flex-row lg:items-center lg:gap-16 lg:px-10">
+        <section className="flex-1 rounded-2xl bg-gradient-to-br from-[#F5472C] via-[#FF7A55] to-[#FFC3B3] p-6 text-white shadow-2xl sm:rounded-3xl sm:p-8 md:p-10">
+          <div className="max-w-lg space-y-4 sm:space-y-5 md:space-y-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/80 sm:text-sm">
               ENGZ AI EXPERIENCE
             </p>
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl">
+            <h1 className="text-2xl font-bold leading-tight sm:text-3xl md:text-4xl lg:text-5xl">
               AI 코치와 4주 만에 영어 말하기 루틴을 완성해 보세요
             </h1>
-            <p className="text-sm leading-relaxed text-white/90">
+            <p className="text-xs leading-relaxed text-white/90 sm:text-sm">
               카카오 또는 Google 계정으로 단 1분 만에 가입하고, AI 레벨 테스트와
               4주 집중 코스 전체를 7일 동안 무료로 체험할 수 있습니다. 언제든지
               해지 가능하며 추가 비용은 청구되지 않습니다.
             </p>
-            <ul className="space-y-3 text-sm text-white/90">
+            <ul className="space-y-2 text-xs text-white/90 sm:space-y-3 sm:text-sm">
               <li>• AI 레벨 테스트 + 맞춤 성장 리포트</li>
               <li>• 4주 집중 미션과 1:1 피드백</li>
               <li>• 해지하지 않으면 체험 종료 후 자동 갱신</li>

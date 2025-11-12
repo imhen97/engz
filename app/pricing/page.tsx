@@ -70,16 +70,16 @@ export default async function PricingPage() {
     <main className="min-h-screen overflow-x-hidden bg-white font-[Pretendard] text-black">
       <NavBar />
 
-      <section className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center px-6 pt-28 pb-20 text-center sm:pt-32">
+      <section className="relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center px-4 pt-24 pb-16 text-center sm:px-6 sm:pt-28 sm:pb-20 md:px-8 lg:px-10 lg:pt-32">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-white to-[#FFF7F5]" />
         <div className="max-w-3xl">
           <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C] sm:text-sm">
             요금제 안내
           </p>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+          <h1 className="mt-4 text-2xl font-bold tracking-tight text-gray-900 sm:mt-6 sm:text-3xl md:text-4xl lg:text-5xl">
             ENGZ AI와 함께할 요금제를 선택해 보세요
           </h1>
-          <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
+          <p className="mt-4 text-xs text-gray-600 sm:mt-6 sm:text-sm md:text-base lg:text-lg">
             목표에 맞춰 성장하는 유연한 플랜을 선택하세요. 7일 무료 체험 후에
             자동으로 갱신되며, 체험 기간 중 언제든지 취소할 수 있습니다.
           </p>
@@ -97,8 +97,8 @@ export default async function PricingPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-20">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 md:grid md:grid-cols-2">
+      <section className="px-4 pb-12 sm:px-6 sm:pb-16 md:px-8 lg:px-10 lg:pb-20">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:gap-6 md:grid md:grid-cols-2">
           {plans.map((plan) => (
             <PricingCard
               key={plan.id}
@@ -116,8 +116,8 @@ export default async function PricingPage() {
           ))}
         </div>
 
-        <div className="mx-auto mt-12 max-w-4xl rounded-3xl border border-gray-100 bg-white p-6 text-center shadow sm:p-8">
-          <p className="text-sm text-gray-600">
+        <div className="mx-auto mt-8 max-w-4xl rounded-2xl border border-gray-100 bg-white p-5 text-center shadow sm:mt-10 sm:rounded-3xl sm:p-6 md:mt-12 md:p-8">
+          <p className="text-xs text-gray-600 sm:text-sm">
             오늘은 결제되지 않습니다. 7일 체험이 종료되면 선택한 플랜으로 자동
             갱신되며, 체험 중에는 언제든지 취소할 수 있습니다. 결제나 구독 관련
             문의는 ENGZ 팀이 빠르게 도와드립니다.

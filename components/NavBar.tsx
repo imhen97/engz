@@ -51,11 +51,11 @@ export default function NavBar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-100 bg-white/85 py-4 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-100 bg-white/85 py-3 backdrop-blur-md sm:py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight text-[#F5472C]"
+          className="text-lg font-bold tracking-tight text-[#F5472C] sm:text-xl max-w-[120px] md:max-w-[160px]"
         >
           ENGZ
         </Link>
@@ -129,7 +129,7 @@ export default function NavBar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="mx-auto mt-2 flex w-full max-w-6xl flex-col gap-2 px-6 py-4 lg:hidden"
+            className="mx-auto mt-2 flex w-full max-w-6xl flex-col gap-2 px-4 py-4 sm:px-6 lg:hidden"
           >
             {menuItems.map((item) => {
               const isExternal = item.href.startsWith("http");

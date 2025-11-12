@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ComingSoonHero() {
   return (
-    <section className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-white px-6 pt-28 pb-20 sm:pt-32">
+    <section className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-white px-4 pt-24 pb-16 sm:px-6 sm:pt-28 sm:pb-20 md:px-8 lg:px-10 lg:pt-32">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -15,10 +15,10 @@ export default function ComingSoonHero() {
         <p className="text-xs font-medium uppercase tracking-[0.3em] text-[#F5472C] sm:text-sm">
           곧 공개됩니다
         </p>
-        <h1 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+        <h1 className="mt-4 text-2xl font-bold tracking-tight text-gray-900 sm:mt-6 sm:text-3xl md:text-4xl lg:text-5xl">
           ENGZ AI 영어 학습 플랫폼
         </h1>
-        <p className="mt-6 text-sm text-gray-600 sm:text-base md:text-lg">
+        <p className="mt-4 text-xs text-gray-600 sm:mt-6 sm:text-sm md:text-base lg:text-lg">
           AI가 설계한 맞춤 영어 학습 경험을 곧 만나보세요.
         </p>
         <p className="mt-3 text-xs text-gray-500 sm:text-sm">
@@ -26,18 +26,18 @@ export default function ComingSoonHero() {
           받아보세요.
         </p>
 
-        <div className="mt-8 flex flex-col justify-center gap-3 sm:mt-10 sm:flex-row">
+        <div className="mt-6 flex flex-col justify-center gap-3 sm:mt-8 sm:flex-row md:mt-10">
           <a
             href="https://open.kakao.com/o/sJDAeK6f"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:px-8"
+            className="inline-flex w-full max-w-xs items-center justify-center rounded-full bg-[#F5472C] px-5 py-2.5 text-xs font-semibold text-white shadow-md transition hover:scale-105 sm:max-w-none sm:w-auto sm:px-6 sm:py-3 sm:text-sm md:px-8"
           >
             사전 안내 받기
           </a>
           <Link
             href="/#service"
-            className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:px-8"
+            className="inline-flex w-full max-w-xs items-center justify-center rounded-full border border-[#F5472C] px-5 py-2.5 text-xs font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:max-w-none sm:w-auto sm:px-6 sm:py-3 sm:text-sm md:px-8"
           >
             서비스 자세히 보기
           </Link>
