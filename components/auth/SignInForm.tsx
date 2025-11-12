@@ -40,25 +40,28 @@ export default function SignInForm() {
     console.log("🔵 버튼 클릭됨! providerId:", providerId);
     setError(null);
     setLoadingProvider(providerId);
-    
+
     try {
       console.log(`[${providerId}] 로그인 시작, callbackUrl:`, callbackUrl);
       console.log(`[${providerId}] signIn 함수 호출 전`);
-      
+
       // signIn 함수가 존재하는지 확인
       if (typeof signIn !== "function") {
         console.error("❌ signIn 함수가 정의되지 않았습니다!");
-        setError("로그인 기능을 사용할 수 없습니다. 페이지를 새로고침해 주세요.");
+        setError(
+          "로그인 기능을 사용할 수 없습니다. 페이지를 새로고침해 주세요."
+        );
         setLoadingProvider(null);
         return;
       }
-      
+
       console.log(`[${providerId}] signIn 함수 호출 중...`);
 
-      // redirect: false로 설정하여 에러를 확인
+      // OAuth의 경우 redirect: true로 설정하여 자동 리다이렉트
+      // NextAuth가 OAuth 제공자로 자동 리다이렉트 처리
       const result = await signIn(providerId, {
         callbackUrl,
-        redirect: false,
+        redirect: true, // OAuth는 자동 리다이렉트 필요
       });
 
       console.log(`[${providerId}] 로그인 결과:`, result);

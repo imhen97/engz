@@ -65,7 +65,9 @@ export default async function DashboardPage() {
 
         <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-6 md:mt-10 md:grid-cols-2">
           <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-lg sm:rounded-3xl sm:p-6">
-            <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">구독 상태</h2>
+            <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">
+              구독 상태
+            </h2>
             <p className="mt-2 text-xs text-gray-600 sm:text-sm">
               현재 이용 중인 플랜:{" "}
               <strong>
@@ -96,7 +98,9 @@ export default async function DashboardPage() {
           </section>
 
           <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-lg sm:rounded-3xl sm:p-6">
-            <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">오늘의 학습</h2>
+            <h2 className="text-lg font-semibold text-gray-900 sm:text-xl">
+              오늘의 학습
+            </h2>
             {currentEnrollment && currentCourse ? (
               <div className="mt-3 space-y-2.5 sm:mt-4 sm:space-y-3">
                 <div className="rounded-lg bg-[#FFF7F0] p-3 sm:rounded-xl sm:p-4">

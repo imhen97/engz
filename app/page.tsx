@@ -134,21 +134,27 @@ export default function EngzLandingFull() {
 
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             <div className="rounded-2xl border border-gray-100 p-5 shadow-sm sm:p-6">
-              <h3 className="mb-2 text-base font-semibold sm:text-lg">1:1 맞춤 코칭</h3>
+              <h3 className="mb-2 text-base font-semibold sm:text-lg">
+                1:1 맞춤 코칭
+              </h3>
               <p className="text-xs leading-snug text-gray-600 sm:text-sm">
                 개인 목표에 맞춘 주 1회 코칭 세션으로 발음, 문법, 스피킹을
                 정교하게 다듬습니다.
               </p>
             </div>
             <div className="rounded-2xl border border-gray-100 p-5 shadow-sm sm:p-6">
-              <h3 className="mb-2 text-base font-semibold sm:text-lg">AI 피드백 & 분석</h3>
+              <h3 className="mb-2 text-base font-semibold sm:text-lg">
+                AI 피드백 & 분석
+              </h3>
               <p className="text-xs leading-snug text-gray-600 sm:text-sm">
                 AI가 학습자의 음성·문법을 분석하고, 개선 포인트를 리포트 형태로
                 제공합니다.
               </p>
             </div>
             <div className="rounded-2xl border border-gray-100 p-5 shadow-sm sm:p-6">
-              <h3 className="mb-2 text-base font-semibold sm:text-lg">주간 성장 리포트</h3>
+              <h3 className="mb-2 text-base font-semibold sm:text-lg">
+                주간 성장 리포트
+              </h3>
               <p className="text-xs leading-snug text-gray-600 sm:text-sm">
                 한 주의 학습 데이터를 시각화해, 발전 정도와 다음 단계의 학습
                 방향을 제시합니다.
@@ -168,7 +174,10 @@ export default function EngzLandingFull() {
       </section>
 
       {/* CEO 섹션 */}
-      <section id="ceo" className="py-12 bg-gray-50 border-t border-gray-100 sm:py-16 md:py-20 lg:py-24">
+      <section
+        id="ceo"
+        className="py-12 bg-gray-50 border-t border-gray-100 sm:py-16 md:py-20 lg:py-24"
+      >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="flex justify-center">
             <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-gray-100 bg-gradient-to-br from-[#F5472C] to-[#ff6a3c] flex items-center justify-center text-white text-4xl sm:text-5xl md:text-6xl font-bold relative">
@@ -230,7 +239,10 @@ export default function EngzLandingFull() {
       </section>
 
       {/* 후기 하이라이트 섹션 */}
-      <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20" id="success">
+      <section
+        className="bg-white px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
+        id="success"
+      >
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 text-center sm:mb-10 md:mb-12">
             <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C]">
@@ -285,7 +297,9 @@ export default function EngzLandingFull() {
         className="py-12 bg-gray-50 text-center border-t border-gray-100 sm:py-16 md:py-20 lg:py-24"
       >
         <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
-          <h2 className="text-2xl font-bold mb-4 sm:text-3xl sm:mb-6 md:text-4xl md:mb-8">문의하기</h2>
+          <h2 className="text-2xl font-bold mb-4 sm:text-3xl sm:mb-6 md:text-4xl md:mb-8">
+            문의하기
+          </h2>
           <p className="text-xs text-gray-600 mb-8 sm:text-sm sm:mb-10 md:mb-12">
             수업, 제휴, 인터뷰 등 모든 문의는 아래 채널을 통해 문의하실 수
             있습니다.

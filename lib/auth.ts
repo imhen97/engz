@@ -7,6 +7,7 @@ import prisma from "./prisma";
 
 const providers = [] as AuthOptions["providers"]; // ensure typing
 
+// Validate and add Google provider
 if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
   providers.push(
     GoogleProvider({
@@ -15,9 +16,16 @@ if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
     })
   );
 } else {
-  console.warn("GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다.");
+  if (process.env.NODE_ENV === "production") {
+    console.error(
+      "❌ GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다. Google 로그인이 작동하지 않습니다."
+    );
+  } else {
+    console.warn("⚠️ GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다.");
+  }
 }
 
+// Validate and add Kakao provider
 if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
   providers.push(
     KakaoProvider({
@@ -26,7 +34,13 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
     })
   );
 } else {
-  console.warn("KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다.");
+  if (process.env.NODE_ENV === "production") {
+    console.error(
+      "❌ KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다. Kakao 로그인이 작동하지 않습니다."
+    );
+  } else {
+    console.warn("⚠️ KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다.");
+  }
 }
 
 if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
@@ -67,8 +81,33 @@ async function enrichToken(token: any) {
   return token;
 }
 
+// Validate NEXTAUTH_SECRET
+if (!process.env.NEXTAUTH_SECRET) {
+  if (process.env.NODE_ENV === "production") {
+    console.error(
+      "❌ NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다. 인증이 작동하지 않습니다."
+    );
+  } else {
+    console.warn("⚠️ NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
+  }
+}
+
+// Validate NEXTAUTH_URL
+if (!process.env.NEXTAUTH_URL) {
+  if (process.env.NODE_ENV === "production") {
+    console.error(
+      "❌ NEXTAUTH_URL 환경 변수가 설정되지 않았습니다. 프로덕션에서는 https://www.eng-z.com으로 설정해야 합니다."
+    );
+  } else {
+    console.warn(
+      "⚠️ NEXTAUTH_URL 환경 변수가 설정되지 않았습니다. 개발 환경에서는 http://localhost:3000을 사용합니다."
+    );
+  }
+}
+
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
@@ -101,15 +140,25 @@ export const authOptions: AuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
-      // callbackUrl이 있으면 그대로 사용
-      if (url.startsWith("/")) {
-        return `${baseUrl}${url}`;
+      try {
+        // callbackUrl이 있으면 그대로 사용
+        if (url.startsWith("/")) {
+          return `${baseUrl}${url}`;
+        }
+        // 외부 URL이면 baseUrl과 비교
+        try {
+          const urlObj = new URL(url);
+          if (urlObj.origin === baseUrl) {
+            return url;
+          }
+        } catch {
+          // URL 파싱 실패 시 baseUrl 반환
+        }
+        return baseUrl;
+      } catch (error) {
+        console.error("redirect callback 오류:", error);
+        return baseUrl;
       }
-      // 외부 URL이면 baseUrl로
-      if (new URL(url).origin === baseUrl) {
-        return url;
-      }
-      return baseUrl;
     },
     async jwt({ token, user, trigger }) {
       if (user) {

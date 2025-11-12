@@ -91,7 +91,9 @@ export default function NavBar() {
               <Link
                 href="/dashboard"
                 className={`${navLinkClass} ${
-                  pathname === "/dashboard" ? "font-semibold text-[#F5472C]" : ""
+                  pathname === "/dashboard"
+                    ? "font-semibold text-[#F5472C]"
+                    : ""
                 }`}
               >
                 대시보드
