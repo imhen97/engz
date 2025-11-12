@@ -299,7 +299,8 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g5",
-      question: "Fill in the blank: If I _____ more time, I would travel abroad.",
+      question:
+        "Fill in the blank: If I _____ more time, I would travel abroad.",
       type: "fill-in-blank",
       correctAnswer: "had",
     },
@@ -391,7 +392,8 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g8",
-      question: "Fill in the blank: Had I known about the meeting, I _____ attended.",
+      question:
+        "Fill in the blank: Had I known about the meeting, I _____ attended.",
       type: "fill-in-blank",
       correctAnswer: "would have",
     },
@@ -409,7 +411,8 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g10a",
-      question: "Fill in the blank: _____ had I arrived when it started raining.",
+      question:
+        "Fill in the blank: _____ had I arrived when it started raining.",
       type: "fill-in-blank",
       correctAnswer: "hardly",
     },
@@ -427,7 +430,8 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g12a",
-      question: "Fill in the blank: The proposal, _____ was submitted yesterday, needs review.",
+      question:
+        "Fill in the blank: The proposal, _____ was submitted yesterday, needs review.",
       type: "fill-in-blank",
       correctAnswer: "which",
     },
@@ -445,7 +449,8 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g14a",
-      question: "Fill in the blank: Were I in your position, I _____ differently.",
+      question:
+        "Fill in the blank: Were I in your position, I _____ differently.",
       type: "fill-in-blank",
       correctAnswer: "would act",
     },
@@ -463,7 +468,8 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g16a",
-      question: "Fill in the blank: Not until she arrived _____ I realize the mistake.",
+      question:
+        "Fill in the blank: Not until she arrived _____ I realize the mistake.",
       type: "fill-in-blank",
       correctAnswer: "did",
     },
@@ -474,7 +480,8 @@ const WRITING_PROMPTS = {
   beginner: [
     {
       id: "w1",
-      prompt: "Rewrite this sentence in your own words: 'I couldn't go out because it was raining.'",
+      prompt:
+        "Rewrite this sentence in your own words: 'I couldn't go out because it was raining.'",
       example: "The weather prevented me from going outside.",
     },
     {
@@ -489,7 +496,8 @@ const WRITING_PROMPTS = {
   intermediate: [
     {
       id: "w4",
-      prompt: "Rewrite this sentence in your own words: 'I couldn't go out because it was raining.'",
+      prompt:
+        "Rewrite this sentence in your own words: 'I couldn't go out because it was raining.'",
       example: "The inclement weather prevented me from leaving the house.",
     },
     {
@@ -498,22 +506,27 @@ const WRITING_PROMPTS = {
     },
     {
       id: "w6",
-      prompt: "Paraphrase: 'The meeting was postponed due to unforeseen circumstances.'",
+      prompt:
+        "Paraphrase: 'The meeting was postponed due to unforeseen circumstances.'",
     },
   ],
   advanced: [
     {
       id: "w7",
-      prompt: "Rewrite this sentence using more sophisticated vocabulary: 'I couldn't go out because it was raining.'",
-      example: "The inclement weather conditions precluded my departure from the premises.",
+      prompt:
+        "Rewrite this sentence using more sophisticated vocabulary: 'I couldn't go out because it was raining.'",
+      example:
+        "The inclement weather conditions precluded my departure from the premises.",
     },
     {
       id: "w8",
-      prompt: "Write a complex sentence (2-3 clauses) about a recent achievement.",
+      prompt:
+        "Write a complex sentence (2-3 clauses) about a recent achievement.",
     },
     {
       id: "w9",
-      prompt: "Paraphrase using advanced grammar structures: 'The meeting was postponed due to unforeseen circumstances.'",
+      prompt:
+        "Paraphrase using advanced grammar structures: 'The meeting was postponed due to unforeseen circumstances.'",
     },
   ],
 };
@@ -525,14 +538,17 @@ export async function POST(request: NextRequest) {
 
     if (!level || !["beginner", "intermediate", "advanced"].includes(level)) {
       return NextResponse.json(
-        { error: "Invalid level. Must be beginner, intermediate, or advanced." },
+        {
+          error: "Invalid level. Must be beginner, intermediate, or advanced.",
+        },
         { status: 400 }
       );
     }
 
     // Get questions for the selected level and randomize
     const vocabPool = VOCAB_QUESTIONS[level as keyof typeof VOCAB_QUESTIONS];
-    const grammarPool = GRAMMAR_QUESTIONS[level as keyof typeof GRAMMAR_QUESTIONS];
+    const grammarPool =
+      GRAMMAR_QUESTIONS[level as keyof typeof GRAMMAR_QUESTIONS];
     const writingPool = WRITING_PROMPTS[level as keyof typeof WRITING_PROMPTS];
 
     // Randomize and select 10 vocab, 10 grammar, 3 writing
@@ -562,4 +578,3 @@ function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffled;
 }
-

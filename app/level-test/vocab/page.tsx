@@ -58,7 +58,9 @@ export default function VocabTestPage() {
         setShowFeedback(false);
       } else {
         // Save answers and move to grammar section
-        const testData = JSON.parse(sessionStorage.getItem("levelTestData") || "{}");
+        const testData = JSON.parse(
+          sessionStorage.getItem("levelTestData") || "{}"
+        );
         testData.vocabAnswers = newAnswers;
         sessionStorage.setItem("levelTestData", JSON.stringify(testData));
         router.push("/level-test/grammar");
@@ -125,7 +127,11 @@ export default function VocabTestPage() {
                       : isSelected
                       ? "border-[#F5472C] bg-[#FFF7F0]"
                       : "border-gray-200 bg-white hover:border-[#F5472C] hover:bg-[#FFF7F0]"
-                  } ${selectedAnswer !== null ? "cursor-default" : "cursor-pointer"}`}
+                  } ${
+                    selectedAnswer !== null
+                      ? "cursor-default"
+                      : "cursor-pointer"
+                  }`}
                   whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
                   whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
                 >
@@ -163,11 +169,15 @@ export default function VocabTestPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className={`mt-6 rounded-lg p-4 ${
-                  isCorrect ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"
+                  isCorrect
+                    ? "bg-green-50 text-green-800"
+                    : "bg-red-50 text-red-800"
                 }`}
               >
                 <p className="text-sm font-semibold">
-                  {isCorrect ? "✅ Correct!" : "❌ Incorrect. The correct answer is highlighted."}
+                  {isCorrect
+                    ? "✅ Correct!"
+                    : "❌ Incorrect. The correct answer is highlighted."}
                 </p>
               </motion.div>
             )}
@@ -177,4 +187,3 @@ export default function VocabTestPage() {
     </main>
   );
 }
-

@@ -50,7 +50,7 @@ function generateRecommendedRoutine(
   writingScore: number
 ): string {
   const lowest = Math.min(vocabScore, grammarScore, writingScore);
-  
+
   if (lowest === grammarScore) {
     return "4-week Grammar & Writing Focus Routine";
   }
@@ -73,17 +73,35 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { level, vocabScore, grammarScore, writingScore } = body;
 
-    if (!level || vocabScore === undefined || grammarScore === undefined || writingScore === undefined) {
+    if (
+      !level ||
+      vocabScore === undefined ||
+      grammarScore === undefined ||
+      writingScore === undefined
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    const overallLevel = determineOverallLevel(vocabScore, grammarScore, writingScore);
+    const overallLevel = determineOverallLevel(
+      vocabScore,
+      grammarScore,
+      writingScore
+    );
     const strengths = generateStrengths(vocabScore, grammarScore, writingScore);
-    const weaknesses = generateWeaknesses(vocabScore, grammarScore, writingScore);
-    const recommendedRoutine = generateRecommendedRoutine(level, vocabScore, grammarScore, writingScore);
+    const weaknesses = generateWeaknesses(
+      vocabScore,
+      grammarScore,
+      writingScore
+    );
+    const recommendedRoutine = generateRecommendedRoutine(
+      level,
+      vocabScore,
+      grammarScore,
+      writingScore
+    );
 
     // Save result if user is logged in
     let resultId: string | null = null;
@@ -126,4 +144,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

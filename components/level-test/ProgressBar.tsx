@@ -8,7 +8,11 @@ interface ProgressBarProps {
   section: string;
 }
 
-export default function ProgressBar({ current, total, section }: ProgressBarProps) {
+export default function ProgressBar({
+  current,
+  total,
+  section,
+}: ProgressBarProps) {
   const percentage = Math.round((current / total) * 100);
 
   return (
@@ -30,4 +34,3 @@ export default function ProgressBar({ current, total, section }: ProgressBarProp
     </div>
   );
 }
-

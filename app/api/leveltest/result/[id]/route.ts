@@ -19,7 +19,10 @@ export async function GET(
     // Handle temporary IDs for anonymous users
     if (resultId.startsWith("temp_")) {
       // Return data from sessionStorage (handled client-side)
-      return NextResponse.json({ error: "Temporary result not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Temporary result not found" },
+        { status: 404 }
+      );
     }
 
     // For logged-in users, fetch from database
@@ -58,4 +61,3 @@ export async function GET(
     );
   }
 }
-

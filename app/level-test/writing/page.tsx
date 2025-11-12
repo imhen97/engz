@@ -69,9 +69,17 @@ export default function WritingTestPage() {
       const writingScores = await response.json();
 
       // Calculate all scores and submit
-      const testData = JSON.parse(sessionStorage.getItem("levelTestData") || "{}");
-      const vocabScore = calculateScore(testData.vocabAnswers, testData.vocabQuestions);
-      const grammarScore = calculateScore(testData.grammarAnswers, testData.grammarQuestions);
+      const testData = JSON.parse(
+        sessionStorage.getItem("levelTestData") || "{}"
+      );
+      const vocabScore = calculateScore(
+        testData.vocabAnswers,
+        testData.vocabQuestions
+      );
+      const grammarScore = calculateScore(
+        testData.grammarAnswers,
+        testData.grammarQuestions
+      );
       const avgWritingScore = Math.round(
         writingScores.scores.reduce((sum: number, s: number) => sum + s, 0) /
           writingScores.scores.length
@@ -97,7 +105,7 @@ export default function WritingTestPage() {
       }
 
       const result = await submitResponse.json();
-      
+
       // Store result ID and data for result page
       sessionStorage.setItem("levelTestResultId", result.id);
       sessionStorage.setItem("levelTestSubmitData", JSON.stringify(result));
@@ -217,4 +225,3 @@ export default function WritingTestPage() {
     </main>
   );
 }
-

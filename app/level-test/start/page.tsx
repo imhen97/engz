@@ -51,14 +51,17 @@ export default function LevelTestStartPage() {
       }
 
       const data = await response.json();
-      
+
       // Store test data in sessionStorage
-      sessionStorage.setItem("levelTestData", JSON.stringify({
-        level: levelId,
-        vocabQuestions: data.vocabQuestions,
-        grammarQuestions: data.grammarQuestions,
-        writingPrompts: data.writingPrompts,
-      }));
+      sessionStorage.setItem(
+        "levelTestData",
+        JSON.stringify({
+          level: levelId,
+          vocabQuestions: data.vocabQuestions,
+          grammarQuestions: data.grammarQuestions,
+          writingPrompts: data.writingPrompts,
+        })
+      );
 
       // Navigate to vocabulary section
       router.push("/level-test/vocab");
@@ -102,7 +105,9 @@ export default function LevelTestStartPage() {
                 selectedLevel === level.id
                   ? "border-[#F5472C] bg-[#FFF7F0] shadow-lg"
                   : "border-gray-200 bg-white hover:border-[#F5472C] hover:shadow-md"
-              } ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+              } ${
+                loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
             >
               <div className="mb-4 text-4xl">{level.emoji}</div>
               <h3 className="mb-2 text-xl font-bold text-gray-900">
@@ -121,4 +126,3 @@ export default function LevelTestStartPage() {
     </main>
   );
 }
-

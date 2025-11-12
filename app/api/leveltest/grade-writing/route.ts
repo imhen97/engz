@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
             {
               role: "system",
               content:
-                "You are an English proficiency grader. Grade the following answer on grammar, sentence structure, vocabulary range, and fluency (1-10 each). Return ONLY a JSON object with the format: {\"grammar\": 7, \"structure\": 6, \"vocabulary\": 8, \"fluency\": 7, \"overall\": 7}. The overall score should be the average of the four scores.",
+                'You are an English proficiency grader. Grade the following answer on grammar, sentence structure, vocabulary range, and fluency (1-10 each). Return ONLY a JSON object with the format: {"grammar": 7, "structure": 6, "vocabulary": 8, "fluency": 7, "overall": 7}. The overall score should be the average of the four scores.',
             },
             {
               role: "user",
@@ -47,9 +47,15 @@ export async function POST(request: NextRequest) {
         });
 
         const grading = JSON.parse(response.choices[0].message.content || "{}");
-        const overallScore = grading.overall || Math.round(
-          (grading.grammar + grading.structure + grading.vocabulary + grading.fluency) / 4
-        );
+        const overallScore =
+          grading.overall ||
+          Math.round(
+            (grading.grammar +
+              grading.structure +
+              grading.vocabulary +
+              grading.fluency) /
+              4
+          );
         scores.push(Math.min(100, overallScore * 10)); // Convert 1-10 to 0-100
       } catch (error) {
         console.error("OpenAI grading error:", error);
@@ -67,4 +73,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

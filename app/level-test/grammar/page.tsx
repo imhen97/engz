@@ -19,7 +19,9 @@ export default function GrammarTestPage() {
   const router = useRouter();
   const [questions, setQuestions] = useState<GrammarQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | string | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | string | null>(
+    null
+  );
   const [fillInAnswer, setFillInAnswer] = useState("");
   const [answers, setAnswers] = useState<(number | string)[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -57,7 +59,9 @@ export default function GrammarTestPage() {
         setFillInAnswer("");
         setShowFeedback(false);
       } else {
-        const testData = JSON.parse(sessionStorage.getItem("levelTestData") || "{}");
+        const testData = JSON.parse(
+          sessionStorage.getItem("levelTestData") || "{}"
+        );
         testData.grammarAnswers = newAnswers;
         sessionStorage.setItem("levelTestData", JSON.stringify(testData));
         router.push("/level-test/writing");
@@ -106,14 +110,17 @@ export default function GrammarTestPage() {
                 : currentQuestion.question.split("_____").map((part, i) => (
                     <span key={i}>
                       {part}
-                      {i < currentQuestion.question.split("_____").length - 1 && (
+                      {i <
+                        currentQuestion.question.split("_____").length - 1 && (
                         <input
                           type="text"
                           value={fillInAnswer}
                           onChange={(e) => setFillInAnswer(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" && fillInAnswer.trim()) {
-                              handleAnswerSelect(fillInAnswer.trim().toLowerCase());
+                              handleAnswerSelect(
+                                fillInAnswer.trim().toLowerCase()
+                              );
                             }
                           }}
                           className="mx-2 rounded-lg border-2 border-[#F5472C] px-3 py-1 text-center font-semibold focus:outline-none focus:ring-2 focus:ring-[#F5472C]"
@@ -147,7 +154,11 @@ export default function GrammarTestPage() {
                         : isSelected
                         ? "border-[#F5472C] bg-[#FFF7F0]"
                         : "border-gray-200 bg-white hover:border-[#F5472C] hover:bg-[#FFF7F0]"
-                    } ${selectedAnswer !== null ? "cursor-default" : "cursor-pointer"}`}
+                    } ${
+                      selectedAnswer !== null
+                        ? "cursor-default"
+                        : "cursor-pointer"
+                    }`}
                     whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
                     whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
                   >
@@ -203,11 +214,15 @@ export default function GrammarTestPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className={`mt-6 rounded-lg p-4 ${
-                  isCorrect ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800"
+                  isCorrect
+                    ? "bg-green-50 text-green-800"
+                    : "bg-red-50 text-red-800"
                 }`}
               >
                 <p className="text-sm font-semibold">
-                  {isCorrect ? "✅ Correct!" : "❌ Incorrect. Try again next time!"}
+                  {isCorrect
+                    ? "✅ Correct!"
+                    : "❌ Incorrect. Try again next time!"}
                 </p>
               </motion.div>
             )}
@@ -217,4 +232,3 @@ export default function GrammarTestPage() {
     </main>
   );
 }
-

@@ -53,7 +53,7 @@ export default function EngzLandingFull() {
             Welcome to ENGZ
           </h1>
           <p className="text-xs text-gray-600 sm:text-sm md:text-base">
-            AI와 사람의 힘으로 언어의 한계를 넘다
+            AI 기반 프리미엄 영어 코칭 브랜드
           </p>
           <AnimatePresence mode="wait">
             <motion.div
