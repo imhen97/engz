@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 
 import SignInForm from "@/components/auth/SignInForm";
+import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "ENGZ 가입 | 7일 무료 체험 시작하기",
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <main className="min-h-screen bg-[#FFF8F5] text-black">
-      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-10 px-6 py-16 lg:flex-row lg:items-center lg:gap-16">
+      <NavBar />
+      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-10 px-6 pt-28 pb-16 lg:flex-row lg:items-center lg:gap-16">
         <section className="flex-1 rounded-3xl bg-gradient-to-br from-[#F5472C] via-[#FF7A55] to-[#FFC3B3] p-10 text-white shadow-2xl">
           <div className="max-w-lg space-y-6">
             <p className="text-sm font-semibold uppercase tracking-[0.4em] text-white/80">

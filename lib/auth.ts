@@ -75,7 +75,9 @@ export const authOptions: AuthOptions = {
   providers,
   pages: {
     signIn: "/signup",
+    error: "/signup?error=AuthError",
   },
+  debug: process.env.NODE_ENV === "development",
   events: {
     async createUser({ user }) {
       await prisma.user.update({
@@ -90,14 +92,23 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      // 모든 로그인 허용
-      return true;
+      try {
+        // 모든 로그인 허용
+        return true;
+      } catch (error) {
+        console.error("signIn callback 오류:", error);
+        return false;
+      }
     },
     async redirect({ url, baseUrl }) {
       // callbackUrl이 있으면 그대로 사용
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
       // 외부 URL이면 baseUrl로
-      if (new URL(url).origin === baseUrl) return url;
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
       return baseUrl;
     },
     async jwt({ token, user, trigger }) {

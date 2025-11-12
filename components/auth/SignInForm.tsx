@@ -19,6 +19,7 @@ export default function SignInForm() {
   const searchParams = useSearchParams();
   // 기본적으로 /pricing으로 이동하되, callbackUrl이 있으면 사용
   const callbackUrl = searchParams.get("callbackUrl") ?? "/pricing";
+  const errorParam = searchParams.get("error");
 
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
   const [email, setEmail] = useState("");
@@ -29,10 +30,32 @@ export default function SignInForm() {
   const handleProviderSignIn = async (providerId: string) => {
     setError(null);
     setLoadingProvider(providerId);
-    await signIn(providerId, {
-      callbackUrl,
-      redirect: true,
-    });
+    try {
+      // OAuth의 경우 NextAuth가 자동으로 리다이렉트 처리
+      // redirect: true로 설정하면 카카오/구글 로그인 페이지로 이동
+      const result = await signIn(providerId, {
+        callbackUrl,
+        redirect: true,
+      });
+      
+      // redirect: true일 때는 여기 도달하지 않지만, 
+      // 혹시 에러가 발생하면 처리
+      if (result?.error) {
+        console.error("로그인 오류:", result.error);
+        setError(
+          result.error === "Configuration"
+            ? "로그인 설정에 문제가 있습니다. 관리자에게 문의해 주세요."
+            : result.error === "AccessDenied"
+            ? "로그인이 거부되었습니다."
+            : "로그인 중 오류가 발생했습니다. 다시 시도해 주세요."
+        );
+        setLoadingProvider(null);
+      }
+    } catch (err) {
+      console.error("로그인 예외:", err);
+      setError("예상치 못한 오류가 발생했습니다. 다시 시도해 주세요.");
+      setLoadingProvider(null);
+    }
   };
 
   const handleEmailSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -64,6 +87,16 @@ export default function SignInForm() {
           있습니다.
         </p>
       </div>
+
+      {errorParam && (
+        <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {errorParam === "AuthError"
+            ? "로그인 중 오류가 발생했습니다. 다시 시도해 주세요."
+            : errorParam === "Configuration"
+            ? "로그인 설정에 문제가 있습니다. 관리자에게 문의해 주세요."
+            : "로그인에 실패했습니다. 다시 시도해 주세요."}
+        </div>
+      )}
 
       <div className="space-y-3">
         {socialProviders.map((provider) => (
