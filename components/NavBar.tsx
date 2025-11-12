@@ -10,9 +10,7 @@ const menuItems = [
   { label: "서비스", href: "/#service" },
   { label: "소개", href: "/#ceo" },
   { label: "구독 플랜", href: "https://www.eng-z.com/pricing" },
-  { label: "AI 집중코스", href: "/ai-course" },
   { label: "AI 레벨 테스트", href: "/level-test" },
-  { label: "AI 플랫폼", href: "/coming-soon" },
   { label: "후기", href: "/testimonials" },
   { label: "문의", href: "/#contact" },
 ];
@@ -59,7 +57,7 @@ export default function NavBar() {
         >
           ENGZ
         </Link>
-        <nav className="hidden lg:flex lg:items-center lg:gap-8">
+        <nav className="hidden lg:flex lg:items-center lg:gap-6">
           {menuItems.map((item) => {
             const isExternal = item.href.startsWith("http");
             const isActive = !isExternal && pathname === item.href;
@@ -87,28 +85,28 @@ export default function NavBar() {
           {status === "loading" ? (
             <div className="h-8 w-20 animate-pulse rounded-full bg-gray-200" />
           ) : session?.user ? (
-            <>
-              <span className="text-sm font-medium text-gray-700">
+            <div className="ml-4 flex items-center gap-3 border-l border-gray-200 pl-4">
+              <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
                 {session.user.name ?? "ENGZ 학습자"}님, 환영합니다 👋
               </span>
               <Link
                 href="/learning-room"
-                className="rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105"
+                className="rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105 whitespace-nowrap"
               >
-                Go to Learning Room
+                학습룸
               </Link>
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="rounded-full border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:border-[#F5472C] hover:text-[#F5472C]"
+                className="rounded-full border border-gray-300 px-4 py-1.5 text-sm font-medium text-gray-700 transition hover:border-[#F5472C] hover:text-[#F5472C] whitespace-nowrap"
               >
                 로그아웃
               </button>
-            </>
+            </div>
           ) : (
             <Link
               href="/signup"
-              className="rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105"
+              className="ml-4 rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105 whitespace-nowrap"
             >
               로그인
             </Link>
@@ -167,7 +165,7 @@ export default function NavBar() {
                   href="/learning-room"
                   className="rounded-2xl bg-[#F5472C] px-4 py-3 text-sm font-semibold text-white shadow-sm"
                 >
-                  Go to Learning Room
+                  학습룸
                 </Link>
                 <button
                   type="button"
