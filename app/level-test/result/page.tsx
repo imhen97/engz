@@ -62,19 +62,19 @@ const LEVEL_DESCRIPTIONS: Record<
 const SECTION_DETAILS = [
   {
     key: "vocabulary" as const,
-    label: "Vocabulary",
+    label: "어휘 (Vocabulary)",
     description:
       "일상 대화와 주제별 표현이 얼마나 다양하게 준비되어 있는지 확인합니다.",
   },
   {
     key: "grammar" as const,
-    label: "Grammar",
+    label: "문법 (Grammar)",
     description:
       "문장 구조와 시제, 가정법 등 정확성을 중심으로 안정감을 평가합니다.",
   },
   {
     key: "writing" as const,
-    label: "Writing",
+    label: "작문 (Writing)",
     description:
       "아이디어 구성, 문장 흐름, 어휘 선택을 통해 논리적인 전달력을 살펴봅니다.",
   },
@@ -216,7 +216,7 @@ export default function LevelTestResultPage() {
             </motion.div>
             <div className="space-y-2">
               <p className="text-xs font-semibold tracking-[0.35em] text-[#FF6B3D]/70">
-                ENGZ AI LEVEL RESULT
+                ENGZ AI 레벨 분석
               </p>
               <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 나만을 위한 AI 학습 리포트
@@ -228,12 +228,14 @@ export default function LevelTestResultPage() {
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="rounded-3xl bg-[#FFF2EA] p-6 text-left shadow-inner">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#FF6B3D]/70">
-                  Level Summary
+                  레벨 요약
                 </p>
                 <h2 className="mt-3 text-2xl font-bold text-[#FF6B3D]">
                   {levelInfo.titleKo}
                 </h2>
-                <p className="text-sm text-[#B34724]">{levelInfo.titleEn}</p>
+                <p className="text-sm text-[#B34724]">
+                  영문 레벨명: {levelInfo.titleEn}
+                </p>
                 <div className="mt-4 space-y-2 text-sm text-gray-700">
                   <p>• AI 진단 레벨: {result.overallLevel}</p>
                   <p>• 선택 수준: {result.levelSelected}</p>
@@ -242,7 +244,7 @@ export default function LevelTestResultPage() {
               </div>
               <div className="rounded-3xl border border-[#FFE2D4] bg-white p-6 text-left shadow-md">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#FF6B3D]/70">
-                  Coach Note
+                  코치 한줄 코멘트
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-gray-700">
                   {levelInfo.summary}
@@ -339,7 +341,7 @@ export default function LevelTestResultPage() {
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
-                NEXT STEP
+                다음 단계
               </p>
               <h3 className="text-2xl font-bold sm:text-3xl">
                 AI 추천 루틴으로 7일간 무료 체험을 시작하세요
@@ -351,7 +353,7 @@ export default function LevelTestResultPage() {
             <div className="w-full max-w-xs">
               <CheckoutButton
                 plan="monthly"
-                label="Start your personalized course – 7-day free trial"
+                label="맞춤 코스 시작하기 – 7일 무료 체험"
               />
             </div>
           </div>
