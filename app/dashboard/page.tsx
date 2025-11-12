@@ -17,18 +17,8 @@ export default async function DashboardPage() {
     redirect("/signup?callbackUrl=/dashboard");
   }
 
-  const { plan, trialActive, trialEndsAtRaw, subscriptionActive, name } =
+  const { plan, trialActive, trialEndsAt, subscriptionActive, name } =
     session.user;
-
-  // trialEndsAt이 Date 객체인지 확인하고 안전하게 처리
-  let trialEndsAt: Date | null = null;
-  if (trialEndsAtRaw) {
-    if (trialEndsAtRaw instanceof Date) {
-      trialEndsAt = trialEndsAtRaw;
-    } else if (typeof trialEndsAtRaw === "string") {
-      trialEndsAt = new Date(trialEndsAtRaw);
-    }
-  }
 
   return (
     <main className="min-h-screen bg-[#FFF8F5] text-black">
