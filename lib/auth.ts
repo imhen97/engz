@@ -118,7 +118,7 @@ export const authOptions: AuthOptions = {
   providers,
   pages: {
     signIn: "/signup",
-    error: "/signup?error=AuthError",
+    error: "/signup",
   },
   debug: process.env.NODE_ENV === "development",
   events: {
@@ -136,6 +136,11 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       try {
+        // Provider가 설정되지 않은 경우 체크
+        if (providers.length === 0) {
+          console.error("❌ 로그인 제공자가 설정되지 않았습니다. 환경 변수를 확인해 주세요.");
+          return false;
+        }
         // 모든 로그인 허용
         return true;
       } catch (error) {

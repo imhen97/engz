@@ -109,8 +109,18 @@ export default function SignInForm() {
           {errorParam === "AuthError"
             ? "로그인 중 오류가 발생했습니다. 다시 시도해 주세요."
             : errorParam === "Configuration"
-            ? "로그인 설정에 문제가 있습니다. 관리자에게 문의해 주세요."
-            : "로그인에 실패했습니다. 다시 시도해 주세요."}
+            ? "로그인 설정에 문제가 있습니다. 환경 변수와 OAuth 설정을 확인해 주세요."
+            : errorParam === "AccessDenied"
+            ? "로그인이 거부되었습니다."
+            : errorParam === "OAuthSignin"
+            ? "OAuth 로그인 페이지로 이동하지 못했습니다. Redirect URI를 확인해 주세요."
+            : errorParam === "OAuthCallback"
+            ? "OAuth 콜백 처리 중 오류가 발생했습니다."
+            : errorParam === "OAuthCreateAccount"
+            ? "계정 생성 중 오류가 발생했습니다."
+            : errorParam === "Callback"
+            ? "로그인 콜백 처리 중 오류가 발생했습니다."
+            : `로그인 오류: ${errorParam}. 다시 시도해 주세요.`}
         </div>
       )}
 
