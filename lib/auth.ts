@@ -212,6 +212,18 @@ export const authOptions: AuthOptions = {
         }
 
         console.log("✅ signIn callback 성공:", user?.email, account?.provider);
+        
+        // 로그인 후 자동 구독 체크 (비동기로 실행, 로그인을 막지 않음)
+        if (user?.id) {
+          import("@/lib/subscription")
+            .then(({ checkAndStartSubscription }) => {
+              checkAndStartSubscription(user.id);
+            })
+            .catch((error) => {
+              console.error("자동 구독 체크 실패:", error);
+            });
+        }
+        
         // 모든 로그인 허용
         return true;
       } catch (error) {
@@ -245,12 +257,12 @@ export const authOptions: AuthOptions = {
         } catch {
           // URL 파싱 실패 시 기본값 반환
         }
-        // 기본값은 /dashboard (my 학습룸)
-        console.log("✅ Redirect 기본값:", `${baseUrl}/dashboard`);
-        return `${baseUrl}/dashboard`;
+        // 기본값은 /learning-room (ENGZ AI Learning Room)
+        console.log("✅ Redirect 기본값:", `${baseUrl}/learning-room`);
+        return `${baseUrl}/learning-room`;
       } catch (error) {
         console.error("❌ redirect callback 오류:", error);
-        return `${baseUrl}/dashboard`;
+        return `${baseUrl}/learning-room`;
       }
     },
     async jwt({ token, user, trigger }) {

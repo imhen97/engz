@@ -92,10 +92,10 @@ export default function NavBar() {
                 {session.user.name ?? "ENGZ 학습자"}님, 환영합니다 👋
               </span>
               <Link
-                href="/dashboard"
+                href="/learning-room"
                 className="rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105"
               >
-                학습룸으로 이동
+                Go to Learning Room
               </Link>
               <button
                 type="button"
@@ -164,10 +164,10 @@ export default function NavBar() {
                   {session.user.name ?? "ENGZ 학습자"}님, 환영합니다 👋
                 </div>
                 <Link
-                  href="/dashboard"
+                  href="/learning-room"
                   className="rounded-2xl bg-[#F5472C] px-4 py-3 text-sm font-semibold text-white shadow-sm"
                 >
-                  학습룸으로 이동
+                  Go to Learning Room
                 </Link>
                 <button
                   type="button"

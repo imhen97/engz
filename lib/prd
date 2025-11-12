@@ -1,0 +1,165 @@
+📘 ENGZ AI Learning Platform – PRD (English Version for Cursor AI)
+1. Product Overview
+ENGZ AI is an AI-powered English coaching platform that combines personalized 4-week learning routines, real-time AI feedback, and optional 1:1 tutor sessions.
+Unlike typical English-learning apps where users quit after the first payment, ENGZ enforces consistency through structured 4-week cycles, progress tracking, and spaced-repetition review — keeping learners engaged and accountable.
+2. Core Concept
+“ENGZ helps even short-attention-span learners (‘4-week sprinters’) build long-term English speaking habits by completing one focused theme every month.”
+Each user’s journey is based on:
+A 4-week structured routine (Grammar, Slang, Business English, etc.)
+AI-generated daily missions + feedback
+Real tutor check-ins (optional)
+Weekly & final progress reports
+Automatic renewal every 4 weeks (with 7-day free trial)
+3. User Flow
+🧩 Step-by-step Journey
+Step	Description	Page / Action
+1️⃣	Login / Signup via Google, Kakao, or Email	/login
+2️⃣	7-day Free Trial Begins	trialActive = true, trialEndsAt = now + 7 days
+3️⃣	AI Routine Setup: User selects learning theme and frequency	/onboarding
+4️⃣	Learning Room Access	/learning-room
+5️⃣	Weekly Missions + Feedback	/learning-room/weeks/[1-4]
+6️⃣	Trial Ends → Stripe Subscription Starts Automatically	Based on user’s selected billing cycle (Monthly or Yearly)
+7️⃣	Routine Completion → AI Report Generated	/report
+8️⃣	Next 4-week Routine Auto-Suggested	/onboarding (loop continues)
+4. Pricing & Subscription Logic
+Stripe Integration Logic
+Free Trial Period: 7 days (no charge)
+Auto-renewal: After 7 days, Stripe automatically creates an active subscription based on user’s selected plan.
+Plan Options:
+price_monthly: $29.90 / month
+price_yearly: $249.00 / year (17% discount)
+Cancellation: User can cancel anytime from “My Account”, but access continues until period end.
+Pseudocode Logic:
+if (trialEndsAt < now && !subscriptionActive) {
+  createStripeSubscription({
+    customerId: user.stripeCustomerId,
+    priceId: user.selectedPlan === "monthly" ? STRIPE_PRICE_MONTHLY : STRIPE_PRICE_YEARLY
+  });
+  user.subscriptionActive = true;
+}
+5. Key Features
+Feature	Description
+🧠 AI Routine Generator	Analyzes level + goal → builds 4-week learning path
+🗓️ Weekly Mission System	5 daily tasks per week with AI-generated feedback
+🔁 Spaced Repetition Review	Smart reminders (Day 3 / 7 / 14) to reinforce memory
+🧑‍🏫 Tutor Session Integration	Optional 20-min live coaching (1–5 times weekly)
+📊 Progress Tracking	Weekly growth graph + AI-generated feedback summary
+🧩 Theme Rotation	New topic every 4 weeks (Grammar, Slang, Business, etc.)
+💬 AI Feedback Chat	Real-time sentence correction + pronunciation score
+💳 Auto Subscription	Stripe billing starts automatically after 7-day trial
+🔔 Notifications	Weekly mission reminders and progress updates
+6. Database Schema (Prisma)
+model User {
+  id                String   @id @default(cuid())
+  name              String?
+  email             String?  @unique
+  emailVerified     DateTime?
+  image             String?
+
+  plan              String?     // "monthly" or "yearly"
+  trialActive       Boolean?    @default(false)
+  trialEndsAt       DateTime?
+  subscriptionActive Boolean?   @default(false)
+  subscriptionId    String?
+  stripeCustomerId  String?
+
+  currentRoutineId  String?
+  routines          Routine[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Routine {
+  id          String   @id @default(cuid())
+  userId      String
+  theme       String
+  startDate   DateTime
+  endDate     DateTime
+  completed   Boolean  @default(false)
+  missions    Mission[]
+  report      Report?
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Mission {
+  id          String   @id @default(cuid())
+  routineId   String
+  week        Int
+  day         Int
+  content     String
+  aiFeedback  String?
+  completed   Boolean  @default(false)
+  routine     Routine  @relation(fields: [routineId], references: [id])
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  routineId   String
+  summary     String
+  scoreChange Float
+  createdAt   DateTime @default(now())
+  routine     Routine  @relation(fields: [routineId], references: [id])
+}
+7. Frontend Pages Overview
+Page	Description
+/login	Login or signup via Google / Kakao / Email
+/onboarding	Choose learning goal & 4-week routine
+/learning-room	User dashboard with missions, AI feedback, and reports
+/learning-room/week/[n]	Weekly progress page
+/report	AI-generated progress summary
+/subscribe	Stripe billing management page
+/account	Profile + Subscription status management
+8. Stripe Subscription Setup (Technical Requirements)
+Environment variables:
+STRIPE_SECRET_KEY=sk_live_***
+STRIPE_PRICE_MONTHLY=price_xxx
+STRIPE_PRICE_YEARLY=price_yyy
+STRIPE_WEBHOOK_SECRET=whsec_***
+When user completes signup:
+createStripeCustomer(email)
+Save stripeCustomerId to user table
+After 7-day trial:
+Stripe automatically starts billing (via subscription.schedule.create)
+Webhook endpoint:
+/api/stripe/webhook → updates Prisma user:
+user.subscriptionActive = true
+user.subscriptionId = event.data.object.id
+9. Learning Room Wireframe
+------------------------------------------------------------
+ENGZ AI Learning Room
+------------------------------------------------------------
+👋 Hello, Hena!
+Your current routine: [AI Speaking – Week 2]
+Progress: ████░░░░ 45%
+
+[ Today’s Mission ]
+🎯 Record your answer → AI feedback → Repeat until 90+ score
+
+[ Feedback Summary ]
+Grammar: B+ | Pronunciation: A- | Fluency: B
+🔁 Review missions from 3 days ago
+
+[ Upcoming Session ]
+🗓️ 1:1 Tutor Call on Friday, 8 PM (Join via Zoom)
+
+------------------------------------------------------------
+[ View Weekly Report ] [ Next Routine Preview ]
+------------------------------------------------------------
+10. Differentiators (vs Traditional Apps)
+Typical App	ENGZ AI
+One-time purchase → user churn	4-week cycle keeps user active
+Static curriculum	AI-tailored 4-week routine
+No accountability	Tutor + AI monitoring combo
+Boring repetition	Theme rotation: Grammar → Slang → Business → Travel
+No re-engagement	Smart reminders & spaced repetition
+No progress visibility	AI-generated visual growth report
+11. Tech Stack Summary
+Layer	Stack
+Frontend	Next.js 15 + TailwindCSS + Shadcn/UI + Framer Motion
+Backend	Next.js API Routes + Prisma + Neon PostgreSQL
+Auth	NextAuth (Google / Kakao / Email)
+Payment	Stripe Subscriptions (7-day trial + auto-renew)
+AI Engine	OpenAI GPT + Whisper (speech feedback)
+Realtime	Liveblocks / Firebase Sync
+Deployment	Vercel
+Storage	Supabase (for audio/video uploads)

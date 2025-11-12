@@ -22,11 +22,14 @@ model User {
   stripeCustomerId   String?
   currentCourseId    String?
   currentCourse      Course?           @relation("CurrentCourse", fields: [currentCourseId], references: [id])
+  currentRoutineId   String?
+  currentRoutine     Routine?          @relation("CurrentRoutine", fields: [currentRoutineId], references: [id])
   accounts           Account[]
   sessions           Session[]
   enrollments        Enrollment[]
   feedbackSessions   FeedbackSession[]
   reports            WeeklyReport[]
+  routines           Routine[]
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 }
@@ -139,4 +142,41 @@ model WeeklyReport {
   summary   String
   dataJson  String
   createdAt DateTime @default(now())
+}
+
+// PRD: Routine, Mission, Report models
+model Routine {
+  id          String   @id @default(cuid())
+  userId      String
+  theme       String   // "Grammar", "Slang", "Business", "Travel", etc.
+  startDate   DateTime
+  endDate     DateTime
+  completed   Boolean  @default(false)
+  missions    Mission[]
+  report      Report?
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Mission {
+  id          String   @id @default(cuid())
+  routineId  String
+  week        Int
+  day         Int
+  content     String
+  aiFeedback  String?
+  completed   Boolean  @default(false)
+  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  routineId   String   @unique
+  summary     String
+  scoreChange Float
+  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
 }
