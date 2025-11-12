@@ -34,7 +34,7 @@ export default function SignInForm() {
     console.log("✅ SignInForm 마운트 완료");
     console.log("✅ signIn 함수 타입:", typeof signIn);
     console.log("✅ callbackUrl:", callbackUrl);
-    
+
     // 오래된 NextAuth 쿠키가 있으면 제거 (일반 모드에서 오류 방지)
     if (typeof document !== "undefined") {
       const cookiesToClear = [
@@ -44,7 +44,7 @@ export default function SignInForm() {
         "__Secure-next-auth.session-token",
         "__Host-next-auth.csrf-token",
       ];
-      
+
       cookiesToClear.forEach((cookieName) => {
         // 모든 가능한 경로와 도메인에서 쿠키 제거
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;

@@ -14,19 +14,19 @@ export async function POST(request: NextRequest) {
     // 쿠키 도메인 문제를 해결하기 위해 명시적으로 쿠키를 확인
     const cookies = request.cookies;
     const allCookies = cookies.getAll();
-    const cookieNames = allCookies.map(c => c.name);
-    
+    const cookieNames = allCookies.map((c) => c.name);
+
     // 가능한 모든 쿠키 이름 확인
     const possibleCookieNames = [
       "next-auth.session-token",
       "__Secure-next-auth.session-token",
       "__Host-next-auth.session-token",
     ];
-    
-    const foundCookieName = possibleCookieNames.find(name => 
+
+    const foundCookieName = possibleCookieNames.find((name) =>
       cookies.has(name)
     );
-    
+
     console.log("🔵 Checkout 요청 - 쿠키 확인:", {
       cookieNames,
       foundCookieName,
@@ -46,12 +46,15 @@ export async function POST(request: NextRequest) {
     });
 
     if (!token?.userId) {
-      console.log("❌ Checkout 요청: 인증되지 않은 사용자", { 
+      console.log("❌ Checkout 요청: 인증되지 않은 사용자", {
         hasToken: !!token,
         foundCookieName,
         cookieNames,
       });
-      return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
     }
 
     const userId = token.userId as string;
@@ -63,7 +66,10 @@ export async function POST(request: NextRequest) {
 
     if (plan !== "monthly" && plan !== "annual") {
       console.log("❌ Checkout 요청: 잘못된 플랜", plan);
-      return NextResponse.json({ error: "잘못된 플랜입니다." }, { status: 400 });
+      return NextResponse.json(
+        { error: "잘못된 플랜입니다." },
+        { status: 400 }
+      );
     }
 
     const priceId = plan === "annual" ? ANNUAL_PRICE : MONTHLY_PRICE;
@@ -87,7 +93,10 @@ export async function POST(request: NextRequest) {
       const message =
         error instanceof Error ? error.message : "Stripe 초기화 실패";
       return NextResponse.json(
-        { error: "결제 시스템을 초기화할 수 없습니다. 잠시 후 다시 시도해 주세요." },
+        {
+          error:
+            "결제 시스템을 초기화할 수 없습니다. 잠시 후 다시 시도해 주세요.",
+        },
         { status: 500 }
       );
     }
@@ -121,7 +130,10 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         console.error("❌ Checkout 요청: Stripe 고객 생성 실패", error);
         return NextResponse.json(
-          { error: "고객 정보를 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요." },
+          {
+            error:
+              "고객 정보를 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+          },
           { status: 500 }
         );
       }
@@ -131,7 +143,7 @@ export async function POST(request: NextRequest) {
       const checkoutSession = await stripe.checkout.sessions.create({
         mode: "subscription",
         customer: customerId,
-        payment_method_types: ["card", "kakao"] as any, // 카카오페이 추가 (타입 단언 필요)
+        payment_method_types: ["card", "kakao_pay"], // 카카오페이 추가
         locale: "ko", // 한국어 로케일 설정 (카카오페이 표시 최적화)
         line_items: [{ price: priceId, quantity: 1 }],
         subscription_data: {
@@ -158,10 +170,7 @@ export async function POST(request: NextRequest) {
         error instanceof Error && error.message
           ? error.message
           : "결제 세션을 생성하는 중 오류가 발생했습니다.";
-      return NextResponse.json(
-        { error: errorMessage },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
   } catch (error) {
     console.error("❌ Checkout 요청: 예상치 못한 오류", error);

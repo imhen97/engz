@@ -221,23 +221,35 @@ export const authOptions: AuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       try {
+        console.log("🔵 Redirect 콜백 호출:", { url, baseUrl });
+        
         // callbackUrl이 있으면 그대로 사용
         if (url.startsWith("/")) {
-          return `${baseUrl}${url}`;
+          // 기본 홈페이지("/")가 아닌 경우에만 사용
+          if (url !== "/" && url !== baseUrl) {
+            console.log("✅ Redirect:", `${baseUrl}${url}`);
+            return `${baseUrl}${url}`;
+          }
         }
         // 외부 URL이면 baseUrl과 비교
         try {
           const urlObj = new URL(url);
           if (urlObj.origin === baseUrl) {
-            return url;
+            const pathname = urlObj.pathname;
+            // 기본 홈페이지가 아닌 경우에만 사용
+            if (pathname !== "/" && pathname !== baseUrl) {
+              console.log("✅ Redirect:", url);
+              return url;
+            }
           }
         } catch {
           // URL 파싱 실패 시 기본값 반환
         }
         // 기본값은 /dashboard (my 학습룸)
+        console.log("✅ Redirect 기본값:", `${baseUrl}/dashboard`);
         return `${baseUrl}/dashboard`;
       } catch (error) {
-        console.error("redirect callback 오류:", error);
+        console.error("❌ redirect callback 오류:", error);
         return `${baseUrl}/dashboard`;
       }
     },
