@@ -71,6 +71,7 @@ export async function POST(request: Request) {
     mode: "subscription",
     customer: customerId,
     payment_method_types: ["card", "kakao"], // 카카오페이 추가
+    locale: "ko", // 한국어 로케일 설정 (카카오페이 표시 최적화)
     line_items: [{ price: priceId, quantity: 1 }],
     subscription_data: {
       trial_period_days: 7,
