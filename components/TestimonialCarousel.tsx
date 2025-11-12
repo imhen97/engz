@@ -161,8 +161,7 @@ export default function TestimonialCarousel({
               scale: 1,
             }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="flex-shrink-0"
-            className="min-w-[350px] md:min-w-[450px]"
+            className="flex-shrink-0 min-w-[350px] md:min-w-[450px]"
             style={{
               scrollSnapAlign: "start",
             }}
