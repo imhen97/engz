@@ -70,7 +70,7 @@ export async function POST(request: Request) {
   const checkoutSession = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer: customerId,
-    payment_method_types: ["card"],
+    payment_method_types: ["card", "kakao"], // 카카오페이 추가
     line_items: [{ price: priceId, quantity: 1 }],
     subscription_data: {
       trial_period_days: 7,
