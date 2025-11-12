@@ -10,6 +10,7 @@ const menuItems = [
   { label: "서비스", href: "/#service" },
   { label: "소개", href: "/#ceo" },
   { label: "구독 플랜", href: "https://www.eng-z.com/pricing" },
+  { label: "AI 집중코스", href: "/ai-course" },
   { label: "AI 레벨 테스트", href: "/level-test" },
   { label: "후기", href: "/testimonials" },
   { label: "문의", href: "/#contact" },
