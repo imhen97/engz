@@ -21,7 +21,9 @@ if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
       "❌ GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다. Google 로그인이 작동하지 않습니다."
     );
   } else {
-    console.warn("⚠️ GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다.");
+    console.warn(
+      "⚠️ GOOGLE_ID 또는 GOOGLE_SECRET 환경 변수가 설정되지 않았습니다."
+    );
   }
 }
 
@@ -39,7 +41,9 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
       "❌ KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다. Kakao 로그인이 작동하지 않습니다."
     );
   } else {
-    console.warn("⚠️ KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다.");
+    console.warn(
+      "⚠️ KAKAO_ID 또는 KAKAO_SECRET 환경 변수가 설정되지 않았습니다."
+    );
   }
 }
 

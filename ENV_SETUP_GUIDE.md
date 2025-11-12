@@ -78,4 +78,3 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 - [ ] All environment variables are set in Vercel dashboard
 - [ ] Test login with Google in production
 - [ ] Test login with Kakao in production
-
