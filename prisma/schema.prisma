@@ -30,6 +30,7 @@ model User {
   feedbackSessions   FeedbackSession[]
   reports            WeeklyReport[]
   routines           Routine[]         @relation("UserRoutines")
+  levelTestResults   LevelTestResult[]
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 }
@@ -180,4 +181,20 @@ model Report {
   scoreChange Float
   routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
+}
+
+// PRD: Level Test Result model
+model LevelTestResult {
+  id                 String   @id @default(cuid())
+  userId             String
+  levelSelected      String // "beginner", "intermediate", "advanced"
+  vocabScore         Int
+  grammarScore       Int
+  writingScore       Int
+  overallLevel       String
+  strengths          String?
+  weaknesses         String?
+  recommendedRoutine String?
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt          DateTime @default(now())
 }
