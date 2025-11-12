@@ -26,6 +26,7 @@ export default function CheckoutButton({
     setError(null);
 
     try {
+      console.log("🔵 Checkout 요청 시작:", { plan });
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -34,8 +35,11 @@ export default function CheckoutButton({
         body: JSON.stringify({ plan }),
       });
 
+      console.log("🔵 Checkout 응답 상태:", response.status);
+
       if (response.status === 401) {
         // 인증이 필요한 경우 로그인 페이지로 리다이렉트
+        console.log("⚠️ 인증 필요 - 로그인 페이지로 리다이렉트");
         setLoading(false);
         router.push(`/signup?callbackUrl=${encodeURIComponent("/pricing")}`);
         return;
@@ -46,16 +50,19 @@ export default function CheckoutButton({
         let errorMessage = "결제 페이지 연결에 실패했습니다.";
         try {
           const errorData = await response.json();
+          console.error("❌ Checkout 에러 응답:", errorData);
           if (errorData.error) {
             errorMessage = errorData.error;
           }
-        } catch {
+        } catch (parseError) {
           // JSON 파싱 실패 시 기본 메시지 사용
+          console.error("❌ 응답 파싱 실패:", parseError);
         }
         throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      console.log("✅ Checkout 성공:", { hasUrl: !!data.url });
       if (data.url) {
         // Stripe Checkout 페이지로 리다이렉트
         window.location.href = data.url;
@@ -64,6 +71,7 @@ export default function CheckoutButton({
       }
     } catch (err) {
       // 네트워크 에러나 기타 에러 처리
+      console.error("❌ Checkout 예외:", err);
       const errorMessage =
         err instanceof Error
           ? err.message
