@@ -46,7 +46,7 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
             profile.kakao_account?.profile?.profile_image_url ||
             profile.properties?.profile_image ||
             null,
-        };
+        } as any; // Type assertion to avoid type conflict with extended User type
       },
     })
   );
