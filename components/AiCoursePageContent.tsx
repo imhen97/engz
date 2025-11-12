@@ -289,10 +289,10 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-white px-6 py-16 sm:py-20"
+        className="bg-white px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             AI가 설계한 몰입형 4주 시리즈
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3 sm:gap-6">
