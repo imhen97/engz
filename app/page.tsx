@@ -50,7 +50,7 @@ export default function EngzLandingFull() {
           className="relative z-10 flex max-w-3xl flex-col items-center gap-4"
         >
           <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
-            9년차 현직 영어 강사가 직접 만든 영어교육 플랫폼
+            Welcome to ENGZ
           </h1>
           <p className="text-xs text-gray-600 sm:text-sm md:text-base">
             AI와 사람의 힘으로 언어의 한계를 넘다
@@ -201,7 +201,7 @@ export default function EngzLandingFull() {
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="text-base font-medium text-[#F5472C] sm:text-lg md:text-xl"
             >
-              9년차 현직 영어 강사가 직접 만든 영어교육 플랫폼
+              CEO · FOUNDER
             </motion.p>
             <p className="text-xs tracking-[0.18em] text-gray-500 mb-2 sm:text-sm">
               대표 · 설립자
