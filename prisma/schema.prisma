@@ -29,7 +29,7 @@ model User {
   enrollments        Enrollment[]
   feedbackSessions   FeedbackSession[]
   reports            WeeklyReport[]
-  routines           Routine[]
+  routines           Routine[]         @relation("UserRoutines")
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 }
@@ -146,31 +146,31 @@ model WeeklyReport {
 
 // PRD: Routine, Mission, Report models
 model Routine {
-  id          String   @id @default(cuid())
-  userId      String
-  theme       String   // "Grammar", "Slang", "Business", "Travel", etc.
-  startDate   DateTime
-  endDate     DateTime
-  completed   Boolean  @default(false)
-  missions    Mission[]
-  report      Report?
-  user        User     @relation("UserRoutines", fields: [userId], references: [id])
-  currentUsers User[]  @relation("CurrentRoutine")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String    @id @default(cuid())
+  userId       String
+  theme        String // "Grammar", "Slang", "Business", "Travel", etc.
+  startDate    DateTime
+  endDate      DateTime
+  completed    Boolean   @default(false)
+  missions     Mission[]
+  report       Report?
+  user         User      @relation("UserRoutines", fields: [userId], references: [id])
+  currentUsers User[]    @relation("CurrentRoutine")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Mission {
-  id          String   @id @default(cuid())
+  id         String   @id @default(cuid())
   routineId  String
-  week        Int
-  day         Int
-  content     String
-  aiFeedback  String?
-  completed   Boolean  @default(false)
-  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  week       Int
+  day        Int
+  content    String
+  aiFeedback String?
+  completed  Boolean  @default(false)
+  routine    Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Report {

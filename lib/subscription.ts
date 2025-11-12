@@ -79,4 +79,3 @@ export async function checkAndStartSubscription(userId: string) {
     // 오류가 발생해도 사용자 경험을 방해하지 않도록 함
   }
 }
-

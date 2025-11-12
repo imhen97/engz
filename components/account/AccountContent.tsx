@@ -85,7 +85,9 @@ export default function AccountContent() {
               </div>
               <div>
                 <p className="text-xs font-medium text-gray-500">Email</p>
-                <p className="mt-1 text-sm text-gray-900">{accountData.email}</p>
+                <p className="mt-1 text-sm text-gray-900">
+                  {accountData.email}
+                </p>
               </div>
             </div>
           </section>
@@ -97,7 +99,9 @@ export default function AccountContent() {
             </h2>
             <div className="space-y-4">
               <div>
-                <p className="text-xs font-medium text-gray-500">Current Plan</p>
+                <p className="text-xs font-medium text-gray-500">
+                  Current Plan
+                </p>
                 <p className="mt-1 text-sm font-semibold text-gray-900">
                   {accountData.plan === "free"
                     ? "Free Trial"
@@ -160,4 +164,3 @@ export default function AccountContent() {
     </main>
   );
 }
-

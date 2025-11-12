@@ -250,9 +250,7 @@ export default function LearningRoomContent() {
                     {routineData.upcomingSession.date} at{" "}
                     {routineData.upcomingSession.time}
                   </p>
-                  <p className="mt-1 text-xs text-gray-500">
-                    Join via Zoom
-                  </p>
+                  <p className="mt-1 text-xs text-gray-500">Join via Zoom</p>
                 </div>
                 <button
                   type="button"
@@ -293,4 +291,3 @@ export default function LearningRoomContent() {
     </main>
   );
 }
-

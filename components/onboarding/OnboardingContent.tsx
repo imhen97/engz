@@ -6,11 +6,31 @@ import { useSession } from "next-auth/react";
 import NavBar from "@/components/NavBar";
 
 const THEMES = [
-  { id: "grammar", label: "Grammar", description: "Master English grammar fundamentals" },
-  { id: "slang", label: "Slang & Idioms", description: "Learn everyday expressions" },
-  { id: "business", label: "Business English", description: "Professional communication skills" },
-  { id: "travel", label: "Travel English", description: "Essential phrases for travelers" },
-  { id: "speaking", label: "AI Speaking", description: "Improve pronunciation and fluency" },
+  {
+    id: "grammar",
+    label: "Grammar",
+    description: "Master English grammar fundamentals",
+  },
+  {
+    id: "slang",
+    label: "Slang & Idioms",
+    description: "Learn everyday expressions",
+  },
+  {
+    id: "business",
+    label: "Business English",
+    description: "Professional communication skills",
+  },
+  {
+    id: "travel",
+    label: "Travel English",
+    description: "Essential phrases for travelers",
+  },
+  {
+    id: "speaking",
+    label: "AI Speaking",
+    description: "Improve pronunciation and fluency",
+  },
 ];
 
 export default function OnboardingContent() {
@@ -74,8 +94,8 @@ export default function OnboardingContent() {
             Choose Your 4-Week Learning Theme
           </h1>
           <p className="mt-3 text-xs text-gray-600 sm:mt-4 sm:text-sm md:text-base">
-            Select a focused theme for your next 4-week learning journey. AI will
-            generate personalized daily missions based on your choice.
+            Select a focused theme for your next 4-week learning journey. AI
+            will generate personalized daily missions based on your choice.
           </p>
         </div>
 
@@ -115,4 +135,3 @@ export default function OnboardingContent() {
     </main>
   );
 }
-

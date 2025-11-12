@@ -67,7 +67,9 @@ export default function SubscribeContent() {
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Subscription Active</span>
+                <span className="text-sm text-gray-600">
+                  Subscription Active
+                </span>
                 <span
                   className={`text-sm font-semibold ${
                     subscriptionActive ? "text-green-600" : "text-gray-400"
@@ -150,4 +152,3 @@ export default function SubscribeContent() {
     </main>
   );
 }
-

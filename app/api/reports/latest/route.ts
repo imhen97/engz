@@ -12,7 +12,10 @@ export async function GET(request: NextRequest) {
     });
 
     if (!token?.userId) {
-      return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
     }
 
     const userId = token.userId as string;
@@ -59,4 +62,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

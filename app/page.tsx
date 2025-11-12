@@ -201,10 +201,10 @@ export default function EngzLandingFull() {
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
               className="text-base font-medium text-[#F5472C] sm:text-lg md:text-xl"
             >
-              CEO · FOUNDER
+              현직 영어강사가 직접 개발한 AI 기반 영어학습 플랫폼
             </motion.p>
             <p className="text-xs tracking-[0.18em] text-gray-500 mb-2 sm:text-sm">
-              대표 · 설립자
+              CEO · FOUNDER · 대표 · 설립자
             </p>
             <h2 className="text-xl font-bold leading-snug mb-3 sm:text-2xl md:mb-4 md:text-3xl">
               김해나 (KIM HAE NA)

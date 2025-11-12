@@ -108,7 +108,10 @@ export default function ReportContent() {
                         : "bg-red-500"
                     }`}
                     style={{
-                      width: `${Math.min(Math.abs(reportData.scoreChange), 100)}%`,
+                      width: `${Math.min(
+                        Math.abs(reportData.scoreChange),
+                        100
+                      )}%`,
                     }}
                   />
                 </div>
@@ -141,7 +144,8 @@ export default function ReportContent() {
         ) : (
           <div className="rounded-2xl border border-gray-100 bg-white p-8 text-center shadow-lg">
             <p className="text-sm text-gray-600">
-              No report available yet. Complete your first week to see your AI-generated progress report.
+              No report available yet. Complete your first week to see your
+              AI-generated progress report.
             </p>
             <Link
               href="/learning-room"
@@ -155,4 +159,3 @@ export default function ReportContent() {
     </main>
   );
 }
-

@@ -12,7 +12,10 @@ export async function GET(request: NextRequest) {
     });
 
     if (!token?.userId) {
-      return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
     }
 
     const userId = token.userId as string;
@@ -44,8 +47,13 @@ export async function GET(request: NextRequest) {
 
     const routine = user.currentRoutine;
     const totalMissions = routine.missions.length;
-    const completedMissions = routine.missions.filter((m) => m.completed).length;
-    const progress = totalMissions > 0 ? Math.round((completedMissions / totalMissions) * 100) : 0;
+    const completedMissions = routine.missions.filter(
+      (m) => m.completed
+    ).length;
+    const progress =
+      totalMissions > 0
+        ? Math.round((completedMissions / totalMissions) * 100)
+        : 0;
 
     // 현재 주/일 계산
     const now = new Date();
@@ -107,4 +115,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

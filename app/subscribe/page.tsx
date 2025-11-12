@@ -8,4 +8,3 @@ export default function SubscribePage() {
     </Suspense>
   );
 }
-

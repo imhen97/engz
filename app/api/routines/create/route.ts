@@ -69,7 +69,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!token?.userId) {
-      return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
     }
 
     const userId = token.userId as string;
@@ -123,4 +126,3 @@ export async function POST(request: NextRequest) {
 }
 
 const THEMES = ["grammar", "slang", "business", "travel", "speaking"];
-

@@ -212,7 +212,7 @@ export const authOptions: AuthOptions = {
         }
 
         console.log("✅ signIn callback 성공:", user?.email, account?.provider);
-        
+
         // 로그인 후 자동 구독 체크 (비동기로 실행, 로그인을 막지 않음)
         if (user?.id) {
           import("@/lib/subscription")
@@ -223,7 +223,7 @@ export const authOptions: AuthOptions = {
               console.error("자동 구독 체크 실패:", error);
             });
         }
-        
+
         // 모든 로그인 허용
         return true;
       } catch (error) {
