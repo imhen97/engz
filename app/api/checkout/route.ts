@@ -11,13 +11,46 @@ const APP_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 export async function POST(request: NextRequest) {
   try {
     // Next.js 13+ App Router에서는 getToken을 사용하여 쿠키에서 토큰을 읽습니다
+    // 쿠키 도메인 문제를 해결하기 위해 명시적으로 쿠키를 확인
+    const cookies = request.cookies;
+    const allCookies = cookies.getAll();
+    const cookieNames = allCookies.map(c => c.name);
+    
+    // 가능한 모든 쿠키 이름 확인
+    const possibleCookieNames = [
+      "next-auth.session-token",
+      "__Secure-next-auth.session-token",
+      "__Host-next-auth.session-token",
+    ];
+    
+    const foundCookieName = possibleCookieNames.find(name => 
+      cookies.has(name)
+    );
+    
+    console.log("🔵 Checkout 요청 - 쿠키 확인:", {
+      cookieNames,
+      foundCookieName,
+      hasCookies: cookieNames.length > 0,
+    });
+
     const token = await getToken({
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
+      cookieName: foundCookieName, // 찾은 쿠키 이름 사용
+    });
+
+    console.log("🔵 Checkout 요청 - 토큰 확인:", {
+      hasToken: !!token,
+      hasUserId: !!token?.userId,
+      userId: token?.userId,
     });
 
     if (!token?.userId) {
-      console.log("❌ Checkout 요청: 인증되지 않은 사용자", { hasToken: !!token });
+      console.log("❌ Checkout 요청: 인증되지 않은 사용자", { 
+        hasToken: !!token,
+        hasSessionToken: !!sessionToken,
+        cookieNames: Array.from(cookies.getAll().map(c => c.name)),
+      });
       return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
     }
 

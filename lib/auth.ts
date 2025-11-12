@@ -232,12 +232,13 @@ export const authOptions: AuthOptions = {
             return url;
           }
         } catch {
-          // URL 파싱 실패 시 baseUrl 반환
+          // URL 파싱 실패 시 기본값 반환
         }
-        return baseUrl;
+        // 기본값은 /dashboard (my 학습룸)
+        return `${baseUrl}/dashboard`;
       } catch (error) {
         console.error("redirect callback 오류:", error);
-        return baseUrl;
+        return `${baseUrl}/dashboard`;
       }
     },
     async jwt({ token, user, trigger }) {

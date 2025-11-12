@@ -20,8 +20,8 @@ const socialProviders = [
 
 export default function SignInForm() {
   const searchParams = useSearchParams();
-  // 기본적으로 /pricing으로 이동하되, callbackUrl이 있으면 사용
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/pricing";
+  // 기본적으로 /dashboard로 이동하되, callbackUrl이 있으면 사용
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
   const errorParam = searchParams.get("error");
 
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
