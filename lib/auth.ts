@@ -36,9 +36,16 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
       profile(profile) {
         return {
           id: profile.id.toString(),
-          name: profile.kakao_account?.profile?.nickname || profile.kakao_account?.name || profile.properties?.nickname || null,
+          name:
+            profile.kakao_account?.profile?.nickname ||
+            profile.kakao_account?.name ||
+            profile.properties?.nickname ||
+            null,
           email: profile.kakao_account?.email || null,
-          image: profile.kakao_account?.profile?.profile_image_url || profile.properties?.profile_image || null,
+          image:
+            profile.kakao_account?.profile?.profile_image_url ||
+            profile.properties?.profile_image ||
+            null,
         };
       },
     })
@@ -154,7 +161,9 @@ export const authOptions: AuthOptions = {
       try {
         // Provider가 설정되지 않은 경우 체크
         if (providers.length === 0) {
-          console.error("❌ 로그인 제공자가 설정되지 않았습니다. 환경 변수를 확인해 주세요.");
+          console.error(
+            "❌ 로그인 제공자가 설정되지 않았습니다. 환경 변수를 확인해 주세요."
+          );
           return false;
         }
 
