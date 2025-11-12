@@ -123,14 +123,22 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   events: {
     async createUser({ user }) {
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          trialActive: true,
-          trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-          subscriptionActive: false,
-        },
-      });
+      try {
+        console.log("✅ 새 사용자 생성 이벤트:", user.id, user.email);
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            trialActive: true,
+            trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            subscriptionActive: false,
+          },
+        });
+        console.log("✅ 사용자 초기 설정 완료:", user.id);
+      } catch (error) {
+        console.error("❌ createUser 이벤트 오류:", error);
+        // 오류가 발생해도 로그인은 계속 진행되도록 함
+        // (이미 PrismaAdapter가 사용자를 생성했을 수 있음)
+      }
     },
   },
   callbacks: {
@@ -141,10 +149,20 @@ export const authOptions: AuthOptions = {
           console.error("❌ 로그인 제공자가 설정되지 않았습니다. 환경 변수를 확인해 주세요.");
           return false;
         }
+
+        // 데이터베이스 연결 확인
+        try {
+          await prisma.$queryRaw`SELECT 1`;
+        } catch (dbError) {
+          console.error("❌ 데이터베이스 연결 실패:", dbError);
+          // 데이터베이스 연결 실패해도 로그인은 허용 (PrismaAdapter가 처리)
+        }
+
+        console.log("✅ signIn callback 성공:", user?.email, account?.provider);
         // 모든 로그인 허용
         return true;
       } catch (error) {
-        console.error("signIn callback 오류:", error);
+        console.error("❌ signIn callback 오류:", error);
         return false;
       }
     },
@@ -170,30 +188,43 @@ export const authOptions: AuthOptions = {
       }
     },
     async jwt({ token, user, trigger }) {
-      if (user) {
-        token.userId = user.id;
-        token.plan = user.plan;
-        token.trialActive = user.trialActive;
-        token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
-        token.subscriptionActive = user.subscriptionActive;
+      try {
+        if (user) {
+          console.log("✅ JWT 토큰 생성 - 사용자:", user.id, user.email);
+          token.userId = user.id;
+          token.plan = user.plan ?? "free";
+          token.trialActive = user.trialActive ?? false;
+          token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
+          token.subscriptionActive = user.subscriptionActive ?? false;
+          return token;
+        }
+        if (trigger === "update") {
+          return await enrichToken(token);
+        }
+        return await enrichToken(token);
+      } catch (error) {
+        console.error("❌ JWT callback 오류:", error);
+        // 오류가 발생해도 기본 토큰 반환
         return token;
       }
-      if (trigger === "update") {
-        return enrichToken(token);
-      }
-      return enrichToken(token);
     },
     async session({ session, token }) {
-      if (session.user && token?.userId) {
-        session.user.id = token.userId as string;
-        session.user.plan = (token.plan as string) ?? "free";
-        session.user.trialActive = Boolean(token.trialActive);
-        session.user.trialEndsAt = token.trialEndsAt
-          ? new Date(token.trialEndsAt as string)
-          : null;
-        session.user.subscriptionActive = Boolean(token.subscriptionActive);
+      try {
+        if (session.user && token?.userId) {
+          session.user.id = token.userId as string;
+          session.user.plan = (token.plan as string) ?? "free";
+          session.user.trialActive = Boolean(token.trialActive);
+          session.user.trialEndsAt = token.trialEndsAt
+            ? new Date(token.trialEndsAt as string)
+            : null;
+          session.user.subscriptionActive = Boolean(token.subscriptionActive);
+        }
+        return session;
+      } catch (error) {
+        console.error("❌ Session callback 오류:", error);
+        // 오류가 발생해도 기본 세션 반환
+        return session;
       }
-      return session;
     },
   },
 };
