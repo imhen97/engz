@@ -154,7 +154,7 @@ model Routine {
   completed   Boolean  @default(false)
   missions    Mission[]
   report      Report?
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation("UserRoutines", fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
