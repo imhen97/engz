@@ -35,24 +35,40 @@ export default function CheckoutButton({
       });
 
       if (response.status === 401) {
+        // 인증이 필요한 경우 로그인 페이지로 리다이렉트
+        setLoading(false);
         router.push(`/signup?callbackUrl=${encodeURIComponent("/pricing")}`);
         return;
       }
 
       if (!response.ok) {
-        throw new Error("결제 페이지 연결에 실패했습니다.");
+        // 응답 본문에서 에러 메시지 추출 시도
+        let errorMessage = "결제 페이지 연결에 실패했습니다.";
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+        } catch {
+          // JSON 파싱 실패 시 기본 메시지 사용
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
       if (data.url) {
+        // Stripe Checkout 페이지로 리다이렉트
         window.location.href = data.url;
       } else {
         throw new Error("Stripe 세션 URL을 불러오지 못했습니다.");
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다."
-      );
+      // 네트워크 에러나 기타 에러 처리
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+      setError(errorMessage);
       setLoading(false);
     }
   };
