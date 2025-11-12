@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+
+// 컴포넌트 마운트 확인
+console.log("✅ SignInForm 컴포넌트 로드됨");
 
 const socialProviders = [
   {
@@ -27,12 +30,31 @@ export default function SignInForm() {
 
   const isLoading = loadingProvider !== null;
 
+  useEffect(() => {
+    console.log("✅ SignInForm 마운트 완료");
+    console.log("✅ signIn 함수 타입:", typeof signIn);
+    console.log("✅ callbackUrl:", callbackUrl);
+  }, [callbackUrl]);
+
   const handleProviderSignIn = async (providerId: string) => {
+    console.log("🔵 버튼 클릭됨! providerId:", providerId);
     setError(null);
     setLoadingProvider(providerId);
+    
     try {
       console.log(`[${providerId}] 로그인 시작, callbackUrl:`, callbackUrl);
+      console.log(`[${providerId}] signIn 함수 호출 전`);
       
+      // signIn 함수가 존재하는지 확인
+      if (typeof signIn !== "function") {
+        console.error("❌ signIn 함수가 정의되지 않았습니다!");
+        setError("로그인 기능을 사용할 수 없습니다. 페이지를 새로고침해 주세요.");
+        setLoadingProvider(null);
+        return;
+      }
+      
+      console.log(`[${providerId}] signIn 함수 호출 중...`);
+
       // redirect: false로 설정하여 에러를 확인
       const result = await signIn(providerId, {
         callbackUrl,
@@ -44,13 +66,15 @@ export default function SignInForm() {
       if (result?.error) {
         console.error(`[${providerId}] 로그인 오류:`, result.error);
         let errorMessage = "로그인 중 오류가 발생했습니다. 다시 시도해 주세요.";
-        
+
         if (result.error === "Configuration") {
-          errorMessage = "로그인 설정에 문제가 있습니다. 카카오 개발자 콘솔과 환경변수를 확인해 주세요.";
+          errorMessage =
+            "로그인 설정에 문제가 있습니다. 카카오 개발자 콘솔과 환경변수를 확인해 주세요.";
         } else if (result.error === "AccessDenied") {
           errorMessage = "로그인이 거부되었습니다.";
         } else if (result.error === "OAuthSignin") {
-          errorMessage = "카카오 로그인 페이지로 이동하지 못했습니다. Redirect URI를 확인해 주세요.";
+          errorMessage =
+            "카카오 로그인 페이지로 이동하지 못했습니다. Redirect URI를 확인해 주세요.";
         } else if (result.error === "OAuthCallback") {
           errorMessage = "카카오 로그인 콜백 처리 중 오류가 발생했습니다.";
         } else if (result.error === "OAuthCreateAccount") {
@@ -60,7 +84,8 @@ export default function SignInForm() {
         } else if (result.error === "Callback") {
           errorMessage = "로그인 콜백 처리 중 오류가 발생했습니다.";
         } else if (result.error === "OAuthAccountNotLinked") {
-          errorMessage = "이 이메일로 이미 다른 방법으로 가입된 계정이 있습니다.";
+          errorMessage =
+            "이 이메일로 이미 다른 방법으로 가입된 계정이 있습니다.";
         } else if (result.error === "EmailSignin") {
           errorMessage = "이메일 로그인 링크 전송에 실패했습니다.";
         } else if (result.error === "CredentialsSignin") {
@@ -68,7 +93,7 @@ export default function SignInForm() {
         } else if (result.error === "SessionRequired") {
           errorMessage = "로그인이 필요합니다.";
         }
-        
+
         setError(errorMessage);
         setLoadingProvider(null);
       } else if (result?.ok) {
@@ -137,7 +162,11 @@ export default function SignInForm() {
           <button
             key={provider.id}
             type="button"
-            onClick={() => handleProviderSignIn(provider.id)}
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("🟢 버튼 클릭 이벤트 발생:", provider.id);
+              handleProviderSignIn(provider.id);
+            }}
             disabled={isLoading}
             className="w-full rounded-full bg-[#FBE44D] px-6 py-3 text-sm font-semibold text-gray-900 shadow-md transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70"
           >
