@@ -9,9 +9,9 @@ generator client {
 
 model User {
   id                 String            @id @default(cuid())
+  name               String?
   email              String?           @unique
   emailVerified      DateTime?
-  name               String?
   image              String?
   provider           String?
   plan               String            @default("free")
@@ -22,11 +22,11 @@ model User {
   stripeCustomerId   String?
   currentCourseId    String?
   currentCourse      Course?           @relation("CurrentCourse", fields: [currentCourseId], references: [id])
+  accounts           Account[]
+  sessions           Session[]
   enrollments        Enrollment[]
   feedbackSessions   FeedbackSession[]
   reports            WeeklyReport[]
-  accounts           Account[]
-  sessions           Session[]
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
 }

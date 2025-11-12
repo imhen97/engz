@@ -139,7 +139,8 @@ export const authOptions: AuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: process.env.NODE_ENV === "production",
-        domain: process.env.NODE_ENV === "production" ? ".eng-z.com" : undefined,
+        domain:
+          process.env.NODE_ENV === "production" ? ".eng-z.com" : undefined,
       },
     },
     callbackUrl: {
@@ -149,7 +150,8 @@ export const authOptions: AuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: process.env.NODE_ENV === "production",
-        domain: process.env.NODE_ENV === "production" ? ".eng-z.com" : undefined,
+        domain:
+          process.env.NODE_ENV === "production" ? ".eng-z.com" : undefined,
       },
     },
     csrfToken: {
@@ -159,7 +161,8 @@ export const authOptions: AuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: process.env.NODE_ENV === "production",
-        domain: process.env.NODE_ENV === "production" ? ".eng-z.com" : undefined,
+        domain:
+          process.env.NODE_ENV === "production" ? ".eng-z.com" : undefined,
       },
     },
   },
