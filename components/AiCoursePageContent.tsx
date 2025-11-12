@@ -325,10 +325,10 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF5F3] px-6 py-16 sm:py-20"
+        className="bg-[#FFF5F3] px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             연습이 아니라 눈에 보이는 성장
           </h2>
           <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_1fr]">
@@ -375,10 +375,10 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-white px-6 py-16 sm:py-20"
+        className="bg-white px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             우리는 단순한 학습 플랫폼이 아닙니다.
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
@@ -406,10 +406,10 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF7F5] px-6 py-16 sm:py-20"
+        className="bg-[#FFF7F5] px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             단 4주 만에 영어가 달라진 사람들
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
@@ -431,25 +431,25 @@ export default function AiCoursePageContent() {
         viewport={{ once: true, amount: 0.3 }}
         variants={sectionVariants}
         transition={transition}
-        className="bg-[#FFF0EC] px-6 py-16 sm:py-20"
+        className="bg-[#FFF0EC] px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-20"
       >
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-xl font-bold text-gray-900 sm:text-2xl md:text-3xl lg:text-4xl">
             4주 뒤, 당신의 영어는 완전히 달라질 거예요.
           </h2>
           <p className="mt-4 text-sm text-gray-600">
             반복적인 앱 학습을 멈추고, AI가 설계한 진짜 변화를 경험해 보세요.
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row sm:gap-4 md:mt-10">
             <Link
               href="/level-test"
-              className="inline-flex w-full items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105 sm:w-auto sm:px-8"
+              className="inline-flex w-full max-w-xs items-center justify-center rounded-full bg-[#F5472C] px-5 py-2.5 text-xs font-semibold text-white shadow-md transition hover:scale-105 sm:max-w-none sm:w-auto sm:px-6 sm:py-3 sm:text-sm md:px-8"
             >
               🧠 무료 AI 진단부터 시작하기 →
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex w-full items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:w-auto sm:px-8"
+              className="inline-flex w-full max-w-xs items-center justify-center rounded-full border border-[#F5472C] px-5 py-2.5 text-xs font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white sm:max-w-none sm:w-auto sm:px-6 sm:py-3 sm:text-sm md:px-8"
             >
               🎯 4주 집중 코스 살펴보기 →
             </Link>
