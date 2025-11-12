@@ -222,7 +222,7 @@ export const authOptions: AuthOptions = {
     async redirect({ url, baseUrl }) {
       try {
         console.log("🔵 Redirect 콜백 호출:", { url, baseUrl });
-        
+
         // callbackUrl이 있으면 그대로 사용
         if (url.startsWith("/")) {
           // 기본 홈페이지("/")가 아닌 경우에만 사용

@@ -88,15 +88,14 @@ export default function NavBar() {
             <div className="h-8 w-20 animate-pulse rounded-full bg-gray-200" />
           ) : session?.user ? (
             <>
+              <span className="text-sm font-medium text-gray-700">
+                {session.user.name ?? "ENGZ 학습자"}님, 환영합니다 👋
+              </span>
               <Link
                 href="/dashboard"
-                className={`${navLinkClass} ${
-                  pathname === "/dashboard"
-                    ? "font-semibold text-[#F5472C]"
-                    : ""
-                }`}
+                className="rounded-full bg-[#F5472C] px-4 py-1.5 text-sm font-semibold text-white transition hover:scale-105"
               >
-                대시보드
+                학습룸으로 이동
               </Link>
               <button
                 type="button"
@@ -161,11 +160,14 @@ export default function NavBar() {
               <div className="h-12 w-full animate-pulse rounded-2xl bg-gray-200" />
             ) : session?.user ? (
               <>
+                <div className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm">
+                  {session.user.name ?? "ENGZ 학습자"}님, 환영합니다 👋
+                </div>
                 <Link
                   href="/dashboard"
-                  className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm"
+                  className="rounded-2xl bg-[#F5472C] px-4 py-3 text-sm font-semibold text-white shadow-sm"
                 >
-                  대시보드
+                  학습룸으로 이동
                 </Link>
                 <button
                   type="button"
