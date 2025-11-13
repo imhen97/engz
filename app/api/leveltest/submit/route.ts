@@ -120,6 +120,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check which columns exist (for backwards compatibility if migration not yet applied)
+    const columns =
+      (await prisma.$queryRaw<
+        { column_name: string }[]
+      >`SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'LevelTestResult'`) ||
+      [];
+    const columnSet = new Set(
+      columns.map((column) => column.column_name.toLowerCase())
+    );
+    const hasTotalScoreColumn = columnSet.has("totalscore");
+    const hasAvgSpeedColumn = columnSet.has("avgspeed");
+    const hasRankPercentColumn = columnSet.has("rankpercent");
+    const hasAiMentColumn = columnSet.has("aiment");
+
     // Calculate total score (average)
     const totalScore = Math.round(
       (vocabScore + grammarScore + writingScore) / 3
@@ -144,38 +158,56 @@ export async function POST(request: NextRequest) {
     );
 
     // Calculate rank percentile based on total score
-    const allResults = await prisma.levelTestResult.findMany({
-      select: { totalScore: true },
-    });
-    const scores = allResults
-      .map((r) => r.totalScore || 0)
-      .filter((s) => s > 0);
-    scores.push(totalScore);
-    scores.sort((a, b) => a - b);
-    const rankPercent = Math.round(
-      (scores.indexOf(totalScore) / scores.length) * 100
-    );
+    let rankPercent: number | null = null;
+    if (hasTotalScoreColumn && hasRankPercentColumn) {
+      try {
+        const allResults = await prisma.levelTestResult.findMany({
+          select: { totalScore: true },
+        });
+        const scores = allResults
+          .map((r) => r.totalScore || 0)
+          .filter((s) => s > 0);
+        scores.push(totalScore);
+        scores.sort((a, b) => a - b);
+        rankPercent = Math.round(
+          (scores.indexOf(totalScore) / scores.length) * 100
+        );
+      } catch (error) {
+        console.warn("⚠️ Rank percentile calculation skipped:", error);
+        rankPercent = null;
+      }
+    }
 
     // Generate AI ment (10-level motivational message)
     const aiMent = generateAiMent(totalScore);
 
     // Save result to database (user is logged in)
+    const createData: Record<string, any> = {
+      userId,
+      levelSelected: level || null,
+      vocabScore,
+      grammarScore,
+      writingScore,
+      overallLevel,
+      strengths,
+      weaknesses,
+      recommendedRoutine,
+    };
+    if (hasTotalScoreColumn) {
+      createData.totalScore = totalScore;
+    }
+    if (hasAvgSpeedColumn) {
+      createData.avgSpeed = avgSpeed ?? null;
+    }
+    if (hasRankPercentColumn && rankPercent !== null) {
+      createData.rankPercent = rankPercent;
+    }
+    if (hasAiMentColumn) {
+      createData.aiMent = aiMent;
+    }
+
     const result = await prisma.levelTestResult.create({
-      data: {
-        userId,
-        levelSelected: level || null,
-        vocabScore,
-        grammarScore,
-        writingScore,
-        totalScore,
-        avgSpeed: avgSpeed || null,
-        rankPercent,
-        overallLevel,
-        strengths,
-        weaknesses,
-        recommendedRoutine,
-        aiMent,
-      },
+      data: createData,
     });
 
     const resultId = result.id;
@@ -215,7 +247,7 @@ export async function POST(request: NextRequest) {
       grammarScore,
       writingScore,
       totalScore,
-      avgSpeed: avgSpeed || null,
+      avgSpeed: avgSpeed ?? null,
       rankPercent,
       overallLevel,
       strengths,
