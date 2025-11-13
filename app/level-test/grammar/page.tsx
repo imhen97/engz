@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "@/components/NavBar";
 import ProgressBar from "@/components/level-test/ProgressBar";
+import CountdownTimer from "@/components/level-test/CountdownTimer";
 
 interface GrammarQuestion {
   id: string;
@@ -26,6 +27,8 @@ export default function GrammarTestPage() {
   const [answers, setAnswers] = useState<(number | string)[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [timings, setTimings] = useState<number[]>([]);
+  const questionStartTime = useRef<number>(Date.now());
 
   useEffect(() => {
     const testData = sessionStorage.getItem("levelTestData");
@@ -37,10 +40,22 @@ export default function GrammarTestPage() {
     const data = JSON.parse(testData);
     setQuestions(data.grammarQuestions || []);
     setAnswers(new Array(data.grammarQuestions?.length || 0).fill(""));
+    setTimings(new Array(data.grammarQuestions?.length || 0).fill(0));
   }, [router]);
+
+  // Reset timer when question changes
+  useEffect(() => {
+    questionStartTime.current = Date.now();
+  }, [currentIndex]);
 
   const handleAnswerSelect = (answer: number | string) => {
     if (selectedAnswer !== null) return;
+
+    // Calculate response time
+    const responseTime = (Date.now() - questionStartTime.current) / 1000;
+    const newTimings = [...timings];
+    newTimings[currentIndex] = responseTime;
+    setTimings(newTimings);
 
     setSelectedAnswer(answer);
     const correct = answer === questions[currentIndex].correctAnswer;
@@ -63,10 +78,40 @@ export default function GrammarTestPage() {
           sessionStorage.getItem("levelTestData") || "{}"
         );
         testData.grammarAnswers = newAnswers;
+        testData.grammarTimings = newTimings;
         sessionStorage.setItem("levelTestData", JSON.stringify(testData));
         router.push("/level-test/writing");
       }
     }, 1500);
+  };
+
+  const handleTimeout = () => {
+    if (selectedAnswer !== null) return;
+
+    const newTimings = [...timings];
+    newTimings[currentIndex] = 10;
+    setTimings(newTimings);
+
+    const newAnswers = [...answers];
+    newAnswers[currentIndex] = "";
+    setAnswers(newAnswers);
+
+    setTimeout(() => {
+      if (currentIndex < questions.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+        setSelectedAnswer(null);
+        setFillInAnswer("");
+        setShowFeedback(false);
+      } else {
+        const testData = JSON.parse(
+          sessionStorage.getItem("levelTestData") || "{}"
+        );
+        testData.grammarAnswers = newAnswers;
+        testData.grammarTimings = newTimings;
+        sessionStorage.setItem("levelTestData", JSON.stringify(testData));
+        router.push("/level-test/writing");
+      }
+    }, 500);
   };
 
   if (questions.length === 0) {

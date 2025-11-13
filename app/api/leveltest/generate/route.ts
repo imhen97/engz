@@ -551,10 +551,10 @@ export async function POST(request: NextRequest) {
       GRAMMAR_QUESTIONS[level as keyof typeof GRAMMAR_QUESTIONS];
     const writingPool = WRITING_PROMPTS[level as keyof typeof WRITING_PROMPTS];
 
-    // Randomize and select 10 vocab, 10 grammar, 3 writing
-    const vocabQuestions = shuffleArray([...vocabPool]).slice(0, 10);
+    // PRD: 20 vocab, 10 grammar, 5 writing questions
+    const vocabQuestions = shuffleArray([...vocabPool]).slice(0, 20);
     const grammarQuestions = shuffleArray([...grammarPool]).slice(0, 10);
-    const writingPrompts = shuffleArray([...writingPool]).slice(0, 3);
+    const writingPrompts = shuffleArray([...writingPool]).slice(0, 5);
 
     return NextResponse.json({
       vocabQuestions,

@@ -12,16 +12,20 @@ type LevelKey = "beginner" | "intermediate" | "advanced" | "custom";
 
 interface LevelResult {
   id: string;
-  levelSelected: string;
+  levelSelected: string | null;
   vocabScore: number;
   grammarScore: number;
   writingScore: number;
+  totalScore?: number;
+  avgSpeed?: number | null;
+  rankPercent?: number | null;
   overallLevel: string;
   strengths: string;
   weaknesses: string;
   recommendedRoutine: string;
   aiFeedback: string;
   aiPlan: string;
+  aiMent?: string | null;
   createdAt: string;
 }
 
@@ -202,7 +206,10 @@ export default function LevelTestResultPage() {
   );
 
   const planLines = result.aiPlan
-    ? result.aiPlan.split("\n").map((line) => line.trim()).filter(Boolean)
+    ? result.aiPlan
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
     : [];
 
   return (
@@ -231,7 +238,8 @@ export default function LevelTestResultPage() {
                 나만을 위한 AI 학습 리포트
               </h1>
               <p className="text-sm text-gray-600">
-                AI 코치가 분석한 레벨과 강·약점을 확인하고, 4주 맞춤 플랜으로 학습을 시작해 보세요.
+                AI 코치가 분석한 레벨과 강·약점을 확인하고, 4주 맞춤 플랜으로
+                학습을 시작해 보세요.
               </p>
             </div>
             <div className="grid gap-6 sm:grid-cols-2">
@@ -247,23 +255,43 @@ export default function LevelTestResultPage() {
                 </p>
                 <div className="mt-4 space-y-2 text-sm text-gray-700">
                   <p>• AI 진단 레벨: {result.overallLevel}</p>
-                  <p>• 선택 수준: {result.levelSelected}</p>
-                  <p>• 종합 점수(평균): {avgScore} / 10</p>
+                  {result.levelSelected && (
+                    <p>• 선택 수준: {result.levelSelected}</p>
+                  )}
+                  <p>• 종합 점수(평균): {result.totalScore || avgScore}점</p>
+                  {result.avgSpeed && (
+                    <p>
+                      • 평균 풀이속도: {result.avgSpeed.toFixed(1)}초 / 문제
+                    </p>
+                  )}
+                  {result.rankPercent !== null &&
+                    result.rankPercent !== undefined && (
+                      <p>
+                        • 상위 {100 - result.rankPercent}% (전 세계 사용자 중)
+                      </p>
+                    )}
                 </div>
               </div>
               <div className="rounded-3xl border border-[#FFE2D4] bg-white p-6 text-left shadow-md">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#FF6B3D]/70">
                   코치 한줄 코멘트
                 </p>
+                {result.aiMent && (
+                  <p className="mt-3 text-base font-semibold text-[#FF6B3D]">
+                    {result.aiMent}
+                  </p>
+                )}
                 <p className="mt-3 text-sm leading-relaxed text-gray-700">
                   {levelInfo.summary}
                 </p>
                 <div className="mt-4 grid gap-3 text-sm">
                   <div className="rounded-2xl bg-[#F5FFF5] p-3 text-green-700 shadow-sm">
-                    <span className="font-semibold">강점</span> · {result.strengths || "데이터 수집 중"}
+                    <span className="font-semibold">강점</span> ·{" "}
+                    {result.strengths || "데이터 수집 중"}
                   </div>
                   <div className="rounded-2xl bg-[#FFF4E8] p-3 text-[#B34724] shadow-sm">
-                    <span className="font-semibold">개선 포인트</span> · {result.weaknesses || "추가 분석 예정"}
+                    <span className="font-semibold">개선 포인트</span> ·{" "}
+                    {result.weaknesses || "추가 분석 예정"}
                   </div>
                 </div>
               </div>
@@ -313,17 +341,13 @@ export default function LevelTestResultPage() {
           className="mt-12 grid gap-8 lg:grid-cols-2"
         >
           <div className="rounded-3xl border border-[#FFE2D4] bg-white p-7 shadow-lg">
-            <h3 className="text-lg font-bold text-[#FF6B3D]">
-              AI 코치 피드백
-            </h3>
+            <h3 className="text-lg font-bold text-[#FF6B3D]">AI 코치 피드백</h3>
             <p className="mt-4 whitespace-pre-line text-sm leading-7 text-gray-700">
               {result.aiFeedback}
             </p>
           </div>
           <div className="rounded-3xl border border-[#FFE2D4] bg-[#FFF2EA] p-7 shadow-lg">
-            <h3 className="text-lg font-bold text-[#B34724]">
-              4주 집중 플랜
-            </h3>
+            <h3 className="text-lg font-bold text-[#B34724]">4주 집중 플랜</h3>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-[#8A3C1E]">
               {planLines.length > 0 ? (
                 planLines.map((line, idx) => (
@@ -335,7 +359,9 @@ export default function LevelTestResultPage() {
                   </li>
                 ))
               ) : (
-                <li>AI 플랜이 생성되는 중입니다. 잠시 후 다시 확인해 주세요.</li>
+                <li>
+                  AI 플랜이 생성되는 중입니다. 잠시 후 다시 확인해 주세요.
+                </li>
               )}
             </ul>
           </div>
@@ -356,7 +382,8 @@ export default function LevelTestResultPage() {
                 AI 추천 루틴으로 7일간 무료 체험을 시작하세요
               </h3>
               <p className="text-sm text-white/80">
-                첫 7일은 무료, 이후 자동으로 월간 플랜으로 전환됩니다. 언제든지 해지할 수 있어요.
+                첫 7일은 무료, 이후 자동으로 월간 플랜으로 전환됩니다. 언제든지
+                해지할 수 있어요.
               </p>
             </div>
             <div className="w-full max-w-xs">

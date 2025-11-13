@@ -60,6 +60,35 @@ function generateRecommendedRoutine(
   return "4-week Writing & Fluency Enhancement Routine";
 }
 
+// PRD: Generate AI ment based on 10-level system
+function generateAiMent(totalScore: number): string {
+  if (totalScore >= 90) {
+    return "슈퍼 영어 엘리트! Engz AI의 코치로 오셔야겠어요 😎";
+  }
+  if (totalScore >= 80) {
+    return "상위 10%! 당신은 거의 영어 고수입니다.";
+  }
+  if (totalScore >= 70) {
+    return "상위 30%! 이제 비즈니스 영어에도 도전 가능해요.";
+  }
+  if (totalScore >= 60) {
+    return "좋아요! 이제 영어가 입에 익어가는 단계예요.";
+  }
+  if (totalScore >= 50) {
+    return "중급 문법 구조는 익혔어요! 표현만 조금 더 확장해볼까요?";
+  }
+  if (totalScore >= 40) {
+    return "기본 표현은 익숙하지만 말하기 자신감이 부족해요.";
+  }
+  if (totalScore >= 30) {
+    return "기초 회화는 가능하지만 아직 문법이 헷갈려요.";
+  }
+  if (totalScore >= 20) {
+    return "이제 막 영어 입문하셨군요!";
+  }
+  return "앗! 우리 영어 공부하러 갈까요?";
+}
+
 export async function POST(request: NextRequest) {
   try {
     const token = await getToken({
@@ -69,7 +98,7 @@ export async function POST(request: NextRequest) {
 
     // Require login to submit test results
     const userId = token?.userId as string | undefined;
-    
+
     if (!userId) {
       return NextResponse.json(
         { error: "로그인이 필요합니다.", requiresLogin: true },
@@ -78,10 +107,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { level, vocabScore, grammarScore, writingScore } = body;
+    const { level, vocabScore, grammarScore, writingScore, avgSpeed } = body;
 
     if (
-      !level ||
       vocabScore === undefined ||
       grammarScore === undefined ||
       writingScore === undefined
@@ -91,6 +119,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Calculate total score (average)
+    const totalScore = Math.round(
+      (vocabScore + grammarScore + writingScore) / 3
+    );
 
     const overallLevel = determineOverallLevel(
       vocabScore,
@@ -104,29 +137,49 @@ export async function POST(request: NextRequest) {
       writingScore
     );
     const recommendedRoutine = generateRecommendedRoutine(
-      level,
+      level || "intermediate",
       vocabScore,
       grammarScore,
       writingScore
     );
 
+    // Calculate rank percentile based on total score
+    const allResults = await prisma.levelTestResult.findMany({
+      select: { totalScore: true },
+    });
+    const scores = allResults
+      .map((r) => r.totalScore || 0)
+      .filter((s) => s > 0);
+    scores.push(totalScore);
+    scores.sort((a, b) => a - b);
+    const rankPercent = Math.round(
+      (scores.indexOf(totalScore) / scores.length) * 100
+    );
+
+    // Generate AI ment (10-level motivational message)
+    const aiMent = generateAiMent(totalScore);
+
     // Save result to database (user is logged in)
     const result = await prisma.levelTestResult.create({
       data: {
         userId,
-        levelSelected: level,
+        levelSelected: level || null,
         vocabScore,
         grammarScore,
         writingScore,
+        totalScore,
+        avgSpeed: avgSpeed || null,
+        rankPercent,
         overallLevel,
         strengths,
         weaknesses,
         recommendedRoutine,
+        aiMent,
       },
     });
-    
+
     const resultId = result.id;
-    
+
     // Send email notification (async, don't wait for it)
     if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
       // Get user email from database
@@ -134,17 +187,22 @@ export async function POST(request: NextRequest) {
         where: { id: userId },
         select: { email: true },
       });
-      
+
       if (user?.email) {
         // Send email in background (don't block response)
-        fetch(`${process.env.NEXT_PUBLIC_URL || "https://www.eng-z.com"}/api/leveltest/send-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: user.email,
-            resultId: result.id,
-          }),
-        }).catch((err) => {
+        fetch(
+          `${
+            process.env.NEXT_PUBLIC_URL || "https://www.eng-z.com"
+          }/api/leveltest/send-email`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: user.email,
+              resultId: result.id,
+            }),
+          }
+        ).catch((err) => {
           console.error("이메일 발송 백그라운드 오류:", err);
         });
       }
@@ -152,14 +210,18 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       id: resultId,
-      levelSelected: level,
+      levelSelected: level || null,
       vocabScore,
       grammarScore,
       writingScore,
+      totalScore,
+      avgSpeed: avgSpeed || null,
+      rankPercent,
       overallLevel,
       strengths,
       weaknesses,
       recommendedRoutine,
+      aiMent,
     });
   } catch (error) {
     console.error("❌ 테스트 결과 제출 실패:", error);

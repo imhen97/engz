@@ -85,6 +85,17 @@ export default function WritingTestPage() {
           writingScores.scores.length
       );
 
+      // Calculate average speed from all timings
+      const allTimings = [
+        ...(testData.vocabTimings || []),
+        ...(testData.grammarTimings || []),
+      ].filter((t: number) => t > 0);
+      const avgSpeed =
+        allTimings.length > 0
+          ? allTimings.reduce((sum: number, t: number) => sum + t, 0) /
+            allTimings.length
+          : null;
+
       // Submit final results
       const submitResponse = await fetch("/api/leveltest/submit", {
         method: "POST",
@@ -94,6 +105,7 @@ export default function WritingTestPage() {
           vocabScore,
           grammarScore,
           writingScore: avgWritingScore,
+          avgSpeed,
           vocabAnswers: testData.vocabAnswers,
           grammarAnswers: testData.grammarAnswers,
           writingAnswers: finalAnswers,
@@ -103,8 +115,19 @@ export default function WritingTestPage() {
       if (!submitResponse.ok) {
         const errorData = await submitResponse.json();
         if (errorData.requiresLogin) {
-          // Redirect to signup page with callback
-          router.push("/signup?callbackUrl=/level-test/result");
+          // Save temporary result for locked page
+          sessionStorage.setItem(
+            "levelTestTempResult",
+            JSON.stringify({
+              vocabScore,
+              grammarScore,
+              writingScore: avgWritingScore,
+            })
+          );
+          // Redirect to locked result page
+          router.push(
+            "/level-test/result-locked?callbackUrl=/level-test/result"
+          );
           return;
         }
         throw new Error(errorData.error || "Failed to submit results");

@@ -1,0 +1,171 @@
+🎯 ENGZ Gamified AI Level Test PRD (for Cursor AI)
+🧠 Concept Overview
+“현재 내 진짜 영어 실력은 어느 정도 수준일까?”
+— 재미있고 직관적인 테스트로 영어 실력을 즉시 진단하고,
+AI가 맞춤 루틴과 학습 제안을 자동으로 생성한다.
+핵심 포인트
+🎮 게이미피케이션 UX (10초 제한 타이머 + 점점 어려워지는 문제 구조)
+📊 세부 결과 리포트 (정답률, 속도, 난이도 별 그래프)
+🔒 로그인 전엔 잠금된 결과 → 로그인 유도
+💬 AI가 자동 생성한 결과 멘트 (10단계 실력 평가 문구)
+💳 결과 후 “7일 무료체험 시작 → 자동 구독 전환” 유도
+⚙️ Test Flow Overview
+단계	설명	구성 요소
+1️⃣	테스트 시작 페이지	제목 + “지금 바로 테스트 해보기” 버튼
+2️⃣	어휘력 테스트 (20문항)	10초 제한, 점점 어려워짐
+3️⃣	문법 테스트 (10문항)	객관식, 10초 제한
+4️⃣	영작 테스트 (5문항)	한글 → 영어로 작성, AI 자동 채점
+5️⃣	결과 잠금 화면	흐릿한 리포트 + “로그인하고 결과보기”
+6️⃣	로그인 후 결과 화면	점수, 정답률, 속도, AI 멘트, 추천 루틴, 결제 CTA
+🖥️ Page Flow & UI
+🧩 Step 1. 테스트 시작 화면
+🧠 현재 내 진짜 영어 실력은 어느 정도 수준일까?
+
+AI가 당신의 어휘, 문법, 작문 능력을 분석하고
+전 세계 사용자 중 어디에 위치해 있는지 알려드립니다.
+
+[ 🟠 지금 바로 테스트 해보기 ]
+버튼 클릭 시 /leveltest/start → /leveltest/quiz로 이동
+🧩 Step 2. 어휘 테스트 (20문항)
+난이도: A1 → C2 순으로 점점 어려움
+예시:
+Question 3 / 20  
+Choose the word that best fits the sentence:
+
+The weather was so ____ that we canceled our trip.
+a) terrible  
+b) curious  
+c) reliable  
+d) fragile
+상단 우측에 10초 카운트다운 (0이 되면 자동 skip)
+정답시 초록 체크 ✅, 오답시 붉은 X ❌ 표시
+정답률 기반으로 다음 문항 난이도 자동 조정
+🧩 Step 3. 문법 테스트 (10문항)
+Which sentence is correct?
+a) She don't likes apples.  
+b) She doesn't like apples.  
+c) She didn’t likes apples.  
+d) She isn’t like apples.
+10초 제한 타이머 유지
+난이도 점진 상승 (시제 → 조동사 → 관계대명사 → 가정법)
+🧩 Step 4. 영작 테스트 (5문항)
+한글 문장: 나는 어제 친구와 카페에 갔어요.  
+영어로 써보세요:
+→ [ Text Input ]
+AI 채점 기준: 어휘, 문법, 문장 구조, 자연스러움 (각 1~10점)
+제출 시 즉시 AI 채점 결과 저장 (OpenAI GPT 사용)
+🧩 Step 5. 결과 잠금 화면
+🔒 테스트 결과 잠금됨
+AI 분석 리포트를 보려면 로그인해주세요.
+
+(흐릿하게 보이는 영역 예시)
+- Vocabulary: 70%
+- Grammar: 55%
+- Writing: 45%
+
+[ 🔑 로그인하고 결과 보기 ]
+로그인 후 /leveltest/result로 이동
+🧩 Step 6. 결과 분석 페이지 (로그인 후)
+🎉 당신의 영어 실력은 Intermediate (중상급) 입니다!
+
+📊 결과 요약
+- Vocabulary: 70% (어휘 다양성 우수)
+- Grammar: 55% (기초 구조는 좋으나 시제 혼동 있음)
+- Writing: 45% (문장 연결어 사용 미흡)
+
+⏱ 평균 풀이속도: 6.8초 / 문제
+📈 상위 36% (전 세계 사용자 중)
+💬 AI 자동 피드백 구조
+AI는 테스트 데이터 기반으로 다음 내용을 생성:
+실력 레벨 문구 (10단계 중 선택)
+AI 코멘트 (한글 중심)
+추천 루틴 (4주 프로그램)
+점수대	AI 멘트
+0~20%	“앗! 우리 영어 공부하러 갈까요?”
+20~30%	“이제 막 영어 입문하셨군요!”
+30~40%	“기초 회화는 가능하지만 아직 문법이 헷갈려요.”
+40~50%	“기본 표현은 익숙하지만 말하기 자신감이 부족해요.”
+50~60%	“중급 문법 구조는 익혔어요! 표현만 조금 더 확장해볼까요?”
+60~70%	“좋아요! 이제 영어가 입에 익어가는 단계예요.”
+70~80%	“상위 30%! 이제 비즈니스 영어에도 도전 가능해요.”
+80~90%	“상위 10%! 당신은 거의 영어 고수입니다.”
+90~100%	“슈퍼 영어 엘리트! Engz AI의 코치로 오셔야겠어요 😎”
+🧭 AI 추천 루틴 예시
+🎯 ENGZ 추천 루틴
+"4주 문법 & 표현력 완성 루틴"
+
+1주차: 문법 패턴 다지기  
+2주차: 표현 확장 + 예문 암기  
+3주차: 일상 작문 미션  
+4주차: AI 피드백 리포트 생성
+📈 실력 분포 곡선 (AI 시뮬레이션)
+시각화 예시:
+X축: 점수 (0~100)
+Y축: 사용자 수
+현재 사용자의 위치를 빨간 점 🔴 으로 표시
+🧱 Prisma Schema
+model LevelTest {
+  id            String   @id @default(cuid())
+  userId        String?
+  vocabScore    Int
+  grammarScore  Int
+  writingScore  Int
+  totalScore    Int
+  avgSpeed      Float
+  rankPercent   Int
+  aiFeedback    String?
+  aiMent        String?
+  aiRoutine     String?
+  createdAt     DateTime @default(now())
+  user          User?    @relation(fields: [userId], references: [id])
+}
+🧠 AI 프롬프트 예시 (결과 생성용)
+{
+  "role": "system",
+  "content": "You are an English learning coach for beginners. Provide detailed Korean feedback, 1-sentence motivational English tagline, and a 4-week recommended plan."
+}
+{
+  "role": "user",
+  "content": "User scored Vocab 70%, Grammar 55%, Writing 45%, total 57%. Rank: 36%. Generate a friendly Korean feedback summary + motivational message + 4-week plan."
+}
+💳 결제 유도 문구
+👉 지금 바로 7일 무료로 시작하고
+AI 코치와 함께 4주 루틴을 완성해보세요.
+[ 🟠 무료체험 시작하기 ]
+(7일 후 자동 결제 전환 – 언제든 해지 가능)
+🎨 UI 스타일 가이드
+요소	스타일
+배경	#FFF8F4 (ivory tone)
+메인 포인트	#FF6B3D (ENGZ orange)
+폰트	Pretendard / Inter
+카드	부드러운 라운드 + 그림자
+타이머	우상단 빨간 원형 카운트다운
+애니메이션	Framer Motion slide-in / fade transition
+언어	설명: 한국어 / 문제: 영어
+🚀 Cursor AI 개발 프롬프트
+You are building a gamified AI English Level Test for ENGZ using Next.js 15, TypeScript, Prisma, and OpenAI.
+
+Requirements:
+1. Pages:
+   - /leveltest (intro with CTA)
+   - /leveltest/quiz (vocab + grammar + writing sections)
+   - /leveltest/result (locked -> unlocked after login)
+2. Each question has a 10-second countdown timer; auto-skip when time is up.
+3. Questions gradually increase in difficulty.
+4. After completion:
+   - Show blurred result with “Login to view result” button.
+   - Once logged in, fetch test data and show:
+     - Scores (vocab, grammar, writing)
+     - Avg speed, rank, score chart
+     - AI-generated Korean feedback
+     - Motivational English tagline (10 levels)
+     - 4-week personalized routine
+5. Add CTA for “Start Free 7-Day Trial” linked to Stripe checkout.
+6. Design:
+   - Orange/Ivory ENGZ theme
+   - Rounded cards, progress bar, Framer Motion transitions
+   - Korean-friendly text, English-only questions
+7. Store test results in Prisma `LevelTest` model.
+
+Goal:
+Deliver a smooth, adaptive, gamified English level test experience with real-time countdowns, AI-generated personalized feedback, and Stripe-linked onboarding.

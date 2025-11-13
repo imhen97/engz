@@ -187,16 +187,20 @@ model Report {
 model LevelTestResult {
   id                 String   @id @default(cuid())
   userId             String
-  levelSelected      String // "beginner", "intermediate", "advanced"
+  levelSelected      String? // "beginner", "intermediate", "advanced" (optional for gamified test)
   vocabScore         Int
   grammarScore       Int
   writingScore       Int
+  totalScore         Int      @default(0) // Average of vocab, grammar, writing
+  avgSpeed           Float?   // Average response time in seconds
+  rankPercent        Int?     // Percentile rank (0-100)
   overallLevel       String
   strengths          String?
   weaknesses         String?
   recommendedRoutine String?
   aiFeedback         String? @db.Text
   aiPlan             String? @db.Text
+  aiMent             String? // Motivational English tagline (10 levels)
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt          DateTime @default(now())
 }

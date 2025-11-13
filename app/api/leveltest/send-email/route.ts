@@ -17,7 +17,7 @@ function getEmailTransporter() {
     // Parse EMAIL_SERVER (format: smtp://user:pass@smtp.example.com:587)
     const emailServer = process.env.EMAIL_SERVER;
     const url = new URL(emailServer);
-    
+
     return nodemailer.createTransport({
       host: url.hostname,
       port: parseInt(url.port) || 587,
@@ -119,8 +119,16 @@ export async function POST(request: NextRequest) {
                 <p><strong>작문 점수:</strong> ${result.writingScore}/10</p>
               </div>
 
-              ${result.strengths ? `<p><strong>✅ 강점:</strong> ${result.strengths}</p>` : ""}
-              ${result.weaknesses ? `<p><strong>⚠️ 개선 포인트:</strong> ${result.weaknesses}</p>` : ""}
+              ${
+                result.strengths
+                  ? `<p><strong>✅ 강점:</strong> ${result.strengths}</p>`
+                  : ""
+              }
+              ${
+                result.weaknesses
+                  ? `<p><strong>⚠️ 개선 포인트:</strong> ${result.weaknesses}</p>`
+                  : ""
+              }
 
               <p>상세한 AI 피드백과 4주 맞춤 플랜을 확인하려면 아래 버튼을 클릭하세요.</p>
               
@@ -154,4 +162,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
