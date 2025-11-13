@@ -174,12 +174,21 @@ export default function LevelTestResultPage() {
           <p className="text-sm text-gray-600">
             {error ?? "레벨 테스트 결과를 불러올 수 없습니다."}
           </p>
-          <Link
-            href="/level-test/start"
-            className="rounded-full bg-[#FF6B3D] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-105"
-          >
-            레벨 테스트 다시 시작하기
-          </Link>
+          {error?.includes("인증") || error?.includes("로그인") ? (
+            <Link
+              href="/signup?callbackUrl=/level-test/result"
+              className="rounded-full bg-[#FF6B3D] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+            >
+              로그인하고 결과 보기
+            </Link>
+          ) : (
+            <Link
+              href="/level-test/start"
+              className="rounded-full bg-[#FF6B3D] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+            >
+              레벨 테스트 다시 시작하기
+            </Link>
+          )}
         </div>
       </main>
     );

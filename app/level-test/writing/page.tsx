@@ -101,14 +101,19 @@ export default function WritingTestPage() {
       });
 
       if (!submitResponse.ok) {
-        throw new Error("Failed to submit results");
+        const errorData = await submitResponse.json();
+        if (errorData.requiresLogin) {
+          // Redirect to signup page with callback
+          router.push("/signup?callbackUrl=/level-test/result");
+          return;
+        }
+        throw new Error(errorData.error || "Failed to submit results");
       }
 
       const result = await submitResponse.json();
 
-      // Store result ID and data for result page
+      // Store result ID for result page
       sessionStorage.setItem("levelTestResultId", result.id);
-      sessionStorage.setItem("levelTestSubmitData", JSON.stringify(result));
       router.push("/level-test/result");
     } catch (error) {
       console.error("제출 실패:", error);

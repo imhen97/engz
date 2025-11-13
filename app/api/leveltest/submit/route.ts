@@ -67,8 +67,15 @@ export async function POST(request: NextRequest) {
       secret: process.env.NEXTAUTH_SECRET,
     });
 
-    // Allow anonymous users to take the test
+    // Require login to submit test results
     const userId = token?.userId as string | undefined;
+    
+    if (!userId) {
+      return NextResponse.json(
+        { error: "로그인이 필요합니다.", requiresLogin: true },
+        { status: 401 }
+      );
+    }
 
     const body = await request.json();
     const { level, vocabScore, grammarScore, writingScore } = body;
@@ -103,26 +110,44 @@ export async function POST(request: NextRequest) {
       writingScore
     );
 
-    // Save result if user is logged in
-    let resultId: string | null = null;
-    if (userId) {
-      const result = await prisma.levelTestResult.create({
-        data: {
-          userId,
-          levelSelected: level,
-          vocabScore,
-          grammarScore,
-          writingScore,
-          overallLevel,
-          strengths,
-          weaknesses,
-          recommendedRoutine,
-        },
+    // Save result to database (user is logged in)
+    const result = await prisma.levelTestResult.create({
+      data: {
+        userId,
+        levelSelected: level,
+        vocabScore,
+        grammarScore,
+        writingScore,
+        overallLevel,
+        strengths,
+        weaknesses,
+        recommendedRoutine,
+      },
+    });
+    
+    const resultId = result.id;
+    
+    // Send email notification (async, don't wait for it)
+    if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
+      // Get user email from database
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { email: true },
       });
-      resultId = result.id;
-    } else {
-      // For anonymous users, generate a temporary ID
-      resultId = `temp_${Date.now()}`;
+      
+      if (user?.email) {
+        // Send email in background (don't block response)
+        fetch(`${process.env.NEXT_PUBLIC_URL || "https://www.eng-z.com"}/api/leveltest/send-email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            resultId: result.id,
+          }),
+        }).catch((err) => {
+          console.error("이메일 발송 백그라운드 오류:", err);
+        });
+      }
     }
 
     return NextResponse.json({
