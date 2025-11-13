@@ -87,6 +87,12 @@ async function enrichToken(token: any) {
   try {
     const user = await prisma.user.findUnique({
       where: { id: token.userId as string },
+      select: {
+        plan: true,
+        trialActive: true,
+        trialEndsAt: true,
+        subscriptionActive: true,
+      },
     });
     if (!user) return token;
     token.plan = user.plan;
