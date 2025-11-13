@@ -3,6 +3,7 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
 function determineOverallLevel(
   vocabScore: number,
@@ -182,7 +183,7 @@ export async function POST(request: NextRequest) {
     const aiMent = generateAiMent(totalScore);
 
     // Save result to database (user is logged in)
-    const createData: Record<string, any> = {
+    const createData: Prisma.LevelTestResultUncheckedCreateInput = {
       userId,
       levelSelected: level || null,
       vocabScore,
