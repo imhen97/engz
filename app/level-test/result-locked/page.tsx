@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import NavBar from "@/components/NavBar";
 import { signIn } from "next-auth/react";
 
-export default function LevelTestResultLockedPage() {
+function LevelTestResultLockedContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [resultData, setResultData] = useState<any>(null);
@@ -120,5 +120,22 @@ export default function LevelTestResultLockedPage() {
         </motion.div>
       </div>
     </main>
+  );
+}
+
+export default function LevelTestResultLockedPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#FFF8F4] text-black">
+          <NavBar />
+          <div className="flex min-h-screen items-center justify-center">
+            <p className="text-sm text-gray-500">로딩 중…</p>
+          </div>
+        </main>
+      }
+    >
+      <LevelTestResultLockedContent />
+    </Suspense>
   );
 }

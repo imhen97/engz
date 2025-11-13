@@ -5,6 +5,9 @@ import NavBar from "@/components/NavBar";
 import PricingCard from "@/components/pricing/PricingCard";
 import { authOptions } from "@/lib/auth";
 
+// Force dynamic rendering since we use getServerSession
+export const dynamic = "force-dynamic";
+
 const plans = [
   {
     id: "monthly" as const,
