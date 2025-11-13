@@ -6,7 +6,7 @@ import OpenAI from "openai";
 import prisma from "@/lib/prisma";
 
 type LevelSummary = {
-  levelSelected: string;
+  levelSelected: string | null;
   vocabScore: number;
   grammarScore: number;
   writingScore: number;
@@ -32,9 +32,10 @@ function getOpenAIClient() {
 }
 
 function buildFallbackInsights(result: LevelSummary) {
-  const levelInfo = LEVEL_LABELS[result.levelSelected] ?? {
+  const levelKey = result.levelSelected || "intermediate";
+  const levelInfo = LEVEL_LABELS[levelKey] ?? {
     ko: "맞춤형 레벨",
-    en: result.levelSelected,
+    en: levelKey,
   };
 
   const feedback = `${levelInfo.ko} 학습자에 맞춰 어휘, 문법, 작문 실력을 균형 있게 다듬어야 합니다. 점수 분포를 보면 어휘 ${result.vocabScore}점, 문법 ${result.grammarScore}점, 작문 ${result.writingScore}점으로 나타납니다. 강점은 ${result.strengths ?? "어휘 이해"}이며, 약점은 ${
@@ -75,7 +76,7 @@ async function generateInsights(result: LevelSummary) {
           role: "user",
           content: `
 English Level Test Summary:
-- Level Selected: ${result.levelSelected}
+- Level Selected: ${result.levelSelected || "Not specified (Gamified test)"}
 - Overall Level: ${result.overallLevel}
 - Vocabulary Score: ${result.vocabScore}/10
 - Grammar Score: ${result.grammarScore}/10
