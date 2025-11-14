@@ -160,79 +160,60 @@ export default function GrammarTestPage() {
             </h2>
           </div>
 
-          {currentQuestion.options && (
-            <div className="space-y-3">
-              {currentQuestion.options.map((option, index) => {
-                const isSelected = selectedAnswer === index;
-                const isCorrectAnswer = index === currentQuestion.correctAnswer;
-                const showResult = showFeedback && isSelected;
+          <div className="space-y-3">
+            {currentQuestion.options.map((option, index) => {
+              const isSelected = selectedAnswer === index;
+              const isCorrectAnswer = index === currentQuestion.correctAnswer;
+              const showResult = showFeedback && isSelected;
 
-                return (
-                  <motion.button
-                    key={index}
-                    type="button"
-                    onClick={() => handleAnswerSelect(index)}
-                    disabled={selectedAnswer !== null}
-                    className={`w-full rounded-xl border-2 p-4 text-left transition-all ${
-                      showResult
-                        ? isCorrect
-                          ? "border-green-500 bg-green-50"
-                          : "border-red-500 bg-red-50"
-                        : isSelected
-                        ? "border-[#F5472C] bg-[#FFF7F0]"
-                        : "border-gray-200 bg-white hover:border-[#F5472C] hover:bg-[#FFF7F0]"
-                    } ${
-                      selectedAnswer !== null
-                        ? "cursor-default"
-                        : "cursor-pointer"
-                    }`}
-                    whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
-                    whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
-                          showResult
-                            ? isCorrect
-                              ? "bg-green-500 text-white"
-                              : "bg-red-500 text-white"
-                            : "bg-gray-100 text-gray-700"
-                        }`}
-                      >
-                        {String.fromCharCode(97 + index)}
-                      </span>
-                      <span className="flex-1 text-sm text-gray-900 sm:text-base">
-                        {option}
-                      </span>
-                      {showResult && isCorrectAnswer && (
-                        <span className="text-green-600">✓</span>
-                      )}
-                      {showResult && !isCorrect && isSelected && (
-                        <span className="text-red-600">✗</span>
-                      )}
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-          )}
-
-          {!isMultipleChoice && (
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={() => {
-                  if (fillInAnswer.trim()) {
-                    handleAnswerSelect(fillInAnswer.trim().toLowerCase());
-                  }
-                }}
-                disabled={!fillInAnswer.trim() || selectedAnswer !== null}
-                className="w-full rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white transition hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Submit Answer
-              </button>
-            </div>
-          )}
+              return (
+                <motion.button
+                  key={index}
+                  type="button"
+                  onClick={() => handleAnswerSelect(index)}
+                  disabled={selectedAnswer !== null}
+                  className={`w-full rounded-xl border-2 p-4 text-left transition-all ${
+                    showResult
+                      ? isCorrect
+                        ? "border-green-500 bg-green-50"
+                        : "border-red-500 bg-red-50"
+                      : isSelected
+                      ? "border-[#F5472C] bg-[#FFF7F0]"
+                      : "border-gray-200 bg-white hover:border-[#F5472C] hover:bg-[#FFF7F0]"
+                  } ${
+                    selectedAnswer !== null
+                      ? "cursor-default"
+                      : "cursor-pointer"
+                  }`}
+                  whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
+                  whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold ${
+                        showResult
+                          ? isCorrect
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                          : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {String.fromCharCode(97 + index)}
+                    </span>
+                    <span className="flex-1 text-sm text-gray-900 sm:text-base">
+                      {option}
+                    </span>
+                    {showResult && isCorrectAnswer && (
+                      <span className="text-green-600">✓</span>
+                    )}
+                    {showResult && !isCorrect && isSelected && (
+                      <span className="text-red-600">✗</span>
+                    )}
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
 
           <AnimatePresence>
             {showFeedback && (
