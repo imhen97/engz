@@ -60,7 +60,9 @@ export default function LevelTestStartPage() {
             ENGZ AI 레벨 테스트
           </p>
           <h1 className="mt-6 text-3xl font-bold text-gray-900 sm:text-4xl md:text-5xl">
-            현재 내 진짜 영어 실력은 어느 정도 수준일까?
+            현재 내 진짜 영어 실력은
+            <br />
+            어느 정도 수준일까?
           </h1>
           <p className="mt-6 text-base text-gray-600 sm:text-lg">
             AI가 당신의 어휘, 문법, 작문 능력을 분석하고
