@@ -16,8 +16,8 @@ export default function ProgressBar({
   const percentage = Math.round((current / total) * 100);
 
   return (
-    <div className="mb-8">
-      <div className="mb-2 flex items-center justify-between">
+    <div className="flex-1">
+      <div className="mb-2 flex items-center gap-3">
         <span className="text-sm font-semibold text-gray-700">{section}</span>
         <span className="text-sm font-semibold text-[#F5472C]">
           {current} / {total} ({percentage}%)

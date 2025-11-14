@@ -129,13 +129,13 @@ export default function GrammarTestPage() {
     <main className="min-h-screen bg-[#FFF8F4] text-black">
       <NavBar />
       <div className="mx-auto w-full max-w-3xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex items-start gap-4">
           <ProgressBar
             current={currentIndex + 1}
             total={questions.length}
             section="Grammar"
           />
-          <div className="ml-4" key={currentIndex}>
+          <div className="flex-shrink-0" key={currentIndex}>
             <CountdownTimer
               resetKey={currentIndex}
               initialSeconds={10}
