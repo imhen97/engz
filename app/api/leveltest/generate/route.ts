@@ -6,61 +6,61 @@ const VOCAB_QUESTIONS = {
   beginner: [
     {
       id: "v1",
-      question: "Which word is closest in meaning to 'essential'?",
+      question: "'essential'와 의미가 가장 가까운 단어는?",
       options: ["ordinary", "necessary", "temporary", "optional"],
       correctAnswer: 1,
     },
     {
       id: "v2",
-      question: "What does 'enormous' mean?",
+      question: "'enormous'의 의미는?",
       options: ["very small", "very large", "very fast", "very slow"],
       correctAnswer: 1,
     },
     {
       id: "v3",
-      question: "Choose the synonym for 'happy':",
+      question: "'happy'의 동의어를 선택하세요:",
       options: ["sad", "joyful", "angry", "tired"],
       correctAnswer: 1,
     },
     {
       id: "v4",
-      question: "What is the opposite of 'expensive'?",
+      question: "'expensive'의 반의어는?",
       options: ["cheap", "costly", "valuable", "precious"],
       correctAnswer: 0,
     },
     {
       id: "v5",
-      question: "Which word means 'to make better'?",
+      question: "'to make better'의 의미를 가진 단어는?",
       options: ["improve", "worsen", "break", "destroy"],
       correctAnswer: 0,
     },
     {
       id: "v1b",
-      question: "What does 'beautiful' mean?",
+      question: "'beautiful'의 의미는?",
       options: ["ugly", "pretty", "big", "small"],
       correctAnswer: 1,
     },
     {
       id: "v2b",
-      question: "Choose the synonym for 'big':",
+      question: "'big'의 동의어를 선택하세요:",
       options: ["small", "large", "tiny", "little"],
       correctAnswer: 1,
     },
     {
       id: "v3b",
-      question: "What is the opposite of 'hot'?",
+      question: "'hot'의 반의어는?",
       options: ["warm", "cold", "cool", "freezing"],
       correctAnswer: 1,
     },
     {
       id: "v4b",
-      question: "Which word means 'to look at'?",
+      question: "'to look at'의 의미를 가진 단어는?",
       options: ["see", "hear", "smell", "taste"],
       correctAnswer: 0,
     },
     {
       id: "v5b",
-      question: "What does 'quick' mean?",
+      question: "'quick'의 의미는?",
       options: ["slow", "fast", "big", "small"],
       correctAnswer: 1,
     },
@@ -68,61 +68,61 @@ const VOCAB_QUESTIONS = {
   intermediate: [
     {
       id: "v6",
-      question: "Which word is closest in meaning to 'essential'?",
+      question: "'essential'와 의미가 가장 가까운 단어는?",
       options: ["ordinary", "necessary", "temporary", "optional"],
       correctAnswer: 1,
     },
     {
       id: "v7",
-      question: "What does 'ambiguous' mean?",
+      question: "'ambiguous'의 의미는?",
       options: ["clear", "unclear", "bright", "dark"],
       correctAnswer: 1,
     },
     {
       id: "v8",
-      question: "Choose the best collocation: 'make a _____'",
+      question: "가장 적절한 어울림을 선택하세요: 'make a _____'",
       options: ["decision", "choice", "selection", "pick"],
       correctAnswer: 0,
     },
     {
       id: "v9",
-      question: "What is a synonym for 'significant'?",
+      question: "'significant'의 동의어는?",
       options: ["small", "important", "tiny", "minor"],
       correctAnswer: 1,
     },
     {
       id: "v10",
-      question: "Which phrase means 'to postpone'?",
+      question: "'to postpone'의 의미를 가진 구문은?",
       options: ["put off", "put on", "put in", "put out"],
       correctAnswer: 0,
     },
     {
       id: "v11i",
-      question: "What does 'comprehend' mean?",
+      question: "'comprehend'의 의미는?",
       options: ["understand", "forget", "ignore", "remember"],
       correctAnswer: 0,
     },
     {
       id: "v12i",
-      question: "Choose the best collocation: 'take _____'",
+      question: "가장 적절한 어울림을 선택하세요: 'take _____'",
       options: ["a decision", "a break", "a choice", "a selection"],
       correctAnswer: 1,
     },
     {
       id: "v13i",
-      question: "What is a synonym for 'difficult'?",
+      question: "'difficult'의 동의어는?",
       options: ["easy", "hard", "simple", "clear"],
       correctAnswer: 1,
     },
     {
       id: "v14i",
-      question: "Which phrase means 'to cancel'?",
+      question: "'to cancel'의 의미를 가진 구문은?",
       options: ["call off", "call on", "call in", "call out"],
       correctAnswer: 0,
     },
     {
       id: "v15i",
-      question: "What does 'efficient' mean?",
+      question: "'efficient'의 의미는?",
       options: ["slow", "productive", "lazy", "busy"],
       correctAnswer: 1,
     },
@@ -130,61 +130,61 @@ const VOCAB_QUESTIONS = {
   advanced: [
     {
       id: "v11",
-      question: "Which word is closest in meaning to 'ubiquitous'?",
+      question: "'ubiquitous'와 의미가 가장 가까운 단어는?",
       options: ["rare", "everywhere", "nowhere", "somewhere"],
       correctAnswer: 1,
     },
     {
       id: "v12",
-      question: "What does 'ephemeral' mean?",
+      question: "'ephemeral'의 의미는?",
       options: ["permanent", "temporary", "eternal", "lasting"],
       correctAnswer: 1,
     },
     {
       id: "v13",
-      question: "Choose the best collocation: '_____ a precedent'",
+      question: "가장 적절한 어울림을 선택하세요: '_____ a precedent'",
       options: ["set", "make", "do", "give"],
       correctAnswer: 0,
     },
     {
       id: "v14",
-      question: "What is a synonym for 'meticulous'?",
+      question: "'meticulous'의 동의어는?",
       options: ["careless", "careful", "hasty", "rushed"],
       correctAnswer: 1,
     },
     {
       id: "v15",
-      question: "Which phrase means 'to exacerbate'?",
+      question: "'to exacerbate'의 의미를 가진 구문은?",
       options: ["make worse", "make better", "make equal", "make different"],
       correctAnswer: 0,
     },
     {
       id: "v16a",
-      question: "What does 'profound' mean?",
+      question: "'profound'의 의미는?",
       options: ["shallow", "deep", "wide", "narrow"],
       correctAnswer: 1,
     },
     {
       id: "v17a",
-      question: "Choose the best collocation: '_____ an impact'",
+      question: "가장 적절한 어울림을 선택하세요: '_____ an impact'",
       options: ["make", "do", "have", "give"],
       correctAnswer: 2,
     },
     {
       id: "v18a",
-      question: "What is a synonym for 'elaborate'?",
+      question: "'elaborate'의 동의어는?",
       options: ["simple", "detailed", "brief", "short"],
       correctAnswer: 1,
     },
     {
       id: "v19a",
-      question: "Which phrase means 'to mitigate'?",
+      question: "'to mitigate'의 의미를 가진 구문은?",
       options: ["make worse", "make better", "make equal", "reduce"],
       correctAnswer: 3,
     },
     {
       id: "v20a",
-      question: "What does 'comprehensive' mean?",
+      question: "'comprehensive'의 의미는?",
       options: ["partial", "complete", "incomplete", "limited"],
       correctAnswer: 1,
     },
@@ -195,7 +195,7 @@ const GRAMMAR_QUESTIONS = {
   beginner: [
     {
       id: "g1",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "He don't likes coffee.",
@@ -213,7 +213,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g3",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "She is go to the store.",
@@ -231,7 +231,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g2b",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "I am like pizza.",
@@ -249,7 +249,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g4b",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "We are go to the park.",
@@ -267,7 +267,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g6b",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "I have a apple.",
@@ -287,7 +287,7 @@ const GRAMMAR_QUESTIONS = {
   intermediate: [
     {
       id: "g4",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "If I was you, I would study more.",
@@ -306,7 +306,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g6",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "The book which I read it yesterday was interesting.",
@@ -324,7 +324,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g5i",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "I wish I was taller.",
@@ -342,7 +342,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g7i",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "Neither John nor Mary are coming.",
@@ -360,7 +360,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g9i",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "The more you practice, the better you get.",
@@ -380,7 +380,7 @@ const GRAMMAR_QUESTIONS = {
   advanced: [
     {
       id: "g7",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "Not only did she finish the project, but also she presented it.",
@@ -399,7 +399,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g9",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "The company, whose employees are well-trained, is successful.",
@@ -418,7 +418,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g11a",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "It is high time we leave.",
@@ -437,7 +437,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g13a",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "So difficult was the exam that many students failed.",
@@ -456,7 +456,7 @@ const GRAMMAR_QUESTIONS = {
     },
     {
       id: "g15a",
-      question: "Choose the correct sentence:",
+      question: "올바른 문장을 선택하세요:",
       type: "multiple-choice",
       options: [
         "The more I study, the more I realize how much I don't know.",
