@@ -480,53 +480,67 @@ const WRITING_PROMPTS = {
   beginner: [
     {
       id: "w1",
-      prompt:
-        "Rewrite this sentence in your own words: 'I couldn't go out because it was raining.'",
-      example: "The weather prevented me from going outside.",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '비가 와서 나갈 수 없었어요.'",
     },
     {
       id: "w2",
-      prompt: "Write a sentence using the word 'important'.",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '이것은 매우 중요한 결정입니다.'",
     },
     {
       id: "w3",
-      prompt: "Complete this sentence: 'If I had more time, _____'",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '시간이 더 많았다면 여행을 갔을 거예요.'",
+    },
+    {
+      id: "w4",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '나는 매일 아침 운동을 합니다.'",
+    },
+    {
+      id: "w5",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '그는 친구들과 함께 영화를 봤어요.'",
     },
   ],
   intermediate: [
     {
-      id: "w4",
-      prompt:
-        "Rewrite this sentence in your own words: 'I couldn't go out because it was raining.'",
-      example: "The inclement weather prevented me from leaving the house.",
-    },
-    {
-      id: "w5",
-      prompt: "Write 2-3 sentences describing your ideal vacation.",
-    },
-    {
       id: "w6",
-      prompt:
-        "Paraphrase: 'The meeting was postponed due to unforeseen circumstances.'",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '비가 와서 나갈 수 없었어요.'",
+    },
+    {
+      id: "w7",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '예상치 못한 상황으로 회의가 연기되었습니다.'",
+    },
+    {
+      id: "w8",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '나는 이상적인 휴가를 2-3문장으로 설명하겠습니다.'",
+    },
+    {
+      id: "w9",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '그는 새로운 프로젝트를 시작하기로 결정했습니다.'",
+    },
+    {
+      id: "w10",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '우리는 내일 오후에 만나기로 약속했어요.'",
     },
   ],
   advanced: [
     {
-      id: "w7",
-      prompt:
-        "Rewrite this sentence using more sophisticated vocabulary: 'I couldn't go out because it was raining.'",
-      example:
-        "The inclement weather conditions precluded my departure from the premises.",
+      id: "w11",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '비가 와서 나갈 수 없었어요.'",
     },
     {
-      id: "w8",
-      prompt:
-        "Write a complex sentence (2-3 clauses) about a recent achievement.",
+      id: "w12",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '예상치 못한 상황으로 회의가 연기되었습니다.'",
     },
     {
-      id: "w9",
-      prompt:
-        "Paraphrase using advanced grammar structures: 'The meeting was postponed due to unforeseen circumstances.'",
+      id: "w13",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '최근에 달성한 성과에 대해 복잡한 문장(2-3절)으로 작성하세요.'",
+    },
+    {
+      id: "w14",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '그 회사는 시장 점유율을 높이기 위해 새로운 전략을 수립했습니다.'",
+    },
+    {
+      id: "w15",
+      prompt: "다음 한글 문장을 영어로 번역하세요: '만약 그가 더 일찍 도착했다면, 우리는 시간 내에 완료할 수 있었을 것입니다.'",
     },
   ],
 };
