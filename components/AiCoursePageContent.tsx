@@ -150,7 +150,11 @@ export default function AiCoursePageContent() {
               4주 AI 집중 코스
             </p>
             <h1 className="mt-4 text-2xl font-bold tracking-tight text-gray-900 sm:mt-6 sm:text-3xl md:text-4xl lg:text-5xl">
-              앱 학습의 한계를 넘어 — 입에서 영어가 실제로 나오기 시작합니다.
+              앱 학습의 한계를 넘어
+              <br />
+              입에서 영어가 실제로
+              <br />
+              나오기 시작합니다.
             </h1>
             <p className="mt-4 text-xs text-gray-600 sm:mt-6 sm:text-sm md:text-base lg:text-lg">
               ENGZ AI가 발음을 분석하고 나만의 문장을 설계해 4주 만에 전후
