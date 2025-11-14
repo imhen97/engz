@@ -10,21 +10,17 @@ import CountdownTimer from "@/components/level-test/CountdownTimer";
 interface GrammarQuestion {
   id: string;
   question: string;
-  type: "multiple-choice" | "fill-in-blank";
-  options?: string[];
-  correctAnswer: number | string;
-  blankPosition?: number;
+  type: "multiple-choice";
+  options: string[];
+  correctAnswer: number;
 }
 
 export default function GrammarTestPage() {
   const router = useRouter();
   const [questions, setQuestions] = useState<GrammarQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | string | null>(
-    null
-  );
-  const [fillInAnswer, setFillInAnswer] = useState("");
-  const [answers, setAnswers] = useState<(number | string)[]>([]);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [timings, setTimings] = useState<number[]>([]);
@@ -38,9 +34,13 @@ export default function GrammarTestPage() {
     }
 
     const data = JSON.parse(testData);
-    setQuestions(data.grammarQuestions || []);
-    setAnswers(new Array(data.grammarQuestions?.length || 0).fill(""));
-    setTimings(new Array(data.grammarQuestions?.length || 0).fill(0));
+    // 주관식 제거: multiple-choice만 필터링
+    const filteredQuestions = (data.grammarQuestions || []).filter(
+      (q: any) => q.type === "multiple-choice" && q.options
+    );
+    setQuestions(filteredQuestions);
+    setAnswers(new Array(filteredQuestions.length || 0).fill(-1));
+    setTimings(new Array(filteredQuestions.length || 0).fill(0));
   }, [router]);
 
   // Reset timer when question changes
@@ -48,7 +48,7 @@ export default function GrammarTestPage() {
     questionStartTime.current = Date.now();
   }, [currentIndex]);
 
-  const handleAnswerSelect = (answer: number | string) => {
+  const handleAnswerSelect = (answer: number) => {
     if (selectedAnswer !== null) return;
 
     // Calculate response time
@@ -71,7 +71,6 @@ export default function GrammarTestPage() {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(currentIndex + 1);
         setSelectedAnswer(null);
-        setFillInAnswer("");
         setShowFeedback(false);
       } else {
         const testData = JSON.parse(
@@ -93,14 +92,13 @@ export default function GrammarTestPage() {
     setTimings(newTimings);
 
     const newAnswers = [...answers];
-    newAnswers[currentIndex] = "";
+    newAnswers[currentIndex] = -1; // Mark as skipped/incorrect
     setAnswers(newAnswers);
 
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(currentIndex + 1);
         setSelectedAnswer(null);
-        setFillInAnswer("");
         setShowFeedback(false);
       } else {
         const testData = JSON.parse(
@@ -126,7 +124,6 @@ export default function GrammarTestPage() {
   }
 
   const currentQuestion = questions[currentIndex];
-  const isMultipleChoice = currentQuestion.type === "multiple-choice";
 
   return (
     <main className="min-h-screen bg-[#FFF8F4] text-black">
@@ -152,42 +149,18 @@ export default function GrammarTestPage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
-          className="rounded-2xl border border-gray-100 bg-white p-8 shadow-lg sm:rounded-3xl sm:p-10"
+          className="rounded-3xl border border-gray-100 bg-white p-8 shadow-lg sm:rounded-3xl sm:p-10"
         >
           <div className="mb-6">
-            <p className="text-sm font-medium text-[#F5472C]">
-              📝 Question {currentIndex + 1} / {questions.length}
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF6B3D]/70">
+              Question {currentIndex + 1} / {questions.length}
             </p>
-            <h2 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
-              {isMultipleChoice
-                ? currentQuestion.question
-                : currentQuestion.question.split("_____").map((part, i) => (
-                    <span key={i}>
-                      {part}
-                      {i <
-                        currentQuestion.question.split("_____").length - 1 && (
-                        <input
-                          type="text"
-                          value={fillInAnswer}
-                          onChange={(e) => setFillInAnswer(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" && fillInAnswer.trim()) {
-                              handleAnswerSelect(
-                                fillInAnswer.trim().toLowerCase()
-                              );
-                            }
-                          }}
-                          className="mx-2 rounded-lg border-2 border-[#F5472C] px-3 py-1 text-center font-semibold focus:outline-none focus:ring-2 focus:ring-[#F5472C]"
-                          placeholder="?"
-                          disabled={selectedAnswer !== null}
-                        />
-                      )}
-                    </span>
-                  ))}
+            <h2 className="mt-3 text-xl font-bold text-gray-900 sm:text-2xl">
+              {currentQuestion.question}
             </h2>
           </div>
 
-          {isMultipleChoice && currentQuestion.options && (
+          {currentQuestion.options && (
             <div className="space-y-3">
               {currentQuestion.options.map((option, index) => {
                 const isSelected = selectedAnswer === index;

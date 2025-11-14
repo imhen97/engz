@@ -551,9 +551,13 @@ export async function POST(request: NextRequest) {
       GRAMMAR_QUESTIONS[level as keyof typeof GRAMMAR_QUESTIONS];
     const writingPool = WRITING_PROMPTS[level as keyof typeof WRITING_PROMPTS];
 
-    // PRD: 20 vocab, 10 grammar, 5 writing questions
-    const vocabQuestions = shuffleArray([...vocabPool]).slice(0, 20);
-    const grammarQuestions = shuffleArray([...grammarPool]).slice(0, 10);
+    // 총 20문제: vocab 10문제, grammar 10문제 (모두 객관식), writing 5문제
+    const vocabQuestions = shuffleArray([...vocabPool]).slice(0, 10);
+    // 주관식 제거: multiple-choice만 필터링
+    const grammarPoolFiltered = grammarPool.filter(
+      (q) => q.type === "multiple-choice"
+    );
+    const grammarQuestions = shuffleArray([...grammarPoolFiltered]).slice(0, 10);
     const writingPrompts = shuffleArray([...writingPool]).slice(0, 5);
 
     return NextResponse.json({
