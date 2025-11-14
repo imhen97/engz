@@ -20,6 +20,7 @@ model User {
   subscriptionActive Boolean           @default(false)
   subscriptionId     String?
   stripeCustomerId   String?
+  role               String?           // "admin" | "coach" | null (for regular users)
   currentCourseId    String?
   currentCourse      Course?           @relation("CurrentCourse", fields: [currentCourseId], references: [id])
   currentRoutineId   String?
@@ -203,4 +204,24 @@ model LevelTestResult {
   aiMent             String? // Motivational English tagline (10 levels)
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt          DateTime @default(now())
+}
+
+// Admin Dashboard models
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("admin") // "admin" | "coach"
+  password  String   // Hashed password
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Log {
+  id        String   @id @default(cuid())
+  type      String   // "login", "payment", "error", "ai_feedback", "user_registered", "test_completed"
+  message   String
+  metadata  String?  @db.Text // JSON string for additional data
+  read      Boolean  @default(false) // Whether admin has read this log
+  createdAt DateTime @default(now())
 }

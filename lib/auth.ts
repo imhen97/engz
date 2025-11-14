@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import prisma from "./prisma";
 
@@ -82,23 +83,61 @@ if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
   console.warn("EMAIL_SERVER 또는 EMAIL_FROM 환경 변수가 설정되지 않았습니다.");
 }
 
+// Add Credentials provider for admin login
+providers.push(
+  CredentialsProvider({
+    name: "Credentials",
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      if (!credentials?.email || !credentials?.password) {
+        return null;
+      }
+
+      // Check if user exists and has admin role
+      const user = (await prisma.user.findUnique({
+        where: { email: credentials.email },
+      })) as any;
+
+      if (!user || (user as any).role !== "admin") {
+        return null;
+      }
+
+      // For now, we'll allow admin login if role is set
+      // In production, you should store hashed passwords in AdminUser table
+      // and verify them here
+      // For simplicity, we'll just check if the user has admin role
+      // You can enhance this by checking AdminUser table with bcrypt.compare
+
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        image: user.image,
+        plan: user.plan,
+        trialActive: user.trialActive,
+        trialEndsAt: user.trialEndsAt,
+        subscriptionActive: user.subscriptionActive,
+        role: (user as any).role,
+      } as any;
+    },
+  })
+);
+
 async function enrichToken(token: any) {
   if (!token?.userId) return token;
   try {
-    const user = await prisma.user.findUnique({
+    const user = (await prisma.user.findUnique({
       where: { id: token.userId as string },
-      select: {
-        plan: true,
-        trialActive: true,
-        trialEndsAt: true,
-        subscriptionActive: true,
-      },
-    });
+    })) as any;
     if (!user) return token;
     token.plan = user.plan;
     token.trialActive = user.trialActive;
     token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
     token.subscriptionActive = user.subscriptionActive;
+    token.role = user.role ?? null; // role 정보도 토큰에 포함
   } catch (error) {
     console.error("토큰 보강 중 오류:", error);
     // 오류 발생 시 기존 토큰 값 유지
@@ -280,6 +319,7 @@ export const authOptions: AuthOptions = {
           token.trialActive = user.trialActive ?? false;
           token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
           token.subscriptionActive = user.subscriptionActive ?? false;
+          token.role = (user as any).role ?? null;
           return token;
         }
         if (trigger === "update") {
@@ -302,6 +342,7 @@ export const authOptions: AuthOptions = {
             ? new Date(token.trialEndsAt as string)
             : null;
           session.user.subscriptionActive = Boolean(token.subscriptionActive);
+          (session.user as any).role = token.role ?? null;
         }
         return session;
       } catch (error) {

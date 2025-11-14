@@ -13,6 +13,7 @@ declare module "next-auth" {
       trialActive: boolean;
       trialEndsAt?: Date | null;
       subscriptionActive: boolean;
+      role?: string | null;
     } & DefaultSession["user"];
   }
 
@@ -21,6 +22,7 @@ declare module "next-auth" {
     trialActive: boolean;
     trialEndsAt: Date | null;
     subscriptionActive: boolean;
+    role?: string | null;
   }
 }
 
@@ -31,5 +33,6 @@ declare module "next-auth/jwt" {
     trialActive?: boolean;
     trialEndsAt?: string | null;
     subscriptionActive?: boolean;
+    role?: string | null;
   }
 }
