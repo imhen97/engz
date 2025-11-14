@@ -38,7 +38,13 @@ function buildFallbackInsights(result: LevelSummary) {
     en: levelKey,
   };
 
-  const feedback = `${levelInfo.ko} 학습자에 맞춰 어휘, 문법, 작문 실력을 균형 있게 다듬어야 합니다. 점수 분포를 보면 어휘 ${result.vocabScore}점, 문법 ${result.grammarScore}점, 작문 ${result.writingScore}점으로 나타납니다. 강점은 ${result.strengths ?? "어휘 이해"}이며, 약점은 ${
+  const feedback = `${
+    levelInfo.ko
+  } 학습자에 맞춰 어휘, 문법, 작문 실력을 균형 있게 다듬어야 합니다. 점수 분포를 보면 어휘 ${
+    result.vocabScore
+  }점, 문법 ${result.grammarScore}점, 작문 ${
+    result.writingScore
+  }점으로 나타납니다. 강점은 ${result.strengths ?? "어휘 이해"}이며, 약점은 ${
     result.weaknesses ?? "자연스러운 문장 구성"
   }입니다.`;
 
@@ -70,7 +76,7 @@ async function generateInsights(result: LevelSummary) {
         {
           role: "system",
           content:
-            "당신은 한국인 성인을 위한 프리미엄 영어 코칭 전문가입니다. 응답은 반드시 JSON 객체로 생성하세요. 구조는 {\"feedback\": \"...\", \"plan\": {\"week1\": \"...\", \"week2\": \"...\", \"week3\": \"...\", \"week4\": \"...\"}} 입니다. 한국어로 따뜻하고 구체적인 코칭 톤을 사용하세요. 점수와 결과를 참고해 학습 전략을 제안하고, 영어 문장을 예시로 1~2개 추가해도 좋습니다.",
+            '당신은 한국인 성인을 위한 프리미엄 영어 코칭 전문가입니다. 응답은 반드시 JSON 객체로 생성하세요. 구조는 {"feedback": "...", "plan": {"week1": "...", "week2": "...", "week3": "...", "week4": "..."}} 입니다. 한국어로 따뜻하고 구체적인 코칭 톤을 사용하세요. 점수와 결과를 참고해 학습 전략을 제안하고, 영어 문장을 예시로 1~2개 추가해도 좋습니다.',
         },
         {
           role: "user",
@@ -100,8 +106,7 @@ English Level Test Summary:
     };
 
     const feedback =
-      payload.feedback?.trim() ||
-      buildFallbackInsights(result).feedback;
+      payload.feedback?.trim() || buildFallbackInsights(result).feedback;
 
     const planLines = payload.plan
       ? [
@@ -112,8 +117,9 @@ English Level Test Summary:
         ].filter(Boolean)
       : null;
 
-    const planText =
-      planLines?.length ? planLines.join("\n") : buildFallbackInsights(result).planText;
+    const planText = planLines?.length
+      ? planLines.join("\n")
+      : buildFallbackInsights(result).planText;
 
     return { feedback, planText };
   } catch (error) {
@@ -195,5 +201,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
-

@@ -129,14 +129,23 @@ export default function GrammarTestPage() {
   const isMultipleChoice = currentQuestion.type === "multiple-choice";
 
   return (
-    <main className="min-h-screen bg-[#FFF8F5] text-black">
+    <main className="min-h-screen bg-[#FFF8F4] text-black">
       <NavBar />
       <div className="mx-auto w-full max-w-3xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
-        <ProgressBar
-          current={currentIndex + 1}
-          total={questions.length}
-          section="Grammar"
-        />
+        <div className="mb-6 flex items-center justify-between">
+          <ProgressBar
+            current={currentIndex + 1}
+            total={questions.length}
+            section="Grammar"
+          />
+          <div className="ml-4" key={currentIndex}>
+            <CountdownTimer
+              resetKey={currentIndex}
+              initialSeconds={10}
+              onTimeout={handleTimeout}
+            />
+          </div>
+        </div>
 
         <motion.div
           key={currentIndex}

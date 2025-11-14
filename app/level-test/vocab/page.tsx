@@ -138,8 +138,12 @@ export default function VocabTestPage() {
             total={questions.length}
             section="Vocabulary"
           />
-          <div className="ml-4">
-            <CountdownTimer initialSeconds={10} onTimeout={handleTimeout} />
+          <div className="ml-4" key={currentIndex}>
+            <CountdownTimer
+              resetKey={currentIndex}
+              initialSeconds={10}
+              onTimeout={handleTimeout}
+            />
           </div>
         </div>
 

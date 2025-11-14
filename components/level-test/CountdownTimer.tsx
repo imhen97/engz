@@ -1,29 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface CountdownTimerProps {
   initialSeconds: number;
   onTimeout: () => void;
   onTick?: (secondsLeft: number) => void;
+  resetKey?: string | number; // 문제가 바뀔 때 리셋하기 위한 key
 }
 
 export default function CountdownTimer({
   initialSeconds,
   onTimeout,
   onTick,
+  resetKey,
 }: CountdownTimerProps) {
   const [seconds, setSeconds] = useState(initialSeconds);
+  const timeoutCalled = useRef(false);
+
+  // 문제가 바뀔 때마다 타이머 리셋
+  useEffect(() => {
+    setSeconds(initialSeconds);
+    timeoutCalled.current = false;
+  }, [resetKey, initialSeconds]);
 
   useEffect(() => {
-    if (seconds <= 0) {
+    if (seconds <= 0 && !timeoutCalled.current) {
+      timeoutCalled.current = true;
       onTimeout();
       return;
     }
 
+    if (seconds <= 0) return;
+
     const timer = setInterval(() => {
       setSeconds((prev) => {
+        if (prev <= 1) {
+          if (!timeoutCalled.current) {
+            timeoutCalled.current = true;
+            onTimeout();
+          }
+          return 0;
+        }
         const newSeconds = prev - 1;
         if (onTick) {
           onTick(newSeconds);
