@@ -26,8 +26,8 @@ async function getStripeSubscriptions() {
         ? (sub.items.data[0].price.unit_amount / 100).toLocaleString("ko-KR")
         : "-",
       currency: sub.items.data[0]?.price?.currency?.toUpperCase() || "KRW",
-      currentPeriodStart: new Date(sub.current_period_start * 1000),
-      currentPeriodEnd: new Date(sub.current_period_end * 1000),
+      currentPeriodStart: new Date((sub as any).current_period_start * 1000),
+      currentPeriodEnd: new Date((sub as any).current_period_end * 1000),
     }));
   } catch (error) {
     console.error("Stripe API error:", error);
