@@ -127,12 +127,28 @@ export async function POST(request: NextRequest) {
 
     // Get or create user session
     const session = await getServerSession(authOptions);
-    const userId = session?.user?.id || "anonymous";
+    const userId = session?.user?.id;
+
+    // If no user, we need to handle this case
+    // Option 1: Create a temporary anonymous user
+    // Option 2: Make userId optional in schema (requires migration)
+    // For now, we'll use a workaround: create result only if user exists
+    // or create a system user for anonymous results
+
+    if (!userId) {
+      // For anonymous users, we'll still save the result but need a valid userId
+      // In production, you might want to create a system/anonymous user
+      // or make userId optional in the schema
+      return NextResponse.json(
+        { error: "User authentication required to save results" },
+        { status: 401 }
+      );
+    }
 
     // Save result to database
     const result = await prisma.levelTestResult.create({
       data: {
-        userId: userId !== "anonymous" ? userId : undefined,
+        userId: userId,
         vocabScore,
         grammarScore,
         writingScore,
