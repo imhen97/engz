@@ -5,16 +5,21 @@ import { motion } from "framer-motion";
 type ProgressBarProps = {
   current: number;
   total: number;
+  section?: string; // Optional section name for backward compatibility
 };
 
-export default function ProgressBar({ current, total }: ProgressBarProps) {
+export default function ProgressBar({
+  current,
+  total,
+  section,
+}: ProgressBarProps) {
   const progress = (current / total) * 100;
 
   return (
     <div className="w-full">
       <div className="mb-2 flex items-center justify-between text-sm">
         <span className="font-medium text-gray-700">
-          Question {current} of {total}
+          {section ? `${section}: ` : ""}Question {current} of {total}
         </span>
         <span className="text-gray-500">{Math.round(progress)}%</span>
       </div>
