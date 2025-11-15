@@ -2,33 +2,28 @@
 
 import { motion } from "framer-motion";
 
-interface ProgressBarProps {
+type ProgressBarProps = {
   current: number;
   total: number;
-  section: string;
-}
+};
 
-export default function ProgressBar({
-  current,
-  total,
-  section,
-}: ProgressBarProps) {
-  const percentage = Math.round((current / total) * 100);
+export default function ProgressBar({ current, total }: ProgressBarProps) {
+  const progress = (current / total) * 100;
 
   return (
-    <div className="flex-1">
-      <div className="mb-2 flex items-center gap-3">
-        <span className="text-sm font-semibold text-gray-700">{section}</span>
-        <span className="text-sm font-semibold text-[#F5472C]">
-          {current} / {total} ({percentage}%)
+    <div className="w-full">
+      <div className="mb-2 flex items-center justify-between text-sm">
+        <span className="font-medium text-gray-700">
+          Question {current} of {total}
         </span>
+        <span className="text-gray-500">{Math.round(progress)}%</span>
       </div>
-      <div className="h-3 w-full overflow-hidden rounded-full bg-gray-100">
+      <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
         <motion.div
+          className="h-full bg-[#FF6B3D]"
           initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
+          animate={{ width: `${progress}%` }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="h-full rounded-full bg-gradient-to-r from-[#F5472C] to-[#ff6a3c]"
         />
       </div>
     </div>

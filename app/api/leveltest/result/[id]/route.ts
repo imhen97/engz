@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
-
 import prisma from "@/lib/prisma";
 
 export async function GET(
@@ -9,32 +7,29 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
     const resultId = params.id;
 
-    // Handle temporary IDs for anonymous users
-    if (resultId.startsWith("temp_")) {
-      // Return data from sessionStorage (handled client-side)
+    if (!resultId) {
       return NextResponse.json(
-        { error: "Temporary result not found" },
-        { status: 404 }
+        { error: "Result ID is required" },
+        { status: 400 }
       );
     }
 
-    // For logged-in users, fetch from database
-    const userId = token?.userId as string | undefined;
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const result = await prisma.levelTestResult.findFirst({
-      where: {
-        id: resultId,
-        userId,
+    const result = await prisma.levelTestResult.findUnique({
+      where: { id: resultId },
+      select: {
+        id: true,
+        vocabScore: true,
+        grammarScore: true,
+        writingScore: true,
+        totalScore: true,
+        avgSpeed: true,
+        rankPercent: true,
+        overallLevel: true,
+        strengths: true,
+        weaknesses: true,
+        recommendedRoutine: true,
       },
     });
 
@@ -43,20 +38,13 @@ export async function GET(
     }
 
     return NextResponse.json({
-      id: result.id,
-      levelSelected: result.levelSelected,
-      vocabScore: result.vocabScore,
-      grammarScore: result.grammarScore,
-      writingScore: result.writingScore,
-      overallLevel: result.overallLevel,
-      strengths: result.strengths || "",
-      weaknesses: result.weaknesses || "",
-      recommendedRoutine: result.recommendedRoutine || "",
+      ...result,
+      percentile: result.rankPercent || 50,
     });
   } catch (error) {
-    console.error("❌ 결과 가져오기 실패:", error);
+    console.error("❌ 결과 조회 실패:", error);
     return NextResponse.json(
-      { error: "결과를 가져오는 중 오류가 발생했습니다." },
+      { error: "결과를 조회하는 중 오류가 발생했습니다." },
       { status: 500 }
     );
   }
