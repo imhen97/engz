@@ -12,9 +12,9 @@ export default async function AdminDashboardPage() {
 
   // Prepare user growth data
   const userGrowthData = stats.userGrowth.map((item) => ({
-    month: new Date(item.createdAt).toLocaleDateString("ko-KR", {
-      month: "short",
-    }),
+    month: item.createdAt instanceof Date 
+      ? item.createdAt.toLocaleDateString("ko-KR", { month: "short" })
+      : new Date(item.createdAt).toLocaleDateString("ko-KR", { month: "short" }),
     users: item._count,
   }));
 
