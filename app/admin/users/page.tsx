@@ -27,7 +27,11 @@ export default async function AdminUsersPage() {
     },
   });
 
-  const getSubscriptionStatus = (user: UserWithSubscription) => {
+  const getSubscriptionStatus = (user: {
+    subscriptionActive: boolean;
+    trialActive: boolean;
+    trialEndsAt: Date | null;
+  }) => {
     if (user.subscriptionActive) return "구독 중";
     if (
       user.trialActive &&
@@ -56,13 +60,18 @@ export default async function AdminUsersPage() {
           {
             key: "levelTestResults",
             label: "레벨",
-            render: (value) =>
-              value && value.length > 0 ? value[0].overallLevel : "미측정",
+            render: (value) => {
+              if (Array.isArray(value) && value.length > 0) {
+                return value[0].overallLevel || "미측정";
+              }
+              return "미측정";
+            },
           },
           {
             key: "plan",
             label: "플랜",
             render: (value) => {
+              if (typeof value !== "string") return "-";
               const planMap: Record<string, string> = {
                 free: "무료",
                 monthly: "월간",
@@ -79,13 +88,30 @@ export default async function AdminUsersPage() {
           {
             key: "trialEndsAt",
             label: "체험 종료일",
-            render: (value) =>
-              value ? new Date(value).toLocaleDateString("ko-KR") : "-",
+            render: (value) => {
+              if (!value) return "-";
+              if (value instanceof Date) {
+                return value.toLocaleDateString("ko-KR");
+              }
+              if (typeof value === "string") {
+                return new Date(value).toLocaleDateString("ko-KR");
+              }
+              return "-";
+            },
           },
           {
             key: "createdAt",
             label: "가입일",
-            render: (value) => new Date(value).toLocaleDateString("ko-KR"),
+            render: (value) => {
+              if (!value) return "-";
+              if (value instanceof Date) {
+                return value.toLocaleDateString("ko-KR");
+              }
+              if (typeof value === "string") {
+                return new Date(value).toLocaleDateString("ko-KR");
+              }
+              return "-";
+            },
           },
         ]}
         searchable

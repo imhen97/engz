@@ -89,14 +89,28 @@ export default async function AdminDashboardPage() {
             {
               key: "createdAt",
               label: "시간",
-              render: (value) =>
-                new Date(value).toLocaleString("ko-KR", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }),
+              render: (value) => {
+                if (!value) return "-";
+                if (value instanceof Date) {
+                  return value.toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  });
+                }
+                if (typeof value === "string") {
+                  return new Date(value).toLocaleString("ko-KR", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  });
+                }
+                return "-";
+              },
             },
           ]}
         />

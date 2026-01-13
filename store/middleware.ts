@@ -10,15 +10,14 @@ export const loggerMiddleware = <T extends object>(
 ): StateCreator<T> => {
   return (set, get, api) => {
     const configResult = config(
-      (...args) => {
+      (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: boolean) => {
         if (process.env.NODE_ENV === "development") {
-          const [partial, replace, action] = args;
-          console.log(`[${name || "Store"}]`, action || "action", {
+          console.log(`[${name || "Store"}]`, "action", {
             previous: get(),
             update: partial,
           });
         }
-        set(...args);
+        (set as any)(partial, replace);
       },
       get,
       api
@@ -63,8 +62,8 @@ export const createPersistMiddleware = <T extends object>(
       }
 
       const configResult = config(
-        (...args) => {
-          set(...args);
+        (partial: T | Partial<T> | ((state: T) => T | Partial<T>), replace?: boolean) => {
+          (set as any)(partial, replace);
           
           // Persist state after update
           if (typeof window !== "undefined") {

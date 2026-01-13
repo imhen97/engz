@@ -68,15 +68,15 @@ export const POST = withErrorHandler(
 
     // Update writing answers with correct results
     writingAnswers.forEach((answer, idx) => {
-      answer.correct = writingResults[idx];
+      answer.isCorrect = writingResults[idx];
     });
 
     // Calculate category scores
     const vocabScore = Math.round(
-      (vocabAnswers.filter((a) => a.correct).length / vocabAnswers.length) * 100
+      (vocabAnswers.filter((a) => a.isCorrect).length / vocabAnswers.length) * 100
     );
     const grammarScore = Math.round(
-      (grammarAnswers.filter((a) => a.correct).length / grammarAnswers.length) *
+      (grammarAnswers.filter((a) => a.isCorrect).length / grammarAnswers.length) *
         100
     );
     const writingScore = Math.round(
@@ -84,12 +84,12 @@ export const POST = withErrorHandler(
     );
 
     // Calculate accuracy
-    const totalCorrect = answers.filter((a) => a.correct).length;
+    const totalCorrect = answers.filter((a) => a.isCorrect).length;
     const accuracy = totalCorrect / answers.length;
 
     // Calculate average speed
     const totalResponseTime = answers.reduce(
-      (sum, a) => sum + a.responseTime,
+      (sum, a) => sum + (a.timeSpent || 0),
       0
     );
     const avgSpeed = totalResponseTime / answers.length;

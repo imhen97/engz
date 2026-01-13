@@ -38,7 +38,13 @@ export default async function AdminFeedbackPage() {
           {
             key: "user",
             label: "사용자",
-            render: (value) => value?.name || value?.email || "-",
+            render: (value) => {
+              if (value && typeof value === "object" && "name" in value) {
+                const user = value as { name: string | null; email: string | null };
+                return user.name || user.email || "-";
+              }
+              return "-";
+            },
           },
           {
             key: "overallLevel",
@@ -47,29 +53,47 @@ export default async function AdminFeedbackPage() {
           {
             key: "aiFeedback",
             label: "AI 피드백",
-            render: (value) =>
-              value ? (
-                <div className="max-w-md truncate" title={value}>
-                  {value.substring(0, 100)}...
-                </div>
-              ) : (
-                "-"
-              ),
+            render: (value) => {
+              if (typeof value === "string" && value) {
+                return (
+                  <div className="max-w-md truncate" title={value}>
+                    {value.substring(0, 100)}...
+                  </div>
+                );
+              }
+              return "-";
+            },
           },
           {
             key: "recommendedRoutine",
             label: "추천 루틴",
-            render: (value) => value || "-",
+            render: (value) => {
+              if (typeof value === "string" && value) {
+                return value;
+              }
+              return "-";
+            },
           },
           {
             key: "createdAt",
             label: "날짜",
-            render: (value) =>
-              new Date(value).toLocaleDateString("ko-KR", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              }),
+            render: (value) => {
+              if (value instanceof Date) {
+                return value.toLocaleDateString("ko-KR", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                });
+              }
+              if (typeof value === "string") {
+                return new Date(value).toLocaleDateString("ko-KR", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                });
+              }
+              return "-";
+            },
           },
         ]}
         searchable

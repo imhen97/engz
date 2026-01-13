@@ -60,7 +60,13 @@ export default async function AdminTestsPage() {
           {
             key: "user",
             label: "사용자",
-            render: (value) => value?.name || value?.email || "-",
+            render: (value) => {
+              if (value && typeof value === "object" && "name" in value) {
+                const user = value as { name: string | null; email: string | null };
+                return user.name || user.email || "-";
+              }
+              return "-";
+            },
           },
           {
             key: "vocabScore",
@@ -77,17 +83,32 @@ export default async function AdminTestsPage() {
           {
             key: "totalScore",
             label: "총점",
-            render: (value) => `${value}점`,
+            render: (value) => {
+              if (typeof value === "number") {
+                return `${value}점`;
+              }
+              return "-";
+            },
           },
           {
             key: "avgSpeed",
             label: "평균 속도",
-            render: (value) => (value ? `${value.toFixed(1)}초` : "-"),
+            render: (value) => {
+              if (typeof value === "number") {
+                return `${value.toFixed(1)}초`;
+              }
+              return "-";
+            },
           },
           {
             key: "rankPercent",
             label: "순위",
-            render: (value) => (value ? `상위 ${value}%` : "-"),
+            render: (value) => {
+              if (typeof value === "number") {
+                return `상위 ${value}%`;
+              }
+              return "-";
+            },
           },
           {
             key: "overallLevel",
@@ -96,7 +117,15 @@ export default async function AdminTestsPage() {
           {
             key: "createdAt",
             label: "날짜",
-            render: (value) => new Date(value).toLocaleDateString("ko-KR"),
+            render: (value) => {
+              if (value instanceof Date) {
+                return value.toLocaleDateString("ko-KR");
+              }
+              if (typeof value === "string") {
+                return new Date(value).toLocaleDateString("ko-KR");
+              }
+              return "-";
+            },
           },
         ]}
         searchable

@@ -17,7 +17,10 @@ async function getStripeSubscriptions(): Promise<PaymentData[]> {
     });
 
     return subscriptions.data.map((sub): PaymentData => {
-      const subscription = sub as Stripe.Subscription;
+      const subscription = sub as Stripe.Subscription & {
+        current_period_start: number;
+        current_period_end: number;
+      };
       const customer =
         typeof subscription.customer === "object"
           ? (subscription.customer as Stripe.Customer)
@@ -113,6 +116,7 @@ export default async function AdminPaymentsPage() {
             key: "stripePlan",
             label: "플랜",
             render: (value) => {
+              if (typeof value !== "string") return "-";
               const planMap: Record<string, string> = {
                 monthly: "월간",
                 annual: "연간",
@@ -124,6 +128,7 @@ export default async function AdminPaymentsPage() {
             key: "stripeStatus",
             label: "상태",
             render: (value) => {
+              if (typeof value !== "string") return "-";
               const statusMap: Record<string, string> = {
                 active: "활성",
                 canceled: "취소됨",
@@ -137,13 +142,26 @@ export default async function AdminPaymentsPage() {
           {
             key: "amount",
             label: "금액",
-            render: (value) => (value !== "-" ? `₩${value}` : "-"),
+            render: (value) => {
+              if (typeof value === "string" && value !== "-") {
+                return `₩${value}`;
+              }
+              return "-";
+            },
           },
           {
             key: "renewalDate",
             label: "갱신일",
-            render: (value) =>
-              value ? new Date(value).toLocaleDateString("ko-KR") : "-",
+            render: (value) => {
+              if (!value) return "-";
+              if (value instanceof Date) {
+                return value.toLocaleDateString("ko-KR");
+              }
+              if (typeof value === "string") {
+                return new Date(value).toLocaleDateString("ko-KR");
+              }
+              return "-";
+            },
           },
         ]}
         searchable
