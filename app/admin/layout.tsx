@@ -6,6 +6,8 @@ import Sidebar from "@/components/admin/Sidebar";
 import Topbar from "@/components/admin/Topbar";
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
 }: {

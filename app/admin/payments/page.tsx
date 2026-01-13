@@ -3,6 +3,8 @@ import DataTable from "@/components/admin/DataTable";
 import { requireAdmin } from "@/lib/admin";
 import { getStripe } from "@/lib/stripe";
 
+export const dynamic = 'force-dynamic';
+
 async function getStripeSubscriptions() {
   try {
     const stripe = getStripe();

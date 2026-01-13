@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import DataTable from "@/components/admin/DataTable";
 import { requireAdmin } from "@/lib/admin";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminFeedbackPage() {
   await requireAdmin();
 
