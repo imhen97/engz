@@ -6,7 +6,27 @@ const PROTECTED_PATHS = ["/dashboard", "/courses"];
 const ADMIN_PATHS = ["/admin"];
 
 export async function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  const { pathname } = request.nextUrl;
+
+  // Skip middleware for these paths entirely to prevent redirect loops
+  if (
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/static") ||
+    pathname === "/favicon.ico" ||
+    pathname === "/signup" ||
+    pathname === "/" ||
+    pathname.startsWith("/pricing") ||
+    pathname.startsWith("/testimonials") ||
+    pathname.startsWith("/coming-soon")
+  ) {
+    return NextResponse.next();
+  }
+
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
   // Handle admin routes
   if (pathname.startsWith("/admin")) {
@@ -15,11 +35,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
     if (!token?.userId) {
       const url = new URL("/admin/login", request.url);
       url.searchParams.set("callbackUrl", pathname);
@@ -27,7 +42,6 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check if user has admin role from JWT token
-    // Role is included in token by auth.ts JWT callback
     if (token.role !== "admin") {
       const url = new URL("/admin/login", request.url);
       url.searchParams.set("error", "unauthorized");
@@ -37,33 +51,38 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Handle regular protected paths
-  const needsProtection =
-    PROTECTED_PATHS.some((path) => pathname.startsWith(path)) ||
-    pathname === "/level-test/result";
+  // Protected routes - only redirect if NO token
+  const protectedRoutes = [
+    "/dashboard",
+    "/courses",
+    "/learning-room",
+    "/account",
+    "/level-test/result",
+  ];
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
 
-  if (!needsProtection) {
-    return NextResponse.next();
+  if (isProtectedRoute && !token) {
+    const signInUrl = new URL("/signup", request.url);
+    signInUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(signInUrl);
   }
 
-  const token = await getToken({
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  // Check trial/subscription for protected routes with token
+  if (isProtectedRoute && token) {
+    const trialActive = Boolean(token.trialActive);
+    const subscriptionActive = Boolean(token.subscriptionActive);
 
-  if (!token) {
-    const url = new URL("/signup", request.url);
-    url.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(url);
-  }
-
-  const trialActive = Boolean(token.trialActive);
-  const subscriptionActive = Boolean(token.subscriptionActive);
-
-  if (!trialActive && !subscriptionActive) {
-    const url = new URL("/pricing", request.url);
-    url.searchParams.set("from", pathname);
-    return NextResponse.redirect(url);
+    // Allow access if trial is active OR subscription is active
+    // Don't redirect if user just logged in (trialActive might not be set yet)
+    if (!trialActive && !subscriptionActive) {
+      // Only redirect to pricing if user is definitely not in trial
+      // This prevents redirect loops for new users
+      const url = new URL("/pricing", request.url);
+      url.searchParams.set("from", pathname);
+      return NextResponse.redirect(url);
+    }
   }
 
   return NextResponse.next();
@@ -71,9 +90,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/courses/:path*",
-    "/admin/:path*",
-    "/level-test/result",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };

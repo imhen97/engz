@@ -87,34 +87,12 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
   }
 }
 
-// Email provider - only add if both EMAIL_SERVER and EMAIL_FROM are set
-if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
-  try {
-    // Use require for dynamic loading (works in both CommonJS and ESM contexts)
-    const EmailProviderModule = require("next-auth/providers/email");
-    const EmailProvider = EmailProviderModule.default || EmailProviderModule;
-    
-    if (EmailProvider) {
-      providers.push(
-        EmailProvider({
-          server: process.env.EMAIL_SERVER,
-          from: process.env.EMAIL_FROM,
-        })
-      );
-      console.log("✅ Email provider 추가됨");
-    } else {
-      console.warn("⚠️ Email provider를 찾을 수 없습니다.");
-    }
-  } catch (error) {
-    console.error("❌ 이메일 제공자를 로드하지 못했습니다:", error);
-    console.warn("⚠️ Email provider 없이 계속 진행합니다.");
-    // Continue without email provider - not critical
-  }
-} else {
-  if (process.env.NODE_ENV === "development") {
-    console.warn("⚠️ EMAIL_SERVER 또는 EMAIL_FROM 환경 변수가 설정되지 않았습니다. Email 로그인을 사용하려면 설정해 주세요.");
-  }
-}
+// Email provider removed to fix /api/auth/session endpoint error
+// EmailProvider was causing "Load failed" errors because the module couldn't be loaded
+// If you need email authentication in the future:
+// 1. Install nodemailer: pnpm add nodemailer
+// 2. Uncomment and fix the EmailProvider code below
+// 3. Make sure EMAIL_SERVER and EMAIL_FROM environment variables are set
 
 // Add Credentials provider for admin login
 providers.push(
@@ -534,11 +512,48 @@ export const authOptions: AuthOptions = {
         if (user) {
           console.log("✅ JWT 토큰 생성 - 사용자:", user.id, user.email);
           token.userId = user.id;
-          token.plan = user.plan ?? "free";
-          token.trialActive = user.trialActive ?? false;
-          token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
-          token.subscriptionActive = user.subscriptionActive ?? false;
-          token.role = (user.role as UserRole) ?? null;
+          
+          // Always fetch latest user data from database to ensure trialActive is up-to-date
+          // This is especially important for new users where createUser event might run after JWT creation
+          try {
+            const dbUser = await prisma.user.findUnique({
+              where: { id: user.id },
+              select: {
+                plan: true,
+                trialActive: true,
+                trialEndsAt: true,
+                subscriptionActive: true,
+                role: true,
+              },
+            });
+            
+            if (dbUser) {
+              token.plan = dbUser.plan ?? "free";
+              token.trialActive = dbUser.trialActive ?? false;
+              token.trialEndsAt = dbUser.trialEndsAt?.toISOString() ?? null;
+              token.subscriptionActive = dbUser.subscriptionActive ?? false;
+              token.role = (dbUser.role as UserRole) ?? null;
+              console.log("✅ JWT 토큰에 최신 DB 데이터 반영:", {
+                trialActive: token.trialActive,
+                subscriptionActive: token.subscriptionActive,
+              });
+            } else {
+              // Fallback to user object if DB query fails
+              token.plan = user.plan ?? "free";
+              token.trialActive = user.trialActive ?? false;
+              token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
+              token.subscriptionActive = user.subscriptionActive ?? false;
+              token.role = (user.role as UserRole) ?? null;
+            }
+          } catch (dbError) {
+            console.error("❌ JWT 콜백에서 DB 조회 실패, user 객체 사용:", dbError);
+            // Fallback to user object if DB query fails
+            token.plan = user.plan ?? "free";
+            token.trialActive = user.trialActive ?? false;
+            token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
+            token.subscriptionActive = user.subscriptionActive ?? false;
+            token.role = (user.role as UserRole) ?? null;
+          }
           
           if (account) {
             token.provider = account.provider;

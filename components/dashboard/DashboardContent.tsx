@@ -48,10 +48,12 @@ export default function DashboardContent() {
   useEffect(() => {
     console.log("🔵 DashboardContent - Status:", status, "Session:", !!session);
     
-    // 인증되지 않은 경우 로그인 페이지로 리다이렉트
+    // Only redirect if we're SURE there's no session (not loading)
+    // This prevents redirect loops
     if (status === "unauthenticated") {
       console.log("❌ 인증되지 않음 - 로그인 페이지로 리다이렉트");
-      router.push("/signup?callbackUrl=/dashboard");
+      // Use replace instead of push to avoid adding to history
+      router.replace("/signup?callbackUrl=/dashboard");
       return;
     }
 
@@ -63,9 +65,12 @@ export default function DashboardContent() {
       const trialActive = session.user.trialActive ?? false;
       const subscriptionActive = session.user.subscriptionActive ?? false;
 
+      // Only redirect to pricing if we're CERTAIN user has no trial/subscription
+      // Don't redirect immediately for new users (middleware will handle it)
       if (!trialActive && !subscriptionActive) {
         console.log("❌ 체험 기간 종료 - 결제 페이지로 리다이렉트");
-        router.push("/pricing");
+        // Use replace to avoid redirect loop
+        router.replace("/pricing");
         return;
       }
 
