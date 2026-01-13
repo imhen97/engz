@@ -19,14 +19,36 @@ interface DashboardData {
 }
 
 export default function DashboardContent() {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession({
+    required: false,
+    refetchInterval: 5, // Refetch session every 5 seconds if loading
+  });
   const router = useRouter();
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
     null
   );
   const [loading, setLoading] = useState(true);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
+
+  // Timeout for loading state - if stuck in loading for more than 10 seconds, force refresh
+  useEffect(() => {
+    if (status === "loading") {
+      const timeout = setTimeout(() => {
+        console.warn("⚠️ 세션 로딩이 10초 이상 지속됨 - 페이지 새로고침");
+        setLoadingTimeout(true);
+        // Force session refetch
+        window.location.reload();
+      }, 10000);
+
+      return () => clearTimeout(timeout);
+    } else {
+      setLoadingTimeout(false);
+    }
+  }, [status]);
 
   useEffect(() => {
+    console.log("🔵 DashboardContent - Status:", status, "Session:", !!session);
+    
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
     if (status === "unauthenticated") {
       console.log("❌ 인증되지 않음 - 로그인 페이지로 리다이렉트");
@@ -36,6 +58,8 @@ export default function DashboardContent() {
 
     // 로그인 상태이고 세션이 있으면 데이터 가져오기
     if (status === "authenticated" && session?.user) {
+      console.log("✅ 인증됨 - 사용자:", session.user.email);
+      
       // 7일 체험 기간 체크
       const trialActive = session.user.trialActive ?? false;
       const subscriptionActive = session.user.subscriptionActive ?? false;
@@ -47,14 +71,21 @@ export default function DashboardContent() {
       }
 
       // 대시보드 데이터 가져오기
+      console.log("📊 대시보드 데이터 가져오기 시작");
       fetch("/api/dashboard/data")
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then((data) => {
+          console.log("✅ 대시보드 데이터 가져오기 성공:", data);
           setDashboardData(data);
           setLoading(false);
         })
         .catch((error) => {
-          console.error("대시보드 데이터 가져오기 실패:", error);
+          console.error("❌ 대시보드 데이터 가져오기 실패:", error);
           setLoading(false);
         });
     }
@@ -65,8 +96,16 @@ export default function DashboardContent() {
     return (
       <main className="min-h-screen bg-[#FFF8F5] text-black">
         <NavBar />
-        <div className="flex min-h-screen items-center justify-center">
-          <p className="text-sm text-gray-500">로딩 중…</p>
+        <div className="flex min-h-screen flex-col items-center justify-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#F5472C] border-t-transparent" />
+          <p className="text-sm text-gray-500">
+            {loadingTimeout ? "세션을 확인하는 중…" : "로딩 중…"}
+          </p>
+          {loadingTimeout && (
+            <p className="text-xs text-gray-400">
+              시간이 오래 걸리면 페이지를 새로고침해 주세요.
+            </p>
+          )}
         </div>
       </main>
     );
