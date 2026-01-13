@@ -178,13 +178,8 @@ export default function EngzLandingFull() {
         id="ceo"
         className="py-12 bg-gray-50 border-t border-gray-100 sm:py-16 md:py-20 lg:py-24"
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
-          <div className="flex justify-center">
-            <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-gray-100 bg-gradient-to-br from-[#F5472C] to-[#ff6a3c] flex items-center justify-center text-white text-4xl sm:text-5xl md:text-6xl font-bold relative">
-            </div>
-          </div>
-
-          <div className="text-center md:text-left">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+          <div className="text-center">
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
