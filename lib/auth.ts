@@ -283,9 +283,10 @@ export const authOptions: AuthOptions = {
         // callbackUrl이 있으면 그대로 사용
         if (url.startsWith("/")) {
           // 기본 홈페이지("/")가 아닌 경우에만 사용
-          if (url !== "/" && url !== baseUrl) {
-            console.log("✅ Redirect:", `${baseUrl}${url}`);
-            return `${baseUrl}${url}`;
+          if (url !== "/") {
+            const fullUrl = `${baseUrl}${url}`;
+            console.log("✅ Redirect (경로):", fullUrl);
+            return fullUrl;
           }
         }
         // 외부 URL이면 baseUrl과 비교
@@ -294,13 +295,22 @@ export const authOptions: AuthOptions = {
           if (urlObj.origin === baseUrl) {
             const pathname = urlObj.pathname;
             // 기본 홈페이지가 아닌 경우에만 사용
-            if (pathname !== "/" && pathname !== baseUrl) {
-              console.log("✅ Redirect:", url);
+            if (pathname !== "/") {
+              console.log("✅ Redirect (전체 URL):", url);
               return url;
             }
+          } else {
+            // 외부 URL이면 그대로 반환 (보안상 위험할 수 있으므로 주의)
+            console.log("⚠️ 외부 URL 리다이렉트:", url);
+            return url;
           }
         } catch {
-          // URL 파싱 실패 시 기본값 반환
+          // URL 파싱 실패 시 경로로 처리
+          if (url.startsWith("/") && url !== "/") {
+            const fullUrl = `${baseUrl}${url}`;
+            console.log("✅ Redirect (파싱 실패 후 경로 처리):", fullUrl);
+            return fullUrl;
+          }
         }
         // 기본값은 /learning-room (ENGZ AI Learning Room)
         console.log("✅ Redirect 기본값:", `${baseUrl}/learning-room`);

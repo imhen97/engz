@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -86,14 +87,31 @@ const SECTION_DETAILS = [
 
 export default function LevelTestResultPage() {
   const router = useRouter();
+  const { status } = useSession();
   const [result, setResult] = useState<LevelResult | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("🔎 LevelTestResult status:", status);
+  }, [status]);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/signup?callbackUrl=/level-test/result");
+    }
+  }, [status, router]);
+
+  useEffect(() => {
+    if (status !== "authenticated") {
+      return;
+    }
+
     let isMounted = true;
+    const controller = new AbortController();
 
     const fetchLatestResult = async () => {
+      console.log("🔎 Fetching /api/leveltest/result/latest …");
       setLoading(true);
       setError(null);
 
@@ -103,10 +121,11 @@ export default function LevelTestResultPage() {
           headers: {
             "Content-Type": "application/json",
           },
+          signal: controller.signal,
         });
 
         if (response.status === 401) {
-          router.push("/signup?callbackUrl=/level-test/start");
+          router.replace("/signup?callbackUrl=/level-test/result");
           return;
         }
 
@@ -123,6 +142,10 @@ export default function LevelTestResultPage() {
           });
         }
       } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return;
+        }
+
         console.error("❌ 레벨 테스트 결과 조회 실패:", err);
         if (isMounted) {
           setError(
@@ -142,8 +165,9 @@ export default function LevelTestResultPage() {
 
     return () => {
       isMounted = false;
+      controller.abort();
     };
-  }, [router]);
+  }, [status, router]);
 
   const levelInfo = useMemo(() => {
     if (!result) {
@@ -157,6 +181,30 @@ export default function LevelTestResultPage() {
       : "custom";
     return LEVEL_DESCRIPTIONS[key] ?? LEVEL_DESCRIPTIONS.custom;
   }, [result]);
+
+  if (status === "loading") {
+    return (
+      <main className="min-h-screen bg-[#FFF8F4] text-black">
+        <NavBar />
+        <div className="flex min-h-[60vh] items-center justify-center gap-3 text-sm text-gray-600">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#FF6B3D] border-t-transparent" />
+          로그인 상태를 확인하는 중입니다…
+        </div>
+      </main>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <main className="min-h-screen bg-[#FFF8F4] text-black">
+        <NavBar />
+        <div className="flex min-h-[60vh] items-center justify-center gap-3 text-sm text-gray-600">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#FF6B3D] border-t-transparent" />
+          리다이렉트 중…
+        </div>
+      </main>
+    );
+  }
 
   if (loading) {
     return (

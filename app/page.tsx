@@ -181,15 +181,6 @@ export default function EngzLandingFull() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="flex justify-center">
             <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-gray-100 bg-gradient-to-br from-[#F5472C] to-[#ff6a3c] flex items-center justify-center text-white text-4xl sm:text-5xl md:text-6xl font-bold relative">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/profile.jpeg"
-                alt="CEO 김해나 프로필"
-                className="object-cover w-full h-full absolute inset-0"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
             </div>
           </div>
 

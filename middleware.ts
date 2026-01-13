@@ -38,9 +38,9 @@ export async function middleware(request: NextRequest) {
   }
 
   // Handle regular protected paths
-  const needsProtection = PROTECTED_PATHS.some((path) =>
-    pathname.startsWith(path)
-  );
+  const needsProtection =
+    PROTECTED_PATHS.some((path) => pathname.startsWith(path)) ||
+    pathname === "/level-test/result";
 
   if (!needsProtection) {
     return NextResponse.next();
@@ -70,5 +70,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/courses/:path*", "/admin/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/courses/:path*",
+    "/admin/:path*",
+    "/level-test/result",
+  ],
 };

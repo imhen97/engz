@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -11,14 +11,87 @@ import SignInForm from "@/components/auth/SignInForm";
 export default function SignupPageContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [hasRedirected, setHasRedirected] = useState(false);
+
+  const safeCallbackUrl = useMemo(() => {
+    // 1. URL 파라미터에서 callbackUrl 확인
+    let rawCallbackUrl = searchParams.get("callbackUrl");
+
+    // 2. URL 파라미터에 없으면 sessionStorage에서 확인 (OAuth 리다이렉트 후)
+    if (!rawCallbackUrl && typeof window !== "undefined") {
+      rawCallbackUrl = sessionStorage.getItem("authCallbackUrl");
+      // 사용 후 삭제
+      if (rawCallbackUrl) {
+        sessionStorage.removeItem("authCallbackUrl");
+      }
+    }
+
+    if (!rawCallbackUrl) {
+      return "/dashboard";
+    }
+
+    if (rawCallbackUrl.startsWith("/")) {
+      return rawCallbackUrl;
+    }
+
+    try {
+      if (typeof window !== "undefined") {
+        const resolved = new URL(rawCallbackUrl, window.location.origin);
+
+        if (resolved.origin === window.location.origin) {
+          return `${resolved.pathname}${resolved.search}${resolved.hash}`;
+        }
+      }
+    } catch (error) {
+      console.warn("Invalid callbackUrl received, falling back to dashboard.", {
+        rawCallbackUrl,
+        error,
+      });
+    }
+
+    return "/dashboard";
+  }, [searchParams]);
 
   useEffect(() => {
-    // 로그인 상태면 대시보드로 리다이렉트
-    if (status === "authenticated" && session?.user) {
-      console.log("✅ 이미 로그인됨 - 대시보드로 리다이렉트");
-      router.push("/dashboard");
+    // 로그인 상태면 대시보드로 리다이렉트 (한 번만 실행)
+    if (status === "authenticated" && session?.user && !hasRedirected) {
+      // 현재 경로가 이미 목적지와 같으면 리다이렉트하지 않음
+      if (typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        if (currentPath === safeCallbackUrl) {
+          console.log("✅ 이미 목적지 페이지에 있음, 리다이렉트 스킵");
+          return;
+        }
+      }
+
+      console.log(
+        "✅ 이미 로그인됨 - 콜백 경로로 리다이렉트:",
+        safeCallbackUrl
+      );
+      console.log(
+        "✅ 현재 URL:",
+        typeof window !== "undefined" ? window.location.href : "N/A"
+      );
+      setHasRedirected(true);
+
+      // 강제 리다이렉트 (window.location.replace 사용 - 히스토리에 남지 않음)
+      if (typeof window !== "undefined") {
+        // window.location.replace를 사용하여 더 확실하게 리다이렉트
+        console.log(
+          "✅ window.location.replace로 리다이렉트 시도:",
+          safeCallbackUrl
+        );
+        // 짧은 딜레이 후 리다이렉트 (React 상태 업데이트 완료 대기)
+        setTimeout(() => {
+          window.location.replace(safeCallbackUrl);
+        }, 50);
+      } else {
+        console.log("✅ router.replace로 리다이렉트 시도:", safeCallbackUrl);
+        router.replace(safeCallbackUrl);
+      }
     }
-  }, [status, session, router]);
+  }, [status, session, router, safeCallbackUrl, hasRedirected]);
 
   // 로딩 중이거나 이미 로그인된 경우
   if (status === "loading") {
@@ -32,7 +105,10 @@ export default function SignupPageContent() {
   if (status === "authenticated" && session?.user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-sm text-gray-500">리다이렉트 중…</p>
+        <div className="text-center">
+          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-[#FF6B3D] border-t-transparent mx-auto"></div>
+          <p className="text-sm text-gray-500">리다이렉트 중…</p>
+        </div>
       </div>
     );
   }
@@ -76,4 +152,3 @@ export default function SignupPageContent() {
     </div>
   );
 }
-
