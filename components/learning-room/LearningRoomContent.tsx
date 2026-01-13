@@ -131,8 +131,8 @@ export default function LearningRoomContent() {
   const routineData = data ? {
     id: routine?.id || "",
     theme: routine?.theme || "",
-    startDate: routine?.startDate?.toISOString() || "",
-    endDate: routine?.endDate?.toISOString() || "",
+    startDate: routine?.startDate ? String(routine.startDate) : "",
+    endDate: routine?.endDate ? String(routine.endDate) : "",
     completed: routine?.completed || false,
     progress: data.progress || 0,
     currentWeek: data.currentWeek || 1,
