@@ -82,7 +82,7 @@ export default function DashboardContent() {
           setLoading(false);
         });
     }
-  }, [status, session, router]);
+  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 로딩 중
   if (status === "loading" || loading) {

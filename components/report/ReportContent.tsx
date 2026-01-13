@@ -48,7 +48,7 @@ export default function ReportContent() {
           setLoading(false);
         });
     }
-  }, [status]); // Only depend on status to prevent infinite loop
+  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (status === "loading" || loading) {
     return (

@@ -73,13 +73,8 @@ export default function LearningRoomContent() {
     if (status === "unauthenticated") {
       hasRedirected.current = true;
       router.push("/signup?callbackUrl=/learning-room");
-      return;
     }
-    
-    // REMOVED: trialActive/subscriptionActive check
-    // This was causing infinite redirect loops for new users
-    // The check is now handled by the page itself or subscription banner
-  }, [status, router]);
+  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 로딩 중
   if (status === "loading") {

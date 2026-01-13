@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -12,7 +12,9 @@ export default function SignupPageContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [hasRedirected, setHasRedirected] = useState(false);
+  
+  // Use ref instead of state to prevent re-renders
+  const hasRedirected = useRef(false);
 
   const safeCallbackUrl = useMemo(() => {
     // 1. URL 파라미터에서 callbackUrl 확인
@@ -28,7 +30,7 @@ export default function SignupPageContent() {
     }
 
     if (!rawCallbackUrl) {
-      return "/dashboard";
+      return "/learning-room"; // Default to learning-room instead of dashboard
     }
 
     if (rawCallbackUrl.startsWith("/")) {
@@ -43,55 +45,26 @@ export default function SignupPageContent() {
           return `${resolved.pathname}${resolved.search}${resolved.hash}`;
         }
       }
-    } catch (error) {
-      console.warn("Invalid callbackUrl received, falling back to dashboard.", {
-        rawCallbackUrl,
-        error,
-      });
+    } catch {
+      // Invalid URL, use default
     }
 
-    return "/dashboard";
+    return "/learning-room";
   }, [searchParams]);
 
   useEffect(() => {
-    // 로그인 상태면 대시보드로 리다이렉트 (한 번만 실행)
-    if (status === "authenticated" && session?.user && !hasRedirected) {
-      // 현재 경로가 이미 목적지와 같으면 리다이렉트하지 않음
-      if (typeof window !== "undefined") {
-        const currentPath = window.location.pathname;
-        if (currentPath === safeCallbackUrl) {
-          console.log("✅ 이미 목적지 페이지에 있음, 리다이렉트 스킵");
-          return;
-        }
-      }
-
-      console.log(
-        "✅ 이미 로그인됨 - 콜백 경로로 리다이렉트:",
-        safeCallbackUrl
-      );
-      console.log(
-        "✅ 현재 URL:",
-        typeof window !== "undefined" ? window.location.href : "N/A"
-      );
-      setHasRedirected(true);
-
-      // 강제 리다이렉트 (window.location.replace 사용 - 히스토리에 남지 않음)
-      if (typeof window !== "undefined") {
-        // window.location.replace를 사용하여 더 확실하게 리다이렉트
-        console.log(
-          "✅ window.location.replace로 리다이렉트 시도:",
-          safeCallbackUrl
-        );
-        // 짧은 딜레이 후 리다이렉트 (React 상태 업데이트 완료 대기)
-        setTimeout(() => {
-          window.location.replace(safeCallbackUrl);
-        }, 50);
-      } else {
-        console.log("✅ router.replace로 리다이렉트 시도:", safeCallbackUrl);
-        router.replace(safeCallbackUrl);
-      }
+    // Only redirect once
+    if (hasRedirected.current) return;
+    
+    // Only redirect when status is "authenticated" (not "loading")
+    if (status === "authenticated") {
+      hasRedirected.current = true;
+      
+      // Use router.replace instead of window.location.replace
+      // to prevent full page reload which causes more session calls
+      router.replace(safeCallbackUrl);
     }
-  }, [status, session, router, safeCallbackUrl, hasRedirected]);
+  }, [status, safeCallbackUrl, router]); // REMOVED: session from dependencies
 
   // 로딩 중이거나 이미 로그인된 경우
   if (status === "loading") {
