@@ -2,13 +2,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const PROTECTED_PATHS = ["/dashboard", "/courses"];
-const ADMIN_PATHS = ["/admin"];
-
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip middleware for these paths entirely to prevent redirect loops
+  // Skip middleware for these paths entirely
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
@@ -18,7 +15,8 @@ export async function middleware(request: NextRequest) {
     pathname === "/" ||
     pathname.startsWith("/pricing") ||
     pathname.startsWith("/testimonials") ||
-    pathname.startsWith("/coming-soon")
+    pathname.startsWith("/coming-soon") ||
+    (pathname.startsWith("/level-test") && !pathname.includes("/result"))  // Allow level-test pages
   ) {
     return NextResponse.next();
   }
@@ -30,7 +28,6 @@ export async function middleware(request: NextRequest) {
 
   // Handle admin routes
   if (pathname.startsWith("/admin")) {
-    // Allow login page
     if (pathname === "/admin/login") {
       return NextResponse.next();
     }
@@ -41,7 +38,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    // Check if user has admin role from JWT token
     if (token.role !== "admin") {
       const url = new URL("/admin/login", request.url);
       url.searchParams.set("error", "unauthorized");
@@ -51,7 +47,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Protected routes - only redirect if NO token
+  // Protected routes
   const protectedRoutes = [
     "/dashboard",
     "/courses",
@@ -59,44 +55,27 @@ export async function middleware(request: NextRequest) {
     "/account",
     "/level-test/result",
   ];
+  
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
+  // No token = redirect to signup
   if (isProtectedRoute && !token) {
     const signInUrl = new URL("/signup", request.url);
     signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
   }
 
-  // Check trial/subscription for protected routes with token
-  if (isProtectedRoute && token) {
-    const trialActive = Boolean(token.trialActive);
-    const subscriptionActive = Boolean(token.subscriptionActive);
-
-    // Allow access if trial is active OR subscription is active
-    // Don't redirect if user just logged in (trialActive might not be set yet)
-    if (!trialActive && !subscriptionActive) {
-      // Only redirect to pricing if user is definitely not in trial
-      // This prevents redirect loops for new users
-      const url = new URL("/pricing", request.url);
-      url.searchParams.set("from", pathname);
-      return NextResponse.redirect(url);
-    }
-  }
+  // REMOVED: Trial/subscription check that was causing infinite redirect
+  // Let the page handle subscription logic instead of middleware
+  // This prevents redirect loops for new users
 
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
     "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };
