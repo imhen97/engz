@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
-import { getToken } from "next-auth/jwt";
 
 import prisma from "@/lib/prisma";
+import { getAuthToken } from "@/lib/api-handler";
 
 export const dynamic = 'force-dynamic';
 
@@ -48,10 +48,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user is logged in (optional, but preferred)
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    const token = await getAuthToken(request);
 
     // Fetch result from database
     let result;

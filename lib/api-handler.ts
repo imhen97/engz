@@ -23,12 +23,23 @@ export function withErrorHandler(
     try {
       // Auth check
       if (options.requireAuth || options.requireAdmin) {
-        const token = await getToken({
+        // Try both cookie names for compatibility
+        let token = await getToken({
           req,
           secret: process.env.NEXTAUTH_SECRET,
+          cookieName: "next-auth.session-token",
         });
         
         if (!token) {
+          token = await getToken({
+            req,
+            secret: process.env.NEXTAUTH_SECRET,
+            cookieName: "__Secure-next-auth.session-token",
+          });
+        }
+        
+        if (!token) {
+          console.error("❌ API Auth check failed: No token found");
           throw new AuthenticationError();
         }
 
@@ -89,4 +100,25 @@ export function apiSuccess<T>(data: T, status: number = 200) {
 // Helper for error responses
 export function apiError(message: string, status: number = 400, code?: string) {
   return NextResponse.json({ success: false, error: message, code }, { status });
+}
+
+// Helper to get token with both possible cookie names
+export async function getAuthToken(req: NextRequest) {
+  // Try regular cookie name first
+  let token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+    cookieName: "next-auth.session-token",
+  });
+  
+  // Fall back to secure cookie name (used in production with HTTPS)
+  if (!token) {
+    token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+      cookieName: "__Secure-next-auth.session-token",
+    });
+  }
+  
+  return token;
 }

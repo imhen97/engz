@@ -1,21 +1,18 @@
 import type { NextRequest } from "next/server";
-import { withErrorHandler, apiSuccess } from "@/lib/api-handler";
+import { withErrorHandler, apiSuccess, getAuthToken } from "@/lib/api-handler";
 import { AuthenticationError } from "@/lib/errors";
 import prisma from "@/lib/prisma";
-import { getToken } from "next-auth/jwt";
 
 export const dynamic = 'force-dynamic';
 
 export const GET = withErrorHandler(
   async (req: NextRequest) => {
     try {
-      // requireAuth 옵션이 이미 인증을 체크했지만, userId를 가져오기 위해 token을 가져옴
-      const token = await getToken({
-        req,
-        secret: process.env.NEXTAUTH_SECRET,
-      });
+      // Get token using helper that tries both cookie names
+      const token = await getAuthToken(req);
 
       if (!token?.userId) {
+        console.error("❌ Learning room API: No token or userId found");
         throw new AuthenticationError();
       }
 

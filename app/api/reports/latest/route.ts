@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
+import { getAuthToken } from "@/lib/api-handler";
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    const token = await getAuthToken(request);
 
     if (!token?.userId) {
       return NextResponse.json(

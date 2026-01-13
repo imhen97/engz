@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import OpenAI from "openai";
 
 import prisma from "@/lib/prisma";
+import { getAuthToken } from "@/lib/api-handler";
 
 export const dynamic = 'force-dynamic';
 
@@ -132,10 +132,7 @@ English Level Test Summary:
 
 export async function GET(request: NextRequest) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    const token = await getAuthToken(request);
 
     if (!token?.userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

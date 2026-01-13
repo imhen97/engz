@@ -1,7 +1,6 @@
 import type { NextRequest } from "next/server";
-import { withErrorHandler, apiSuccess } from "@/lib/api-handler";
+import { withErrorHandler, apiSuccess, getAuthToken } from "@/lib/api-handler";
 import { ValidationError, AuthenticationError } from "@/lib/errors";
-import { getToken } from "next-auth/jwt";
 import prisma from "@/lib/prisma";
 import type { Question, TestAnswer } from "@/types";
 
@@ -125,11 +124,8 @@ export const POST = withErrorHandler(
           )
         : 50;
 
-    // Get user from token (requireAuth 옵션이 이미 인증을 체크했지만, userId를 가져오기 위해 token을 가져옴)
-    const token = await getToken({
-      req,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    // Get user from token using helper that tries both cookie names
+    const token = await getAuthToken(req);
 
     if (!token?.userId) {
       throw new AuthenticationError("결과를 저장하려면 로그인이 필요합니다");

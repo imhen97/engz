@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
+import { getAuthToken } from "@/lib/api-handler";
 import type { RoutineCreateRequest, RoutineCreateResponse, ApiResponse, MissionCreateData } from "@/types";
 
 export const dynamic = 'force-dynamic';
@@ -66,10 +66,7 @@ function generateMissions(theme: string): MissionCreateData[] {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    const token = await getAuthToken(request);
 
     if (!token?.userId) {
       return NextResponse.json(
