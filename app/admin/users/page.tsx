@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import DataTable from "@/components/admin/DataTable";
 import { requireAdmin } from "@/lib/admin";
+import type { UserWithSubscription } from "@/types";
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +27,7 @@ export default async function AdminUsersPage() {
     },
   });
 
-  const getSubscriptionStatus = (user: any) => {
+  const getSubscriptionStatus = (user: UserWithSubscription) => {
     if (user.subscriptionActive) return "구독 중";
     if (
       user.trialActive &&

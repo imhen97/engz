@@ -3,12 +3,13 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
+import type { RoutineCreateRequest, RoutineCreateResponse, ApiResponse, MissionCreateData } from "@/types";
 
 export const dynamic = 'force-dynamic';
 
 // Generate 4-week routine missions (5 missions per week = 20 total)
-function generateMissions(theme: string) {
-  const missions = [];
+function generateMissions(theme: string): MissionCreateData[] {
+  const missions: MissionCreateData[] = [];
   const themes: Record<string, string[]> = {
     grammar: [
       "Practice present tense with 5 sentences",
@@ -78,14 +79,15 @@ export async function POST(request: NextRequest) {
     }
 
     const userId = token.userId as string;
-    const body = await request.json();
+    const body = (await request.json()) as RoutineCreateRequest;
     const { theme } = body;
 
     if (!theme || !THEMES.includes(theme)) {
-      return NextResponse.json(
-        { error: "유효한 테마를 선택해주세요." },
-        { status: 400 }
-      );
+      const errorResponse: ApiResponse<never> = {
+        success: false,
+        error: "유효한 테마를 선택해주세요.",
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
     const startDate = new Date();
@@ -117,13 +119,15 @@ export async function POST(request: NextRequest) {
       data: { currentRoutineId: routine.id },
     });
 
-    return NextResponse.json({ routineId: routine.id });
+    const response: RoutineCreateResponse = { routineId: routine.id };
+    return NextResponse.json(response);
   } catch (error) {
     console.error("❌ 루틴 생성 실패:", error);
-    return NextResponse.json(
-      { error: "루틴을 생성하는 중 오류가 발생했습니다." },
-      { status: 500 }
-    );
+    const errorResponse: ApiResponse<never> = {
+      success: false,
+      error: "루틴을 생성하는 중 오류가 발생했습니다.",
+    };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }
 

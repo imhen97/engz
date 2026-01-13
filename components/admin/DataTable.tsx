@@ -5,7 +5,7 @@ import { useState } from "react";
 type Column<T> = {
   key: keyof T | string;
   label: string;
-  render?: (value: any, row: T) => React.ReactNode;
+  render?: <K extends keyof T>(value: T[K], row: T) => React.ReactNode;
 };
 
 type DataTableProps<T> = {
@@ -16,7 +16,7 @@ type DataTableProps<T> = {
   onRowClick?: (row: T) => void;
 };
 
-export default function DataTable<T extends Record<string, any>>({
+export default function DataTable<T extends Record<string, unknown>>({
   data,
   columns,
   searchable = false,

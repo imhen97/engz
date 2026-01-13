@@ -3,23 +3,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Timer from "./Timer";
+import type { Question, TestAnswer } from "@/types";
 
-type Question = {
-  id: string;
-  type: "vocabulary" | "grammar" | "writing";
-  question: string;
-  options?: string[];
-  correctAnswer?: number;
-  correctAnswerText?: string;
-};
-
-type QuestionCardProps = {
+interface QuestionCardProps {
   question: Question;
   questionNumber: number;
   totalQuestions: number;
   onAnswer: (answer: string | number, responseTime: number) => void;
   onTimeout: () => void;
-};
+}
 
 export default function QuestionCard({
   question,
@@ -28,12 +20,18 @@ export default function QuestionCard({
   onAnswer,
   onTimeout,
 }: QuestionCardProps) {
-  const handleAnswer = (answer: string | number, startTime: number) => {
+  const handleAnswer = (answer: string | number, startTime: number): void => {
     const responseTime = (Date.now() - startTime) / 1000;
     onAnswer(answer, responseTime);
   };
 
-  const [startTime] = useState(Date.now());
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    const textarea = document.querySelector("textarea");
+    handleAnswer(textarea?.value || "", startTime);
+  };
+
+  const [startTime] = useState<number>(Date.now());
 
   if (question.type === "writing") {
     return (
@@ -63,10 +61,8 @@ export default function QuestionCard({
             autoFocus
           />
           <button
-            onClick={() => {
-              const textarea = document.querySelector("textarea");
-              handleAnswer(textarea?.value || "", startTime);
-            }}
+            type="button"
+            onClick={handleButtonClick}
             className="w-full rounded-lg bg-[#FF6B3D] px-6 py-3 font-medium text-white transition-colors hover:bg-[#FF6B3D]/90"
           >
             Submit Answer
@@ -99,7 +95,11 @@ export default function QuestionCard({
         {question.options?.map((option, index) => (
           <button
             key={index}
-            onClick={() => handleAnswer(index, startTime)}
+            type="button"
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.preventDefault();
+              handleAnswer(index, startTime);
+            }}
             className="w-full rounded-lg border-2 border-gray-200 bg-white p-4 text-left transition-all hover:border-[#FF6B3D] hover:bg-[#FFF8F4] focus:outline-none focus:ring-2 focus:ring-[#FF6B3D]/20"
           >
             <span className="font-medium text-gray-900">{option}</span>

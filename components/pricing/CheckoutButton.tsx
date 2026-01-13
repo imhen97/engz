@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { ApiResponse, SubscriptionPlan } from "@/types";
+
+interface CheckoutResponse {
+  url: string;
+}
 
 type CheckoutButtonProps = {
-  plan: "monthly" | "annual";
+  plan: SubscriptionPlan;
   label: string;
   variant?: "solid" | "outline";
   disabled?: boolean;
@@ -20,7 +25,7 @@ export default function CheckoutButton({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = async (): Promise<void> => {
     if (disabled || loading) return;
     setLoading(true);
     setError(null);
@@ -49,7 +54,7 @@ export default function CheckoutButton({
         // 응답 본문에서 에러 메시지 추출 시도
         let errorMessage = "결제 페이지 연결에 실패했습니다.";
         try {
-          const errorData = await response.json();
+          const errorData = (await response.json()) as ApiResponse<never>;
           console.error("❌ Checkout 에러 응답:", errorData);
           if (errorData.error) {
             errorMessage = errorData.error;
@@ -61,7 +66,7 @@ export default function CheckoutButton({
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as CheckoutResponse;
       console.log("✅ Checkout 성공:", { hasUrl: !!data.url });
       if (data.url) {
         // Stripe Checkout 페이지로 리다이렉트

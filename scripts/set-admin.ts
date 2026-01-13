@@ -20,14 +20,19 @@ async function setAdminRole() {
     console.log(`   이름: ${user.name || "(없음)"}`);
     console.log(`   이메일: ${user.email}`);
     console.log(`   역할: ${user.role}`);
-  } catch (error: any) {
-    if (error.code === "P2025") {
-      console.error(
-        `❌ 이메일 "${email}"에 해당하는 사용자를 찾을 수 없습니다.`
-      );
-      console.error("   먼저 일반 회원가입으로 사용자를 생성해주세요.");
+  } catch (error) {
+    if (error && typeof error === "object" && "code" in error) {
+      const prismaError = error as { code: string; message?: string };
+      if (prismaError.code === "P2025") {
+        console.error(
+          `❌ 이메일 "${email}"에 해당하는 사용자를 찾을 수 없습니다.`
+        );
+        console.error("   먼저 일반 회원가입으로 사용자를 생성해주세요.");
+      } else {
+        console.error("❌ 오류:", prismaError.message || String(error));
+      }
     } else {
-      console.error("❌ 오류:", error.message);
+      console.error("❌ 오류:", error instanceof Error ? error.message : String(error));
     }
     process.exit(1);
   } finally {

@@ -2,10 +2,12 @@ import prisma from "@/lib/prisma";
 import DataTable from "@/components/admin/DataTable";
 import { requireAdmin } from "@/lib/admin";
 import { getStripe } from "@/lib/stripe";
+import type { PaymentData, StripeSubscriptionWithCustomer } from "@/types";
+import type Stripe from "stripe";
 
 export const dynamic = 'force-dynamic';
 
-async function getStripeSubscriptions() {
+async function getStripeSubscriptions(): Promise<PaymentData[]> {
   try {
     const stripe = getStripe();
 
@@ -14,23 +16,33 @@ async function getStripeSubscriptions() {
       expand: ["data.customer"],
     });
 
-    return subscriptions.data.map((sub) => ({
-      id: sub.id,
-      customerId:
-        typeof sub.customer === "string" ? sub.customer : sub.customer?.id,
-      customerEmail:
-        typeof sub.customer === "object" && sub.customer
-          ? (sub.customer as any).email
-          : null,
-      status: sub.status,
-      plan: sub.items.data[0]?.price?.nickname || "Unknown",
-      amount: sub.items.data[0]?.price?.unit_amount
-        ? (sub.items.data[0].price.unit_amount / 100).toLocaleString("ko-KR")
-        : "-",
-      currency: sub.items.data[0]?.price?.currency?.toUpperCase() || "KRW",
-      currentPeriodStart: new Date((sub as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((sub as any).current_period_end * 1000),
-    }));
+    return subscriptions.data.map((sub): PaymentData => {
+      const subscription = sub as Stripe.Subscription;
+      const customer =
+        typeof subscription.customer === "object"
+          ? (subscription.customer as Stripe.Customer)
+          : null;
+
+      return {
+        id: subscription.id,
+        customerId:
+          typeof subscription.customer === "string"
+            ? subscription.customer
+            : subscription.customer?.id ?? null,
+        customerEmail: customer?.email ?? null,
+        status: subscription.status,
+        plan: subscription.items.data[0]?.price?.nickname || "Unknown",
+        amount: subscription.items.data[0]?.price?.unit_amount
+          ? (subscription.items.data[0].price.unit_amount / 100).toLocaleString(
+              "ko-KR"
+            )
+          : "-",
+        currency:
+          subscription.items.data[0]?.price?.currency?.toUpperCase() || "KRW",
+        currentPeriodStart: new Date(subscription.current_period_start * 1000),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      };
+    });
   } catch (error) {
     console.error("Stripe API error:", error);
     return [];

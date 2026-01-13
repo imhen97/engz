@@ -3,12 +3,21 @@ import { getToken } from "next-auth/jwt";
 
 import prisma from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
+import type { ApiResponse, SubscriptionPlan } from "@/types";
 
 export const dynamic = 'force-dynamic';
 
 const MONTHLY_PRICE = process.env.STRIPE_PRICE_MONTHLY_ID;
 const ANNUAL_PRICE = process.env.STRIPE_PRICE_ANNUAL_ID;
 const APP_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+
+interface CheckoutRequest {
+  plan: SubscriptionPlan;
+}
+
+interface CheckoutResponse {
+  url: string;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,17 +70,22 @@ export async function POST(request: NextRequest) {
 
     const userId = token.userId as string;
 
-    const body = (await request.json().catch(() => null)) as {
-      plan?: string;
-    } | null;
+    let body: CheckoutRequest | null = null;
+    try {
+      body = (await request.json()) as CheckoutRequest;
+    } catch {
+      body = null;
+    }
+
     const plan = body?.plan;
 
     if (plan !== "monthly" && plan !== "annual") {
       console.log("❌ Checkout 요청: 잘못된 플랜", plan);
-      return NextResponse.json(
-        { error: "잘못된 플랜입니다." },
-        { status: 400 }
-      );
+      const errorResponse: ApiResponse<never> = {
+        success: false,
+        error: "잘못된 플랜입니다.",
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
     const priceId = plan === "annual" ? ANNUAL_PRICE : MONTHLY_PRICE;
@@ -165,20 +179,33 @@ export async function POST(request: NextRequest) {
       });
 
       console.log("✅ Checkout 세션 생성 완료:", checkoutSession.id);
-      return NextResponse.json({ url: checkoutSession.url });
+      if (!checkoutSession.url) {
+        const errorResponse: ApiResponse<never> = {
+          success: false,
+          error: "결제 세션 URL을 생성할 수 없습니다.",
+        };
+        return NextResponse.json(errorResponse, { status: 500 });
+      }
+      const successResponse: CheckoutResponse = { url: checkoutSession.url };
+      return NextResponse.json(successResponse);
     } catch (error) {
       console.error("❌ Checkout 요청: Stripe 세션 생성 실패", error);
       const errorMessage =
         error instanceof Error && error.message
           ? error.message
           : "결제 세션을 생성하는 중 오류가 발생했습니다.";
-      return NextResponse.json({ error: errorMessage }, { status: 500 });
+      const errorResponse: ApiResponse<never> = {
+        success: false,
+        error: errorMessage,
+      };
+      return NextResponse.json(errorResponse, { status: 500 });
     }
   } catch (error) {
     console.error("❌ Checkout 요청: 예상치 못한 오류", error);
-    return NextResponse.json(
-      { error: "예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해 주세요." },
-      { status: 500 }
-    );
+    const errorResponse: ApiResponse<never> = {
+      success: false,
+      error: "예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+    };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }

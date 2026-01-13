@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ChatWidget from "@/components/ChatWidget";
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
+import { QueryProvider } from "@/components/providers/QueryProvider";
+import { ToastContainer } from "@/components/ui/ToastContainer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,10 +35,13 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <SessionProviderWrapper>
-          {children}
-          <ChatWidget />
-        </SessionProviderWrapper>
+        <QueryProvider>
+          <SessionProviderWrapper>
+            {children}
+            <ChatWidget />
+            <ToastContainer />
+          </SessionProviderWrapper>
+        </QueryProvider>
       </body>
     </html>
   );

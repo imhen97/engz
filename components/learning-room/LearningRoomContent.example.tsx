@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
-import { useLearningRoom } from "@/hooks/queries/useLearning";
-import { useLearningStore } from "@/store";
+import { useApiCall } from "@/hooks/useApiCall";
 
 interface RoutineData {
   id: string;
@@ -17,6 +16,25 @@ interface RoutineData {
   progress: number;
   currentWeek: number;
   currentDay: number;
+  routine?: {
+    id: string;
+    userId: string;
+    theme: string;
+    startDate: string;
+    endDate: string;
+    completed: boolean;
+    createdAt: string;
+    updatedAt: string;
+  };
+  missions?: Array<{
+    id: string;
+    routineId: string;
+    week: number;
+    day: number;
+    content: string;
+    aiFeedback: string | null;
+    completed: boolean;
+  }>;
   todayMission?: {
     id: string;
     week: number;
@@ -24,7 +42,7 @@ interface RoutineData {
     content: string;
     aiFeedback?: string;
     completed: boolean;
-  };
+  } | null;
   upcomingSession?: {
     date: string;
     time: string;
@@ -40,24 +58,16 @@ interface RoutineData {
 export default function LearningRoomContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { data, isLoading, error, refetch } = useLearningRoom();
-  const { setCurrentRoutine, setMissions, setTodayMission, updateStreak } = useLearningStore();
-
-  // Sync React Query data with Zustand store
-  useEffect(() => {
-    if (data) {
-      if (data.routine) {
-        setCurrentRoutine(data.routine);
-      }
-      if (data.missions) {
-        setMissions(data.missions);
-      }
-      if (data.todayMission) {
-        setTodayMission(data.todayMission);
-      }
-      updateStreak();
-    }
-  }, [data, setCurrentRoutine, setMissions, setTodayMission, updateStreak]);
+  
+  // useApiCall 훅 사용 - 에러 토스트는 기본적으로 표시됨
+  const { 
+    data: routineData, 
+    isLoading: loading, 
+    execute: fetchRoutineData 
+  } = useApiCall<RoutineData>({
+    showErrorToast: true, // 에러 발생 시 토스트 표시
+    showSuccessToast: false, // 성공 시 토스트는 표시하지 않음
+  });
 
   useEffect(() => {
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
@@ -66,7 +76,7 @@ export default function LearningRoomContent() {
       return;
     }
 
-    // 로그인 상태이고 세션이 있으면 체험 기간 체크
+    // 로그인 상태이고 세션이 있으면 데이터 가져오기
     if (status === "authenticated" && session?.user) {
       // 7일 체험 기간 체크
       const trialActive = session.user.trialActive ?? false;
@@ -76,28 +86,30 @@ export default function LearningRoomContent() {
         router.push("/pricing");
         return;
       }
+
+      // useApiCall을 사용하여 데이터 가져오기
+      fetchRoutineData(
+        () => fetch("/api/learning-room/data"),
+        (data) => {
+          // 성공 콜백 - 추가 처리 필요 시
+          console.log("Learning Room 데이터 로드 성공:", data);
+        },
+        (error) => {
+          // 에러 콜백 - 추가 처리 필요 시
+          console.error("Learning Room 데이터 로드 실패:", error);
+        }
+      );
     }
-  }, [status, session, router]);
+  }, [status, session, router, fetchRoutineData]);
 
   // 로딩 중
-  if (status === "loading" || isLoading) {
+  if (status === "loading" || loading) {
     return (
       <main className="min-h-screen bg-[#FFF8F5] text-black">
         <NavBar />
-        <LoadingSkeleton />
-      </main>
-    );
-  }
-
-  // 에러 상태
-  if (error) {
-    return (
-      <main className="min-h-screen bg-[#FFF8F5] text-black">
-        <NavBar />
-        <ErrorState
-          message="학습 데이터를 불러올 수 없습니다"
-          onRetry={() => refetch()}
-        />
+        <div className="flex min-h-screen items-center justify-center">
+          <p className="text-sm text-gray-500">로딩 중…</p>
+        </div>
       </main>
     );
   }
@@ -120,30 +132,13 @@ export default function LearningRoomContent() {
   }
 
   const { name } = session.user;
-  const routine = data?.routine;
-  const routineData = data ? {
-    id: routine?.id || "",
-    theme: routine?.theme || "",
-    startDate: routine?.startDate?.toISOString() || "",
-    endDate: routine?.endDate?.toISOString() || "",
-    completed: routine?.completed || false,
-    progress: data.progress || 0,
-    currentWeek: data.currentWeek || 1,
-    currentDay: data.currentDay || 1,
-    todayMission: data.todayMission,
-    upcomingSession: data.upcomingSession,
-    feedbackSummary: data.feedbackSummary,
-  } : null;
-
-  // 루틴이 없는 경우
-  if (!data?.routine) {
-    return (
-      <main className="min-h-screen bg-[#FFF8F5] text-black">
-        <NavBar />
-        <NoRoutineState />
-      </main>
-    );
-  }
+  const routine = routineData?.routine || (routineData?.id ? {
+    id: routineData.id,
+    theme: routineData.theme,
+    startDate: routineData.startDate,
+    endDate: routineData.endDate,
+    completed: routineData.completed,
+  } : null);
 
   return (
     <main className="min-h-screen bg-[#FFF8F5] text-black">
@@ -157,10 +152,10 @@ export default function LearningRoomContent() {
           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             👋 Hello, {name ?? "ENGZ Learner"}!
           </h1>
-          {routineData && (
+          {routine && (
             <p className="text-xs text-gray-600 sm:text-sm">
-              Your current routine: [{routineData.theme} – Week{" "}
-              {routineData.currentWeek}]
+              Your current routine: [{routine.theme} – Week{" "}
+              {routineData?.currentWeek}]
             </p>
           )}
         </div>
@@ -330,51 +325,5 @@ export default function LearningRoomContent() {
         </div>
       </div>
     </main>
-  );
-}
-
-function LoadingSkeleton() {
-  return (
-    <div className="mx-auto w-full max-w-6xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
-      <div className="space-y-6 animate-pulse">
-        <div className="h-32 bg-gray-200 rounded-xl" />
-        <div className="h-48 bg-gray-200 rounded-xl" />
-        <div className="h-24 bg-gray-200 rounded-xl" />
-      </div>
-    </div>
-  );
-}
-
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return (
-    <div className="mx-auto w-full max-w-6xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
-      <div className="text-center py-12">
-        <p className="text-gray-600 mb-4">{message}</p>
-        <button
-          onClick={onRetry}
-          className="px-4 py-2 bg-[#F5472C] text-white rounded-lg hover:bg-[#d93d25] transition-colors"
-        >
-          다시 시도
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function NoRoutineState() {
-  return (
-    <div className="mx-auto w-full max-w-6xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
-      <div className="text-center py-12">
-        <p className="text-gray-600 mb-4">
-          No active routine yet. Start your first 4-week learning journey!
-        </p>
-        <Link
-          href="/onboarding"
-          className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
-        >
-          Start Onboarding →
-        </Link>
-      </div>
-    </div>
   );
 }

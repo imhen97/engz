@@ -1,23 +1,21 @@
-import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
-
+import { withErrorHandler, apiSuccess } from "@/lib/api-handler";
+import { AuthenticationError } from "@/lib/errors";
 import prisma from "@/lib/prisma";
+import { getToken } from "next-auth/jwt";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest) {
-  try {
+export const GET = withErrorHandler(
+  async (req: NextRequest) => {
+    // requireAuth 옵션이 이미 인증을 체크했지만, userId를 가져오기 위해 token을 가져옴
     const token = await getToken({
-      req: request,
+      req,
       secret: process.env.NEXTAUTH_SECRET,
     });
 
     if (!token?.userId) {
-      return NextResponse.json(
-        { error: "인증이 필요합니다." },
-        { status: 401 }
-      );
+      throw new AuthenticationError();
     }
 
     const userId = token.userId as string;
@@ -38,9 +36,10 @@ export async function GET(request: NextRequest) {
     });
 
     if (!user?.currentRoutine) {
-      return NextResponse.json({
-        id: null,
-        theme: null,
+      return apiSuccess({
+        routine: null,
+        missions: [],
+        todayMission: null,
         progress: 0,
         currentWeek: 1,
         currentDay: 1,
@@ -75,25 +74,22 @@ export async function GET(request: NextRequest) {
     nextThursday.setDate(now.getDate() + ((4 + 7 - now.getDay()) % 7 || 7));
     nextThursday.setHours(20, 0, 0, 0);
 
-    return NextResponse.json({
-      id: routine.id,
-      theme: routine.theme,
-      startDate: routine.startDate.toISOString(),
-      endDate: routine.endDate.toISOString(),
-      completed: routine.completed,
+    return apiSuccess({
+      routine: {
+        id: routine.id,
+        userId: routine.userId,
+        theme: routine.theme,
+        startDate: routine.startDate,
+        endDate: routine.endDate,
+        completed: routine.completed,
+        createdAt: routine.createdAt,
+        updatedAt: routine.updatedAt,
+      },
+      missions: routine.missions,
+      todayMission: todayMission || null,
       progress,
       currentWeek,
       currentDay,
-      todayMission: todayMission
-        ? {
-            id: todayMission.id,
-            week: todayMission.week,
-            day: todayMission.day,
-            content: todayMission.content,
-            aiFeedback: todayMission.aiFeedback,
-            completed: todayMission.completed,
-          }
-        : null,
       upcomingSession: {
         date: nextThursday.toLocaleDateString("en-US", {
           weekday: "long",
@@ -109,11 +105,6 @@ export async function GET(request: NextRequest) {
         fluency: "B",
       },
     });
-  } catch (error) {
-    console.error("❌ Learning Room 데이터 가져오기 실패:", error);
-    return NextResponse.json(
-      { error: "데이터를 가져오는 중 오류가 발생했습니다." },
-      { status: 500 }
-    );
-  }
-}
+  },
+  { requireAuth: true }
+);

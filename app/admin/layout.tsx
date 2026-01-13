@@ -21,9 +21,13 @@ export default async function AdminLayout({
 
   // Check if user has admin role
   try {
-    const user = (await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-    })) as any;
+      select: {
+        id: true,
+        role: true,
+      },
+    });
 
     if (!user || user.role !== "admin") {
       redirect("/admin/login?error=unauthorized");

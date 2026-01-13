@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import NavBar from "@/components/NavBar";
 import ProgressBar from "@/components/level-test/ProgressBar";
-
-interface WritingPrompt {
-  id: string;
-  prompt: string;
-  example?: string;
-}
+import type {
+  WritingPrompt,
+  Question,
+  VocabularyQuestion,
+  GrammarQuestion,
+  WritingGradingResponse,
+  LevelTestSubmission,
+  ApiResponse,
+} from "@/types";
 
 export default function WritingTestPage() {
   const router = useRouter();
@@ -46,7 +49,7 @@ export default function WritingTestPage() {
     }
   };
 
-  const handleSubmit = async (finalAnswers: string[]) => {
+  const handleSubmit = async (finalAnswers: string[]): Promise<void> => {
     setLoading(true);
 
     try {
@@ -66,7 +69,7 @@ export default function WritingTestPage() {
         throw new Error("Failed to grade writing");
       }
 
-      const writingScores = await response.json();
+      const writingScores = (await response.json()) as WritingGradingResponse;
 
       // Calculate all scores and submit
       const testData = JSON.parse(
@@ -97,23 +100,27 @@ export default function WritingTestPage() {
           : null;
 
       // Submit final results
+      const submitData: LevelTestSubmission = {
+        level: testData.level,
+        vocabScore,
+        grammarScore,
+        writingScore: avgWritingScore,
+        avgSpeed,
+        vocabAnswers: testData.vocabAnswers || [],
+        grammarAnswers: testData.grammarAnswers || [],
+        writingAnswers: finalAnswers,
+      };
+
       const submitResponse = await fetch("/api/leveltest/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          level: testData.level,
-          vocabScore,
-          grammarScore,
-          writingScore: avgWritingScore,
-          avgSpeed,
-          vocabAnswers: testData.vocabAnswers,
-          grammarAnswers: testData.grammarAnswers,
-          writingAnswers: finalAnswers,
-        }),
+        body: JSON.stringify(submitData),
       });
 
       if (!submitResponse.ok) {
-        const errorData = await submitResponse.json();
+        const errorData = (await submitResponse.json()) as ApiResponse<never> & {
+          requiresLogin?: boolean;
+        };
         if (errorData.requiresLogin) {
           // Save temporary result for locked page
           sessionStorage.setItem(
@@ -133,22 +140,32 @@ export default function WritingTestPage() {
         throw new Error(errorData.error || "Failed to submit results");
       }
 
-      const result = await submitResponse.json();
+      const result = (await submitResponse.json()) as ApiResponse<{
+        resultId: string;
+      }>;
 
       // Store result ID for result page
-      sessionStorage.setItem("levelTestResultId", result.id);
-      router.push("/level-test/result");
+      if (result.data?.resultId) {
+        sessionStorage.setItem("levelTestResultId", result.data.resultId);
+        router.push("/level-test/result");
+      } else {
+        throw new Error("Result ID not found in response");
+      }
     } catch (error) {
       console.error("제출 실패:", error);
       setLoading(false);
     }
   };
 
-  const calculateScore = (answers: (number | string)[], questions: any[]) => {
+  const calculateScore = (
+    answers: (number | string)[],
+    questions: (VocabularyQuestion | GrammarQuestion)[]
+  ) => {
     if (!answers || !questions) return 0;
     let correct = 0;
     answers.forEach((answer, index) => {
-      if (questions[index] && answer === questions[index].correctAnswer) {
+      const question = questions[index];
+      if (question && answer === question.correctAnswer) {
         correct++;
       }
     });

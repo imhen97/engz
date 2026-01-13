@@ -6,14 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import NavBar from "@/components/NavBar";
 import ProgressBar from "@/components/level-test/ProgressBar";
 import CountdownTimer from "@/components/level-test/CountdownTimer";
-
-interface GrammarQuestion {
-  id: string;
-  question: string;
-  type: "multiple-choice";
-  options: string[];
-  correctAnswer: number;
-}
+import type { GrammarQuestion, Question } from "@/types";
 
 export default function GrammarTestPage() {
   const router = useRouter();
@@ -36,7 +29,8 @@ export default function GrammarTestPage() {
     const data = JSON.parse(testData);
     // 주관식 제거: multiple-choice만 필터링
     const filteredQuestions = (data.grammarQuestions || []).filter(
-      (q: any) => q.type === "multiple-choice" && q.options
+      (q: Question): q is GrammarQuestion =>
+        q.type === "multiple-choice" && q.options !== undefined
     );
     setQuestions(filteredQuestions);
     setAnswers(new Array(filteredQuestions.length || 0).fill(-1));

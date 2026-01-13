@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import OpenAI from "openai";
+import type { WritingGradingRequest, WritingGradingResponse, ApiResponse } from "@/types";
 
 // Lazy initialization to avoid build-time errors
 function getOpenAIClient() {
@@ -12,16 +13,25 @@ function getOpenAIClient() {
   });
 }
 
+interface OpenAIResponse {
+  grammar?: number;
+  structure?: number;
+  vocabulary?: number;
+  fluency?: number;
+  overall?: number;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = (await request.json()) as WritingGradingRequest;
     const { prompts } = body;
 
     if (!prompts || !Array.isArray(prompts)) {
-      return NextResponse.json(
-        { error: "Invalid prompts array" },
-        { status: 400 }
-      );
+      const errorResponse: ApiResponse<never> = {
+        success: false,
+        error: "Invalid prompts array",
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
     const scores: number[] = [];
@@ -30,9 +40,10 @@ export async function POST(request: NextRequest) {
     if (!process.env.OPENAI_API_KEY) {
       console.warn("⚠️ OPENAI_API_KEY not configured, using default scores");
       // Return default scores if API key is not configured
-      return NextResponse.json({
+      const defaultResponse: WritingGradingResponse = {
         scores: prompts.map(() => 50),
-      });
+      };
+      return NextResponse.json(defaultResponse);
     }
 
     const openai = getOpenAIClient();
@@ -56,14 +67,16 @@ export async function POST(request: NextRequest) {
           response_format: { type: "json_object" },
         });
 
-        const grading = JSON.parse(response.choices[0].message.content || "{}");
+        const grading = JSON.parse(
+          response.choices[0].message.content || "{}"
+        ) as OpenAIResponse;
         const overallScore =
           grading.overall ||
           Math.round(
-            (grading.grammar +
-              grading.structure +
-              grading.vocabulary +
-              grading.fluency) /
+            ((grading.grammar || 0) +
+              (grading.structure || 0) +
+              (grading.vocabulary || 0) +
+              (grading.fluency || 0)) /
               4
           );
         scores.push(Math.min(100, overallScore * 10)); // Convert 1-10 to 0-100
@@ -74,12 +87,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ scores });
+    const response: WritingGradingResponse = { scores };
+    return NextResponse.json(response);
   } catch (error) {
     console.error("❌ Writing 채점 실패:", error);
-    return NextResponse.json(
-      { error: "Writing을 채점하는 중 오류가 발생했습니다." },
-      { status: 500 }
-    );
+    const errorResponse: ApiResponse<never> = {
+      success: false,
+      error: "Writing을 채점하는 중 오류가 발생했습니다.",
+    };
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }

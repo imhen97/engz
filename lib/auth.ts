@@ -1,10 +1,12 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { AuthOptions } from "next-auth";
+import type { AuthOptions, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import prisma from "./prisma";
+import type { KakaoProfile, UserRole } from "@/types";
 
 const providers = [] as AuthOptions["providers"]; // ensure typing
 
@@ -32,22 +34,34 @@ if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
 if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
   providers.push(
     KakaoProvider({
-      clientId: process.env.KAKAO_ID,
-      clientSecret: process.env.KAKAO_SECRET,
+      clientId: process.env.KAKAO_ID!,
+      clientSecret: process.env.KAKAO_SECRET!,
+      authorization: {
+        params: {
+          scope: "profile_nickname profile_image account_email",
+        },
+      },
       profile(profile) {
+        const kakaoProfile = profile as KakaoProfile;
+        // Return basic user object - NextAuth will extend it with plan, trialActive, etc. in callbacks
         return {
-          id: profile.id.toString(),
+          id: kakaoProfile.id.toString(),
           name:
-            profile.kakao_account?.profile?.nickname ||
-            profile.kakao_account?.name ||
-            profile.properties?.nickname ||
+            kakaoProfile.kakao_account?.profile?.nickname ||
+            kakaoProfile.kakao_account?.name ||
+            kakaoProfile.properties?.nickname ||
             null,
-          email: profile.kakao_account?.email || null,
+          email: kakaoProfile.kakao_account?.email || null,
           image:
-            profile.kakao_account?.profile?.profile_image_url ||
-            profile.properties?.profile_image ||
+            kakaoProfile.kakao_account?.profile?.profile_image_url ||
+            kakaoProfile.properties?.profile_image ||
             null,
-        } as any; // Type assertion to avoid type conflict with extended User type
+          plan: "free",
+          trialActive: false,
+          trialEndsAt: null,
+          subscriptionActive: false,
+          role: null,
+        };
       },
     })
   );
@@ -97,11 +111,22 @@ providers.push(
       }
 
       // Check if user exists and has admin role
-      const user = (await prisma.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { email: credentials.email },
-      })) as any;
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          image: true,
+          plan: true,
+          trialActive: true,
+          trialEndsAt: true,
+          subscriptionActive: true,
+          role: true,
+        },
+      });
 
-      if (!user || (user as any).role !== "admin") {
+      if (!user || user.role !== "admin") {
         return null;
       }
 
@@ -120,24 +145,31 @@ providers.push(
         trialActive: user.trialActive,
         trialEndsAt: user.trialEndsAt,
         subscriptionActive: user.subscriptionActive,
-        role: (user as any).role,
-      } as any;
+        role: user.role,
+      } satisfies User;
     },
   })
 );
 
-async function enrichToken(token: any) {
+async function enrichToken(token: JWT): Promise<JWT> {
   if (!token?.userId) return token;
   try {
-    const user = (await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: token.userId as string },
-    })) as any;
+      select: {
+        plan: true,
+        trialActive: true,
+        trialEndsAt: true,
+        subscriptionActive: true,
+        role: true,
+      },
+    });
     if (!user) return token;
     token.plan = user.plan;
     token.trialActive = user.trialActive;
     token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
     token.subscriptionActive = user.subscriptionActive;
-    token.role = user.role ?? null; // role 정보도 토큰에 포함
+    token.role = (user.role as UserRole) ?? null; // role 정보도 토큰에 포함
   } catch (error) {
     console.error("토큰 보강 중 오류:", error);
     // 오류 발생 시 기존 토큰 값 유지
@@ -246,6 +278,25 @@ export const authOptions: AuthOptions = {
           provider: account?.provider,
         });
 
+        // Handle Kakao OAuth specifically
+        if (account?.provider === "kakao" && profile) {
+          // Type assertion for Kakao profile
+          const kakaoProfile = profile as KakaoProfile;
+
+          // Ensure user has required fields from Kakao profile
+          if (!user.email && kakaoProfile?.kakao_account?.email) {
+            user.email = kakaoProfile.kakao_account.email;
+            console.log("✅ Kakao 이메일 설정:", user.email);
+          }
+
+          // Log Kakao profile details for debugging
+          console.log("🔵 Kakao 프로필 정보:", {
+            hasEmail: !!kakaoProfile?.kakao_account?.email,
+            emailVerified: kakaoProfile?.kakao_account?.is_email_verified,
+            hasNickname: !!kakaoProfile?.kakao_account?.profile?.nickname,
+          });
+        }
+
         // Provider가 설정되지 않은 경우 체크
         if (providers.length === 0) {
           console.error(
@@ -284,8 +335,28 @@ export const authOptions: AuthOptions = {
           message: error instanceof Error ? error.message : String(error),
           stack: error instanceof Error ? error.stack : undefined,
         });
-        // 오류가 발생해도 로그인을 허용 (PrismaAdapter가 처리)
-        // 다만 심각한 오류인 경우에만 false 반환
+
+        // Check if it's a critical error that should block login
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        const criticalErrors = [
+          "database",
+          "prisma",
+          "adapter",
+          "authentication",
+        ];
+
+        if (
+          criticalErrors.some((keyword) =>
+            errorMessage.toLowerCase().includes(keyword)
+          )
+        ) {
+          console.error("❌ Critical error detected - blocking login");
+          return false;
+        }
+
+        // Non-critical errors - allow login to proceed (PrismaAdapter will handle)
+        console.log("⚠️ Non-critical error - allowing login to proceed");
         return true;
       }
     },
@@ -342,7 +413,7 @@ export const authOptions: AuthOptions = {
           token.trialActive = user.trialActive ?? false;
           token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
           token.subscriptionActive = user.subscriptionActive ?? false;
-          token.role = (user as any).role ?? null;
+          token.role = (user.role as UserRole) ?? null;
           return token;
         }
         if (trigger === "update") {
@@ -365,7 +436,7 @@ export const authOptions: AuthOptions = {
             ? new Date(token.trialEndsAt as string)
             : null;
           session.user.subscriptionActive = Boolean(token.subscriptionActive);
-          (session.user as any).role = token.role ?? null;
+          session.user.role = (token.role as UserRole) ?? null;
         }
         return session;
       } catch (error) {

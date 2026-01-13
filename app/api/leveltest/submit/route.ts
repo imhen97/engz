@@ -1,38 +1,36 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { withErrorHandler, apiSuccess } from "@/lib/api-handler";
+import { ValidationError, AuthenticationError } from "@/lib/errors";
+import { getToken } from "next-auth/jwt";
 import prisma from "@/lib/prisma";
+import type { Question, TestAnswer } from "@/types";
 
 export const dynamic = 'force-dynamic';
 
-type Answer = {
-  questionId: string;
-  answer: string | number;
-  responseTime: number;
-  correct: boolean;
-};
+interface LevelTestSubmitRequest {
+  questions: Question[];
+  answers: TestAnswer[];
+}
 
-type Question = {
-  id: string;
-  type: "vocabulary" | "grammar" | "writing";
-  question: string;
-  options?: string[];
-  correctAnswer?: number;
-  correctAnswerText?: string;
-  alternatives?: string[];
-};
+interface LevelTestSubmitResponse {
+  resultId: string;
+  score: number;
+  vocabScore: number;
+  grammarScore: number;
+  writingScore: number;
+  accuracy: number;
+  avgSpeed: number;
+  percentile: number;
+  overallLevel: string;
+}
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { questions, answers } = body as {
-      questions: Question[];
-      answers: Answer[];
-    };
+export const POST = withErrorHandler(
+  async (req: NextRequest) => {
+    const body = (await req.json()) as LevelTestSubmitRequest;
+    const { questions, answers } = body;
 
     if (!questions || !answers || questions.length !== answers.length) {
-      return NextResponse.json({ error: "Invalid test data" }, { status: 400 });
+      throw new ValidationError("테스트 데이터가 올바르지 않습니다");
     }
 
     // Calculate scores by category
@@ -127,25 +125,17 @@ export async function POST(request: NextRequest) {
           )
         : 50;
 
-    // Get or create user session
-    const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
+    // Get user from token (requireAuth 옵션이 이미 인증을 체크했지만, userId를 가져오기 위해 token을 가져옴)
+    const token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
 
-    // If no user, we need to handle this case
-    // Option 1: Create a temporary anonymous user
-    // Option 2: Make userId optional in schema (requires migration)
-    // For now, we'll use a workaround: create result only if user exists
-    // or create a system user for anonymous results
-
-    if (!userId) {
-      // For anonymous users, we'll still save the result but need a valid userId
-      // In production, you might want to create a system/anonymous user
-      // or make userId optional in the schema
-      return NextResponse.json(
-        { error: "User authentication required to save results" },
-        { status: 401 }
-      );
+    if (!token?.userId) {
+      throw new AuthenticationError("결과를 저장하려면 로그인이 필요합니다");
     }
+
+    const userId = token.userId as string;
 
     // Save result to database
     const result = await prisma.levelTestResult.create({
@@ -164,8 +154,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
-      success: true,
+    const responseData: LevelTestSubmitResponse = {
       resultId: result.id,
       score: totalScore,
       vocabScore,
@@ -175,15 +164,12 @@ export async function POST(request: NextRequest) {
       avgSpeed,
       percentile,
       overallLevel,
-    });
-  } catch (error) {
-    console.error("❌ 테스트 제출 실패:", error);
-    return NextResponse.json(
-      { error: "테스트를 제출하는 중 오류가 발생했습니다." },
-      { status: 500 }
-    );
-  }
-}
+    };
+
+    return apiSuccess(responseData, 201);
+  },
+  { requireAuth: true }
+);
 
 function getStrengths(vocab: number, grammar: number, writing: number): string {
   const strengths: string[] = [];
