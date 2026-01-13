@@ -21,10 +21,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Debug: Check available cookies
+  const allCookies = request.cookies.getAll();
+  const sessionCookie = request.cookies.get("next-auth.session-token");
+  const secureCookie = request.cookies.get("__Secure-next-auth.session-token");
+  
+  console.log("🍪 Middleware cookies:", {
+    pathname,
+    cookieCount: allCookies.length,
+    cookieNames: allCookies.map(c => c.name),
+    hasSessionCookie: !!sessionCookie,
+    hasSecureCookie: !!secureCookie,
+  });
+
+  // Try multiple cookie names since NextAuth might use different names in production
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
-    cookieName: "next-auth.session-token", // Must match auth.ts cookie name
+    cookieName: sessionCookie ? "next-auth.session-token" : "__Secure-next-auth.session-token",
   });
   
   // Debug logging for production
@@ -32,6 +46,7 @@ export async function middleware(request: NextRequest) {
     pathname,
     hasToken: !!token,
     tokenUserId: token?.userId || null,
+    secret: process.env.NEXTAUTH_SECRET ? "set" : "NOT SET",
   });
 
   // Handle admin routes
