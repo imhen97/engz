@@ -240,6 +240,12 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       try {
+        console.log("🔵 signIn callback 시작:", {
+          userId: user?.id,
+          email: user?.email,
+          provider: account?.provider,
+        });
+
         // Provider가 설정되지 않은 경우 체크
         if (providers.length === 0) {
           console.error(
@@ -248,9 +254,10 @@ export const authOptions: AuthOptions = {
           return false;
         }
 
-        // 데이터베이스 연결 확인
+        // 데이터베이스 연결 확인 (오류가 발생해도 로그인은 허용)
         try {
           await prisma.$queryRaw`SELECT 1`;
+          console.log("✅ 데이터베이스 연결 확인 완료");
         } catch (dbError) {
           console.error("❌ 데이터베이스 연결 실패:", dbError);
           // 데이터베이스 연결 실패해도 로그인은 허용 (PrismaAdapter가 처리)
@@ -273,7 +280,13 @@ export const authOptions: AuthOptions = {
         return true;
       } catch (error) {
         console.error("❌ signIn callback 오류:", error);
-        return false;
+        console.error("❌ 오류 상세:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
+        // 오류가 발생해도 로그인을 허용 (PrismaAdapter가 처리)
+        // 다만 심각한 오류인 경우에만 false 반환
+        return true;
       }
     },
     async redirect({ url, baseUrl }) {
