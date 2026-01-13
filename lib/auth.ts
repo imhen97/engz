@@ -365,21 +365,34 @@ export const authOptions: AuthOptions = {
           console.log("🔵 Processing Kakao OAuth sign-in");
           
           // For Kakao users without email, generate a placeholder
-          if (!user.email && account?.providerAccountId) {
-            // Use Kakao ID as unique identifier
-            user.email = `kakao_${account.providerAccountId}@kakao.placeholder`;
-            console.log("✅ Kakao 이메일 플레이스홀더 생성:", user.email);
-          } else if (profile) {
-            // Type assertion for Kakao profile
-            const kakaoProfile = profile as KakaoProfile;
-
-            // Ensure user has required fields from Kakao profile
-            if (!user.email && kakaoProfile?.kakao_account?.email) {
-              user.email = kakaoProfile.kakao_account.email;
-              console.log("✅ Kakao 이메일 설정:", user.email);
+          if (!user.email) {
+            if (account?.providerAccountId) {
+              // Use Kakao ID as unique identifier
+              user.email = `kakao_${account.providerAccountId}@kakao.placeholder`;
+              console.log("✅ Kakao 이메일 플레이스홀더 생성:", user.email);
+            } else if (profile) {
+              // Try to get email from profile
+              const kakaoProfile = profile as KakaoProfile;
+              if (kakaoProfile?.kakao_account?.email) {
+                user.email = kakaoProfile.kakao_account.email;
+                console.log("✅ Kakao 이메일 설정:", user.email);
+              } else if (kakaoProfile?.id) {
+                // Fallback: use Kakao ID from profile
+                user.email = `kakao_${kakaoProfile.id}@kakao.placeholder`;
+                console.log("✅ Kakao 이메일 플레이스홀더 생성 (from profile):", user.email);
+              }
             }
-
-            // Log Kakao profile details for debugging
+            
+            // If still no email, try to use user.id as fallback
+            if (!user.email && user.id) {
+              user.email = `kakao_${user.id}@kakao.placeholder`;
+              console.log("✅ Kakao 이메일 플레이스홀더 생성 (from user.id):", user.email);
+            }
+          }
+          
+          // Log Kakao profile details for debugging
+          if (profile) {
+            const kakaoProfile = profile as KakaoProfile;
             console.log("🔵 Kakao 프로필 정보:", {
               hasEmail: !!kakaoProfile?.kakao_account?.email,
               emailVerified: kakaoProfile?.kakao_account?.is_email_verified,
@@ -387,10 +400,10 @@ export const authOptions: AuthOptions = {
             });
           }
           
-          // Ensure user has email before proceeding
+          // Warn if still no email, but don't block login
+          // PrismaAdapter will handle the email requirement
           if (!user.email) {
-            console.error("❌ Kakao user has no email and providerAccountId is missing");
-            return false;
+            console.warn("⚠️ Kakao user has no email - PrismaAdapter will handle");
           }
         }
 
