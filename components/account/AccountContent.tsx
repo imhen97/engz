@@ -42,7 +42,7 @@ export default function AccountContent() {
         email: session.user.email ?? "",
         plan: session.user.plan ?? "free",
         trialActive: session.user.trialActive ?? false,
-        trialEndsAt: session.user.trialEndsAt?.toISOString() ?? null,
+        trialEndsAt: session.user.trialEndsAt ? String(session.user.trialEndsAt) : null,
         subscriptionActive: session.user.subscriptionActive ?? false,
       });
       setLoading(false);
