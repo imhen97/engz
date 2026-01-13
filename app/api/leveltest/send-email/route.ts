@@ -5,6 +5,8 @@ import { getToken } from "next-auth/jwt";
 
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 const APP_URL = process.env.NEXT_PUBLIC_URL || "https://www.eng-z.com";
 
 // Initialize nodemailer transporter

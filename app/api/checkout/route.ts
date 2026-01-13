@@ -4,6 +4,8 @@ import { getToken } from "next-auth/jwt";
 import prisma from "@/lib/prisma";
 import { getStripe } from "@/lib/stripe";
 
+export const dynamic = 'force-dynamic';
+
 const MONTHLY_PRICE = process.env.STRIPE_PRICE_MONTHLY_ID;
 const ANNUAL_PRICE = process.env.STRIPE_PRICE_ANNUAL_ID;
 const APP_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";

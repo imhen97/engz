@@ -4,6 +4,8 @@ import type { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 // Generate 4-week routine missions (5 missions per week = 20 total)
 function generateMissions(theme: string) {
   const missions = [];

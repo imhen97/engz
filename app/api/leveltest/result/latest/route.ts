@@ -5,6 +5,8 @@ import OpenAI from "openai";
 
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 type LevelSummary = {
   levelSelected: string | null;
   vocabScore: number;
