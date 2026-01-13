@@ -71,10 +71,10 @@ export default function ReportContent() {
       <div className="mx-auto w-full max-w-4xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
         <div className="mb-8 text-center sm:mb-10">
           <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C] sm:text-sm">
-            AI GENERATED REPORT
+            AI 생성 리포트
           </p>
           <h1 className="mt-3 text-2xl font-bold text-gray-900 sm:mt-4 sm:text-3xl md:text-4xl">
-            Weekly Progress Report
+            주간 학습 리포트
           </h1>
         </div>
 
@@ -83,10 +83,10 @@ export default function ReportContent() {
             <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
               <div className="mb-4">
                 <p className="text-sm font-medium text-gray-500">
-                  {reportData.theme} Routine · Week {reportData.week}
+                  {reportData.theme} 루틴 · {reportData.week}주차
                 </p>
                 <p className="mt-1 text-xs text-gray-400">
-                  {new Date(reportData.createdAt).toLocaleDateString("en-US", {
+                  {new Date(reportData.createdAt).toLocaleDateString("ko-KR", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -96,7 +96,7 @@ export default function ReportContent() {
               <div className="mb-6">
                 <div className="mb-2 flex items-center justify-between">
                   <span className="text-sm font-semibold text-gray-700">
-                    Score Change
+                    점수 변화
                   </span>
                   <span
                     className={`text-lg font-bold ${
@@ -127,7 +127,7 @@ export default function ReportContent() {
               </div>
               <div>
                 <h3 className="mb-3 text-sm font-semibold text-gray-900">
-                  AI Summary
+                  AI 분석 요약
                 </h3>
                 <p className="text-sm leading-relaxed text-gray-700">
                   {reportData.summary}
@@ -140,27 +140,27 @@ export default function ReportContent() {
                 href="/learning-room"
                 className="inline-flex items-center justify-center rounded-full border border-[#F5472C] px-6 py-3 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
               >
-                ← Back to Learning Room
+                ← 학습룸으로 돌아가기
               </Link>
               <Link
                 href="/onboarding"
                 className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
               >
-                Start Next Routine →
+                다음 루틴 시작하기 →
               </Link>
             </div>
           </div>
         ) : (
           <div className="rounded-2xl border border-gray-100 bg-white p-8 text-center shadow-lg">
             <p className="text-sm text-gray-600">
-              No report available yet. Complete your first week to see your
-              AI-generated progress report.
+              아직 리포트가 없습니다. 첫 주 학습을 완료하면 AI가 생성한 
+              학습 리포트를 확인할 수 있습니다.
             </p>
             <Link
               href="/learning-room"
               className="mt-6 inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
             >
-              Go to Learning Room →
+              학습룸으로 이동 →
             </Link>
           </div>
         )}

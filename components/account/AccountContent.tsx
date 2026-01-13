@@ -74,10 +74,10 @@ export default function AccountContent() {
       <div className="mx-auto w-full max-w-4xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
         <div className="mb-8 sm:mb-10">
           <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C] sm:text-sm">
-            MY ACCOUNT
+            내 계정
           </p>
           <h1 className="mt-3 text-2xl font-bold text-gray-900 sm:mt-4 sm:text-3xl md:text-4xl">
-            Profile & Subscription
+            프로필 및 구독 관리
           </h1>
         </div>
 
@@ -85,15 +85,15 @@ export default function AccountContent() {
           {/* Profile Section */}
           <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl">
-              Profile
+              프로필
             </h2>
             <div className="space-y-4">
               <div>
-                <p className="text-xs font-medium text-gray-500">Name</p>
+                <p className="text-xs font-medium text-gray-500">이름</p>
                 <p className="mt-1 text-sm text-gray-900">{accountData.name}</p>
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500">Email</p>
+                <p className="text-xs font-medium text-gray-500">이메일</p>
                 <p className="mt-1 text-sm text-gray-900">
                   {accountData.email}
                 </p>
@@ -104,33 +104,33 @@ export default function AccountContent() {
           {/* Subscription Section */}
           <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl">
-              Subscription Status
+              구독 상태
             </h2>
             <div className="space-y-4">
               <div>
                 <p className="text-xs font-medium text-gray-500">
-                  Current Plan
+                  현재 플랜
                 </p>
                 <p className="mt-1 text-sm font-semibold text-gray-900">
                   {accountData.plan === "free"
-                    ? "Free Trial"
+                    ? "무료 체험"
                     : accountData.plan === "annual"
-                    ? "Annual Plan"
-                    : "Monthly Plan"}
+                    ? "연간 플랜"
+                    : "월간 플랜"}
                 </p>
               </div>
               <div>
                 <p className="text-xs font-medium text-gray-500">
-                  Trial Status
+                  체험 상태
                 </p>
                 <p className="mt-1 text-sm text-gray-900">
-                  {accountData.trialActive ? "Active" : "Ended"}
+                  {accountData.trialActive ? "진행 중" : "종료됨"}
                 </p>
                 {accountData.trialActive && accountData.trialEndsAt && (
                   <p className="mt-1 text-xs text-gray-500">
-                    Ends:{" "}
+                    종료일:{" "}
                     {new Date(accountData.trialEndsAt).toLocaleDateString(
-                      "en-US",
+                      "ko-KR",
                       {
                         year: "numeric",
                         month: "long",
@@ -142,10 +142,10 @@ export default function AccountContent() {
               </div>
               <div>
                 <p className="text-xs font-medium text-gray-500">
-                  Subscription Active
+                  구독 활성화
                 </p>
                 <p className="mt-1 text-sm text-gray-900">
-                  {accountData.subscriptionActive ? "Yes" : "No"}
+                  {accountData.subscriptionActive ? "예" : "아니요"}
                 </p>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function AccountContent() {
                 href="/subscribe"
                 className="inline-flex items-center justify-center rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
               >
-                Manage Subscription →
+                구독 관리 →
               </Link>
             </div>
           </section>
@@ -166,7 +166,7 @@ export default function AccountContent() {
             onClick={() => signOut({ callbackUrl: "/" })}
             className="inline-flex items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-red-500 hover:text-red-500"
           >
-            Sign Out
+            로그아웃
           </button>
         </div>
       </div>

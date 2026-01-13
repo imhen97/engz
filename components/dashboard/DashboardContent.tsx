@@ -132,7 +132,7 @@ export default function DashboardContent() {
       <div className="mx-auto w-full max-w-5xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10">
         <div className="flex flex-col gap-3 sm:gap-4">
           <p className="text-xs font-medium tracking-[0.3em] text-[#F5472C] sm:text-sm">
-            MY ENGZ BOARD
+            내 학습 현황
           </p>
           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             {name ?? "ENGZ 학습자"}님의 대시보드
@@ -190,8 +190,7 @@ export default function DashboardContent() {
                     {currentCourse.title}
                   </p>
                   <p className="mt-1 text-xs text-gray-600">
-                    Week {currentEnrollment.currentWeek} · Day{" "}
-                    {currentEnrollment.currentDay}
+                    {currentEnrollment.currentWeek}주차 · {currentEnrollment.currentDay}일차
                   </p>
                 </div>
                 <Link
