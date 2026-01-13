@@ -10,8 +10,8 @@ export default function SessionProviderWrapper({
 }) {
   return (
     <SessionProvider
-      refetchInterval={5 * 60} // Refetch session every 5 minutes
-      refetchOnWindowFocus={true} // Refetch when window gains focus
+      refetchInterval={0} // Don't auto-refetch to prevent infinite loops
+      refetchOnWindowFocus={false} // Don't refetch on focus to prevent excessive calls
     >
       {children}
     </SessionProvider>

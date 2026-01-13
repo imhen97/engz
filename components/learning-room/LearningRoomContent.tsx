@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -42,6 +42,9 @@ export default function LearningRoomContent() {
   const router = useRouter();
   const { data, isLoading, error, refetch } = useLearningRoom();
   const { setCurrentRoutine, setMissions, setTodayMission, updateStreak } = useLearningStore();
+  
+  // Prevent multiple redirects
+  const hasRedirected = useRef(false);
 
   // Sync React Query data with Zustand store
   useEffect(() => {
@@ -60,24 +63,30 @@ export default function LearningRoomContent() {
   }, [data, setCurrentRoutine, setMissions, setTodayMission, updateStreak]);
 
   useEffect(() => {
+    // Only redirect once to prevent infinite loops
+    if (hasRedirected.current) return;
+    
     // 인증되지 않은 경우 로그인 페이지로 리다이렉트
     if (status === "unauthenticated") {
+      hasRedirected.current = true;
       router.push("/signup?callbackUrl=/learning-room");
       return;
     }
 
     // 로그인 상태이고 세션이 있으면 체험 기간 체크
+    // Note: Only check when status is "authenticated" (not "loading")
     if (status === "authenticated" && session?.user) {
       // 7일 체험 기간 체크
       const trialActive = session.user.trialActive ?? false;
       const subscriptionActive = session.user.subscriptionActive ?? false;
 
       if (!trialActive && !subscriptionActive) {
+        hasRedirected.current = true;
         router.push("/pricing");
         return;
       }
     }
-  }, [status, session, router]);
+  }, [status]); // Only depend on status, not session object (prevents infinite loop)
 
   // 로딩 중
   if (status === "loading" || isLoading) {

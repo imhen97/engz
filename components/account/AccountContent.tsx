@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
@@ -20,14 +20,23 @@ export default function AccountContent() {
   const router = useRouter();
   const [accountData, setAccountData] = useState<AccountData | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Prevent multiple redirects
+  const hasRedirected = useRef(false);
+  const hasSetData = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple redirects
+    if (hasRedirected.current) return;
+    
     if (status === "unauthenticated") {
+      hasRedirected.current = true;
       router.push("/signup?callbackUrl=/account");
       return;
     }
 
-    if (status === "authenticated" && session?.user) {
+    if (status === "authenticated" && session?.user && !hasSetData.current) {
+      hasSetData.current = true;
       setAccountData({
         name: session.user.name ?? "",
         email: session.user.email ?? "",
@@ -38,7 +47,7 @@ export default function AccountContent() {
       });
       setLoading(false);
     }
-  }, [status, session, router]);
+  }, [status]); // Only depend on status to prevent infinite loop
 
   if (status === "loading" || loading) {
     return (

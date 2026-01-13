@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -20,14 +20,23 @@ export default function ReportContent() {
   const router = useRouter();
   const [reportData, setReportData] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Prevent multiple redirects and fetches
+  const hasRedirected = useRef(false);
+  const hasFetchedData = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple redirects
+    if (hasRedirected.current) return;
+    
     if (status === "unauthenticated") {
+      hasRedirected.current = true;
       router.push("/signup?callbackUrl=/report");
       return;
     }
 
-    if (status === "authenticated" && session?.user) {
+    if (status === "authenticated" && session?.user && !hasFetchedData.current) {
+      hasFetchedData.current = true;
       fetch("/api/reports/latest")
         .then((res) => res.json())
         .then((data) => {
@@ -39,7 +48,7 @@ export default function ReportContent() {
           setLoading(false);
         });
     }
-  }, [status, session, router]);
+  }, [status]); // Only depend on status to prevent infinite loop
 
   if (status === "loading" || loading) {
     return (

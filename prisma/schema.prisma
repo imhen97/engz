@@ -1,17 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
   id                 String            @id @default(cuid())
-  name               String?
   email              String?           @unique
-  emailVerified      DateTime?
+  name               String?
   image              String?
   provider           String?
   plan               String            @default("free")
@@ -20,20 +19,21 @@ model User {
   subscriptionActive Boolean           @default(false)
   subscriptionId     String?
   stripeCustomerId   String?
-  role               String?           // "admin" | "coach" | null (for regular users)
   currentCourseId    String?
-  currentCourse      Course?           @relation("CurrentCourse", fields: [currentCourseId], references: [id])
-  currentRoutineId   String?
-  currentRoutine     Routine?          @relation("CurrentRoutine", fields: [currentRoutineId], references: [id])
-  accounts           Account[]
-  sessions           Session[]
-  enrollments        Enrollment[]
-  feedbackSessions   FeedbackSession[]
-  reports            WeeklyReport[]
-  routines           Routine[]         @relation("UserRoutines")
-  levelTestResults   LevelTestResult[]
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
+  emailVerified      DateTime?
+  currentRoutineId   String?
+  role               String?
+  accounts           Account[]
+  enrollments        Enrollment[]
+  feedbackSessions   FeedbackSession[]
+  levelTestResults   LevelTestResult[]
+  routines           Routine[]         @relation("UserRoutines")
+  sessions           Session[]
+  currentCourse      Course?           @relation("CurrentCourse", fields: [currentCourseId], references: [id])
+  currentRoutine     Routine?          @relation("CurrentRoutine", fields: [currentRoutineId], references: [id])
+  reports            WeeklyReport[]
 }
 
 model Account {
@@ -42,14 +42,14 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?
+  access_token             String?
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?
   session_state            String?
-  refresh_token_expires_in Int?    // For Kakao refresh token expiration
+  refresh_token_expires_in Int?
   user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -79,17 +79,16 @@ model Course {
   durationWeeks Int            @default(4)
   level         String
   type          String
-  lessons       Lesson[]
-  enrollments   Enrollment[]
-  currentUsers  User[]         @relation("CurrentCourse")
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  enrollments   Enrollment[]
+  lessons       Lesson[]
+  currentUsers  User[]         @relation("CurrentCourse")
   weeklyReports WeeklyReport[]
 }
 
 model Lesson {
   id               String            @id @default(cuid())
-  course           Course            @relation(fields: [courseId], references: [id])
   courseId         String
   week             Int
   day              Int
@@ -97,16 +96,15 @@ model Lesson {
   contentType      String
   contentUrl       String?
   prompt           String?
-  feedbackSessions FeedbackSession[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+  feedbackSessions FeedbackSession[]
+  course           Course            @relation(fields: [courseId], references: [id])
 }
 
 model Enrollment {
   id          String   @id @default(cuid())
-  user        User     @relation(fields: [userId], references: [id])
   userId      String
-  course      Course   @relation(fields: [courseId], references: [id])
   courseId    String
   startedAt   DateTime @default(now())
   currentWeek Int      @default(1)
@@ -114,15 +112,15 @@ model Enrollment {
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  course      Course   @relation(fields: [courseId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, courseId])
 }
 
 model FeedbackSession {
   id                 String   @id @default(cuid())
-  user               User     @relation(fields: [userId], references: [id])
   userId             String
-  lesson             Lesson   @relation(fields: [lessonId], references: [id])
   lessonId           String
   inputText          String?
   audioUrl           String?
@@ -133,34 +131,35 @@ model FeedbackSession {
   feedbackText       String?
   correctionsJson    String?
   createdAt          DateTime @default(now())
+  lesson             Lesson   @relation(fields: [lessonId], references: [id])
+  user               User     @relation(fields: [userId], references: [id])
 }
 
 model WeeklyReport {
   id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  course    Course   @relation(fields: [courseId], references: [id])
   courseId  String
   week      Int
   summary   String
   dataJson  String
   createdAt DateTime @default(now())
+  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
-// PRD: Routine, Mission, Report models
 model Routine {
   id           String    @id @default(cuid())
   userId       String
-  theme        String // "Grammar", "Slang", "Business", "Travel", etc.
+  theme        String
   startDate    DateTime
   endDate      DateTime
   completed    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   missions     Mission[]
   report       Report?
   user         User      @relation("UserRoutines", fields: [userId], references: [id])
   currentUsers User[]    @relation("CurrentRoutine")
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
 }
 
 model Mission {
@@ -171,9 +170,9 @@ model Mission {
   content    String
   aiFeedback String?
   completed  Boolean  @default(false)
-  routine    Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  routine    Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
 }
 
 model Report {
@@ -181,48 +180,46 @@ model Report {
   routineId   String   @unique
   summary     String
   scoreChange Float
-  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
+  routine     Routine  @relation(fields: [routineId], references: [id], onDelete: Cascade)
 }
 
-// PRD: Level Test Result model
 model LevelTestResult {
   id                 String   @id @default(cuid())
   userId             String
-  levelSelected      String? // "beginner", "intermediate", "advanced" (optional for gamified test)
+  levelSelected      String?
   vocabScore         Int
   grammarScore       Int
   writingScore       Int
-  totalScore         Int      @default(0) // Average of vocab, grammar, writing
-  avgSpeed           Float?   // Average response time in seconds
-  rankPercent        Int?     // Percentile rank (0-100)
   overallLevel       String
   strengths          String?
   weaknesses         String?
   recommendedRoutine String?
-  aiFeedback         String? @db.Text
-  aiPlan             String? @db.Text
-  aiMent             String? // Motivational English tagline (10 levels)
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aiFeedback         String?
+  aiPlan             String?
   createdAt          DateTime @default(now())
+  totalScore         Int      @default(0)
+  avgSpeed           Float?
+  rankPercent        Int?
+  aiMent             String?
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// Admin Dashboard models
 model AdminUser {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
-  role      String   @default("admin") // "admin" | "coach"
-  password  String   // Hashed password
+  role      String   @default("admin")
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Log {
   id        String   @id @default(cuid())
-  type      String   // "login", "payment", "error", "ai_feedback", "user_registered", "test_completed"
+  type      String
   message   String
-  metadata  String?  @db.Text // JSON string for additional data
-  read      Boolean  @default(false) // Whether admin has read this log
+  metadata  String?
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
