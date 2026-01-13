@@ -278,15 +278,9 @@ export default function LearningRoomContent() {
                 <button
                   type="button"
                   onClick={() => handleMissionClick(routineData.todayMission!)}
-                  className={`w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md transition hover:scale-105 ${
-                    routineData.todayMission.completed
-                      ? "bg-gray-400 text-white"
-                      : "bg-[#F5472C] text-white"
-                  }`}
+                  className="w-full rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
                 >
-                  {routineData.todayMission.completed
-                    ? "🔄 다시 연습하기"
-                    : "🎯 미션 시작하기"}
+                  🎯 답변 녹음 → AI 피드백 → 90점 이상까지 반복
                 </button>
               </div>
             ) : (
