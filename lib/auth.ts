@@ -278,7 +278,10 @@ export const authOptions: AuthOptions = {
   events: {
     async createUser({ user }) {
       try {
+        console.log("=== createUser Event ===");
+        console.log("User:", JSON.stringify(user, null, 2));
         console.log("✅ 새 사용자 생성 이벤트:", user.id, user.email);
+        
         await prisma.user.update({
           where: { id: user.id },
           data: {
@@ -290,8 +293,62 @@ export const authOptions: AuthOptions = {
         console.log("✅ 사용자 초기 설정 완료:", user.id);
       } catch (error) {
         console.error("❌ createUser 이벤트 오류:", error);
+        console.error("❌ createUser 오류 상세:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
         // 오류가 발생해도 로그인은 계속 진행되도록 함
         // (이미 PrismaAdapter가 사용자를 생성했을 수 있음)
+      }
+    },
+    async linkAccount({ account, user }) {
+      try {
+        console.log("=== linkAccount Event ===");
+        console.log("Account:", JSON.stringify(account, null, 2));
+        console.log("User:", JSON.stringify(user, null, 2));
+        console.log("✅ 계정 연결 이벤트:", account.provider, user.id);
+        
+        // Verify Account was saved to database
+        try {
+          const savedAccount = await prisma.account.findUnique({
+            where: {
+              provider_providerAccountId: {
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              },
+            },
+          });
+          
+          if (savedAccount) {
+            console.log("✅ Account 저장 확인됨:", savedAccount.id);
+            console.log("✅ Account 상세:", JSON.stringify(savedAccount, null, 2));
+          } else {
+            console.warn("⚠️ Account가 데이터베이스에 저장되지 않았습니다.");
+          }
+        } catch (dbError) {
+          console.error("❌ Account 확인 중 오류:", dbError);
+        }
+      } catch (error) {
+        console.error("❌ linkAccount 이벤트 오류:", error);
+        console.error("❌ linkAccount 오류 상세:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
+      }
+    },
+    async signIn({ user, account, isNewUser }) {
+      try {
+        console.log("=== signIn Event ===");
+        console.log("User:", JSON.stringify(user, null, 2));
+        console.log("Account:", JSON.stringify(account, null, 2));
+        console.log("Is New User:", isNewUser);
+        console.log("✅ 로그인 이벤트:", user.email, account?.provider);
+      } catch (error) {
+        console.error("❌ signIn 이벤트 오류:", error);
+        console.error("❌ signIn 이벤트 오류 상세:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
       }
     },
   },
