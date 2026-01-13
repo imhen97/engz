@@ -29,7 +29,7 @@ interface LearningRoomData {
   };
 }
 
-export function useLearningRoom() {
+export function useLearningRoom(enabled: boolean = true) {
   return useQuery({
     queryKey: learningKeys.room(),
     queryFn: async (): Promise<LearningRoomData> => {
@@ -39,6 +39,9 @@ export function useLearningRoom() {
       return json.data;
     },
     staleTime: 1000 * 60 * 2, // 2 minutes
+    enabled, // Only fetch when authenticated
+    retry: false, // Don't retry on error to prevent infinite loops
+    refetchOnWindowFocus: false, // Don't refetch on window focus
   });
 }
 

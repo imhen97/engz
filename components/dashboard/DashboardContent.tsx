@@ -53,41 +53,20 @@ export default function DashboardContent() {
     // Prevent multiple redirects
     if (hasRedirected.current) return;
     
-    console.log("🔵 DashboardContent - Status:", status, "Session:", !!session);
-    
     // Only redirect if we're SURE there's no session (not loading)
-    // This prevents redirect loops
     if (status === "unauthenticated") {
-      console.log("❌ 인증되지 않음 - 로그인 페이지로 리다이렉트");
       hasRedirected.current = true;
-      // Use replace instead of push to avoid adding to history
       router.replace("/signup?callbackUrl=/dashboard");
       return;
     }
 
+    // REMOVED: trialActive/subscriptionActive check to prevent redirect loops
     // 로그인 상태이고 세션이 있으면 데이터 가져오기
     if (status === "authenticated" && session?.user) {
-      console.log("✅ 인증됨 - 사용자:", session.user.email);
-      
-      // 7일 체험 기간 체크
-      const trialActive = session.user.trialActive ?? false;
-      const subscriptionActive = session.user.subscriptionActive ?? false;
-
-      // Only redirect to pricing if we're CERTAIN user has no trial/subscription
-      // Don't redirect immediately for new users (middleware will handle it)
-      if (!trialActive && !subscriptionActive) {
-        console.log("❌ 체험 기간 종료 - 결제 페이지로 리다이렉트");
-        hasRedirected.current = true;
-        // Use replace to avoid redirect loop
-        router.replace("/pricing");
-        return;
-      }
-
       // 대시보드 데이터 가져오기 (only once)
       if (hasFetchedData.current) return;
       hasFetchedData.current = true;
       
-      console.log("📊 대시보드 데이터 가져오기 시작");
       fetch("/api/dashboard/data")
         .then((res) => {
           if (!res.ok) {
@@ -96,16 +75,14 @@ export default function DashboardContent() {
           return res.json();
         })
         .then((data) => {
-          console.log("✅ 대시보드 데이터 가져오기 성공:", data);
           setDashboardData(data);
           setLoading(false);
         })
-        .catch((error) => {
-          console.error("❌ 대시보드 데이터 가져오기 실패:", error);
+        .catch(() => {
           setLoading(false);
         });
     }
-  }, [status]); // Only depend on status to prevent infinite loop
+  }, [status, session, router]);
 
   // 로딩 중
   if (status === "loading" || loading) {

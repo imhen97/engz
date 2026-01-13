@@ -40,11 +40,14 @@ interface RoutineData {
 export default function LearningRoomContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { data, isLoading, error, refetch } = useLearningRoom();
   const { setCurrentRoutine, setMissions, setTodayMission, updateStreak } = useLearningStore();
   
   // Prevent multiple redirects
   const hasRedirected = useRef(false);
+  
+  // Only fetch learning data when authenticated
+  const isAuthenticated = status === "authenticated";
+  const { data, isLoading, error, refetch } = useLearningRoom(isAuthenticated);
 
   // Sync React Query data with Zustand store
   useEffect(() => {
@@ -72,41 +75,18 @@ export default function LearningRoomContent() {
       router.push("/signup?callbackUrl=/learning-room");
       return;
     }
-
-    // 로그인 상태이고 세션이 있으면 체험 기간 체크
-    // Note: Only check when status is "authenticated" (not "loading")
-    if (status === "authenticated" && session?.user) {
-      // 7일 체험 기간 체크
-      const trialActive = session.user.trialActive ?? false;
-      const subscriptionActive = session.user.subscriptionActive ?? false;
-
-      if (!trialActive && !subscriptionActive) {
-        hasRedirected.current = true;
-        router.push("/pricing");
-        return;
-      }
-    }
-  }, [status]); // Only depend on status, not session object (prevents infinite loop)
+    
+    // REMOVED: trialActive/subscriptionActive check
+    // This was causing infinite redirect loops for new users
+    // The check is now handled by the page itself or subscription banner
+  }, [status, router]);
 
   // 로딩 중
-  if (status === "loading" || isLoading) {
+  if (status === "loading") {
     return (
       <main className="min-h-screen bg-[#FFF8F5] text-black">
         <NavBar />
         <LoadingSkeleton />
-      </main>
-    );
-  }
-
-  // 에러 상태
-  if (error) {
-    return (
-      <main className="min-h-screen bg-[#FFF8F5] text-black">
-        <NavBar />
-        <ErrorState
-          message="학습 데이터를 불러올 수 없습니다"
-          onRetry={() => refetch()}
-        />
       </main>
     );
   }
@@ -126,6 +106,29 @@ export default function LearningRoomContent() {
   // 세션이 없는 경우
   if (!session?.user) {
     return null;
+  }
+  
+  // 데이터 로딩 중
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-[#FFF8F5] text-black">
+        <NavBar />
+        <LoadingSkeleton />
+      </main>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <main className="min-h-screen bg-[#FFF8F5] text-black">
+        <NavBar />
+        <ErrorState
+          message="학습 데이터를 불러올 수 없습니다"
+          onRetry={() => refetch()}
+        />
+      </main>
+    );
   }
 
   const { name } = session.user;

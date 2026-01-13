@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/pricing") ||
     pathname.startsWith("/testimonials") ||
     pathname.startsWith("/coming-soon") ||
-    (pathname.startsWith("/level-test") && !pathname.includes("/result"))  // Allow level-test pages
+    (pathname.startsWith("/level-test") && !pathname.includes("/result")) // Allow level-test pages
   ) {
     return NextResponse.next();
   }
@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
     "/account",
     "/level-test/result",
   ];
-  
+
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
@@ -75,7 +75,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
