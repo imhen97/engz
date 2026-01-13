@@ -87,24 +87,33 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
   }
 }
 
+// Email provider - only add if both EMAIL_SERVER and EMAIL_FROM are set
 if (process.env.EMAIL_SERVER && process.env.EMAIL_FROM) {
   try {
-    const EmailProvider = (
-      eval("require")(
-        "next-auth/providers/email"
-      ) as typeof import("next-auth/providers/email")
-    ).default;
-    providers.push(
-      EmailProvider({
-        server: process.env.EMAIL_SERVER,
-        from: process.env.EMAIL_FROM,
-      })
-    );
+    // Use require for dynamic loading (works in both CommonJS and ESM contexts)
+    const EmailProviderModule = require("next-auth/providers/email");
+    const EmailProvider = EmailProviderModule.default || EmailProviderModule;
+    
+    if (EmailProvider) {
+      providers.push(
+        EmailProvider({
+          server: process.env.EMAIL_SERVER,
+          from: process.env.EMAIL_FROM,
+        })
+      );
+      console.log("✅ Email provider 추가됨");
+    } else {
+      console.warn("⚠️ Email provider를 찾을 수 없습니다.");
+    }
   } catch (error) {
-    console.error("이메일 제공자를 로드하지 못했습니다:", error);
+    console.error("❌ 이메일 제공자를 로드하지 못했습니다:", error);
+    console.warn("⚠️ Email provider 없이 계속 진행합니다.");
+    // Continue without email provider - not critical
   }
 } else {
-  console.warn("EMAIL_SERVER 또는 EMAIL_FROM 환경 변수가 설정되지 않았습니다.");
+  if (process.env.NODE_ENV === "development") {
+    console.warn("⚠️ EMAIL_SERVER 또는 EMAIL_FROM 환경 변수가 설정되지 않았습니다. Email 로그인을 사용하려면 설정해 주세요.");
+  }
 }
 
 // Add Credentials provider for admin login
