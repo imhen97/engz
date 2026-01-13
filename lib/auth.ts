@@ -36,11 +36,6 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
     KakaoProvider({
       clientId: process.env.KAKAO_ID!,
       clientSecret: process.env.KAKAO_SECRET!,
-      authorization: {
-        params: {
-          scope: "profile_nickname profile_image account_email",
-        },
-      },
       profile(profile) {
         const kakaoProfile = profile as KakaoProfile;
         // Return basic user object - NextAuth will extend it with plan, trialActive, etc. in callbacks
@@ -279,22 +274,29 @@ export const authOptions: AuthOptions = {
         });
 
         // Handle Kakao OAuth specifically
-        if (account?.provider === "kakao" && profile) {
-          // Type assertion for Kakao profile
-          const kakaoProfile = profile as KakaoProfile;
+        if (account?.provider === "kakao") {
+          // For Kakao users without email, generate a placeholder
+          if (!user.email && account?.providerAccountId) {
+            // Use Kakao ID as unique identifier
+            user.email = `kakao_${account.providerAccountId}@kakao.local`;
+            console.log("✅ Kakao 이메일 플레이스홀더 생성:", user.email);
+          } else if (profile) {
+            // Type assertion for Kakao profile
+            const kakaoProfile = profile as KakaoProfile;
 
-          // Ensure user has required fields from Kakao profile
-          if (!user.email && kakaoProfile?.kakao_account?.email) {
-            user.email = kakaoProfile.kakao_account.email;
-            console.log("✅ Kakao 이메일 설정:", user.email);
+            // Ensure user has required fields from Kakao profile
+            if (!user.email && kakaoProfile?.kakao_account?.email) {
+              user.email = kakaoProfile.kakao_account.email;
+              console.log("✅ Kakao 이메일 설정:", user.email);
+            }
+
+            // Log Kakao profile details for debugging
+            console.log("🔵 Kakao 프로필 정보:", {
+              hasEmail: !!kakaoProfile?.kakao_account?.email,
+              emailVerified: kakaoProfile?.kakao_account?.is_email_verified,
+              hasNickname: !!kakaoProfile?.kakao_account?.profile?.nickname,
+            });
           }
-
-          // Log Kakao profile details for debugging
-          console.log("🔵 Kakao 프로필 정보:", {
-            hasEmail: !!kakaoProfile?.kakao_account?.email,
-            emailVerified: kakaoProfile?.kakao_account?.is_email_verified,
-            hasNickname: !!kakaoProfile?.kakao_account?.profile?.nickname,
-          });
         }
 
         // Provider가 설정되지 않은 경우 체크
