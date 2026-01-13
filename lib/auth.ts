@@ -38,6 +38,11 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
       clientId: process.env.KAKAO_ID!,
       clientSecret: process.env.KAKAO_SECRET!,
       allowDangerousEmailAccountLinking: true,
+      authorization: {
+        params: {
+          scope: "profile_nickname profile_image account_email",
+        },
+      },
       profile(profile) {
         try {
           console.log("=== Kakao Profile Data ===");
@@ -51,8 +56,8 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
               kakaoProfile.kakao_account?.profile?.nickname ||
               kakaoProfile.kakao_account?.name ||
               kakaoProfile.properties?.nickname ||
-              "카카오 사용자",
-            email: kakaoProfile.kakao_account?.email || `kakao_${kakaoProfile.id}@kakao.placeholder`,
+              "사용자",
+            email: kakaoProfile.kakao_account?.email || `kakao_${kakaoProfile.id}@placeholder.engz.com`,
             image:
               kakaoProfile.kakao_account?.profile?.profile_image_url ||
               kakaoProfile.properties?.profile_image ||
