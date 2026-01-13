@@ -24,6 +24,14 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
+    cookieName: "next-auth.session-token", // Must match auth.ts cookie name
+  });
+  
+  // Debug logging for production
+  console.log("🔐 Middleware token check:", {
+    pathname,
+    hasToken: !!token,
+    tokenUserId: token?.userId || null,
   });
 
   // Handle admin routes
