@@ -14,9 +14,12 @@ interface LearningRoomData {
   routine: Routine | null;
   missions: Mission[];
   todayMission: Mission | null;
+  reviewMission?: Mission | null;
   progress: number;
   currentWeek: number;
   currentDay: number;
+  completedCount?: number;
+  totalCount?: number;
   upcomingSession?: {
     date: string;
     time: string;
@@ -26,6 +29,9 @@ interface LearningRoomData {
     grammar: string;
     pronunciation: string;
     fluency: string;
+    avgGrammar?: number;
+    avgPronunciation?: number;
+    avgFluency?: number;
   };
 }
 

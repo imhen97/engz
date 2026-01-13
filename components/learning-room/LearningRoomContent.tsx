@@ -15,7 +15,7 @@ interface Mission {
   week: number;
   day: number;
   content: string;
-  aiFeedback?: string;
+  aiFeedback?: string | null;
   completed: boolean;
 }
 
