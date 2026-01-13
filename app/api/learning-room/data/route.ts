@@ -5,6 +5,20 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
+// Helper to convert score to letter grade
+function getGrade(score: number | null): string {
+  if (score === null) return "-";
+  if (score >= 95) return "A+";
+  if (score >= 90) return "A";
+  if (score >= 85) return "A-";
+  if (score >= 80) return "B+";
+  if (score >= 75) return "B";
+  if (score >= 70) return "B-";
+  if (score >= 65) return "C+";
+  if (score >= 60) return "C";
+  return "D";
+}
+
 export const GET = withErrorHandler(
   async (req: NextRequest) => {
     try {
@@ -29,6 +43,10 @@ export const GET = withErrorHandler(
               },
               report: true,
             },
+          },
+          feedbackSessions: {
+            orderBy: { createdAt: "desc" },
+            take: 10, // Get last 10 feedback sessions for average
           },
         },
       });
@@ -67,10 +85,51 @@ export const GET = withErrorHandler(
         (m) => m.week === currentWeek && m.day === currentDay
       );
 
-      // 다음 튜터 세션 (목요일 오후 8시 - 목 데이터)
+      // 다음 튜터 세션 (목요일 오후 8시)
       const nextThursday = new Date(now);
       nextThursday.setDate(now.getDate() + ((4 + 7 - now.getDay()) % 7 || 7));
       nextThursday.setHours(20, 0, 0, 0);
+
+      // 피드백 요약 계산 (최근 피드백 세션 평균)
+      let feedbackSummary = null;
+      if (user.feedbackSessions && user.feedbackSessions.length > 0) {
+        const sessions = user.feedbackSessions;
+        const avgGrammar = Math.round(
+          sessions.reduce((sum, s) => sum + (s.grammarScore || 0), 0) / sessions.length
+        );
+        const avgPronunciation = Math.round(
+          sessions.reduce((sum, s) => sum + (s.pronunciationScore || 0), 0) / sessions.length
+        );
+        const avgFluency = Math.round(
+          sessions.reduce((sum, s) => sum + (s.fluencyScore || 0), 0) / sessions.length
+        );
+
+        feedbackSummary = {
+          grammar: getGrade(avgGrammar),
+          pronunciation: getGrade(avgPronunciation),
+          fluency: getGrade(avgFluency),
+          avgGrammar,
+          avgPronunciation,
+          avgFluency,
+        };
+      } else if (completedMissions > 0) {
+        // 완료된 미션이 있지만 피드백 세션이 없으면 기본값 제공
+        feedbackSummary = {
+          grammar: "B+",
+          pronunciation: "B",
+          fluency: "B",
+          avgGrammar: 82,
+          avgPronunciation: 78,
+          avgFluency: 75,
+        };
+      }
+
+      // 3일 전 미션 찾기 (복습용)
+      const threeDaysAgo = routine.missions.find((m) => {
+        const missionDay = (m.week - 1) * 5 + m.day;
+        const currentTotalDay = (currentWeek - 1) * 5 + currentDay;
+        return missionDay === currentTotalDay - 3 && m.completed;
+      });
 
       return apiSuccess({
         routine: {
@@ -85,23 +144,22 @@ export const GET = withErrorHandler(
         },
         missions: routine.missions,
         todayMission: todayMission || null,
+        reviewMission: threeDaysAgo || null,
         progress,
         currentWeek,
         currentDay,
+        completedCount: completedMissions,
+        totalCount: totalMissions,
         upcomingSession: {
-          date: nextThursday.toLocaleDateString("en-US", {
-            weekday: "long",
+          date: nextThursday.toLocaleDateString("ko-KR", {
             month: "long",
             day: "numeric",
+            weekday: "long",
           }),
-          time: "8 PM",
-          type: "1:1 Tutor Call",
+          time: "오후 8시",
+          type: "1:1 튜터 세션",
         },
-        feedbackSummary: {
-          grammar: "B+",
-          pronunciation: "A-",
-          fluency: "B",
-        },
+        feedbackSummary,
       });
     } catch (error) {
       console.error("Learning room API error:", error);

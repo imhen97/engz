@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import { useLearningRoom } from "@/hooks/queries/useLearning";
 import { useLearningStore } from "@/store";
+import MissionPracticeModal from "./MissionPracticeModal";
+import AllMissionsView from "./AllMissionsView";
+
+interface Mission {
+  id: string;
+  week: number;
+  day: number;
+  content: string;
+  aiFeedback?: string;
+  completed: boolean;
+}
 
 interface RoutineData {
   id: string;
@@ -17,14 +28,8 @@ interface RoutineData {
   progress: number;
   currentWeek: number;
   currentDay: number;
-  todayMission?: {
-    id: string;
-    week: number;
-    day: number;
-    content: string;
-    aiFeedback?: string;
-    completed: boolean;
-  };
+  todayMission?: Mission;
+  reviewMission?: Mission;
   upcomingSession?: {
     date: string;
     time: string;
@@ -34,6 +39,9 @@ interface RoutineData {
     grammar: string;
     pronunciation: string;
     fluency: string;
+    avgGrammar?: number;
+    avgPronunciation?: number;
+    avgFluency?: number;
   };
 }
 
@@ -44,6 +52,11 @@ export default function LearningRoomContent() {
   
   // Prevent multiple redirects
   const hasRedirected = useRef(false);
+  
+  // Modal states
+  const [showPracticeModal, setShowPracticeModal] = useState(false);
+  const [selectedMission, setSelectedMission] = useState<Mission | null>(null);
+  const [showAllMissions, setShowAllMissions] = useState(false);
   
   // Only fetch learning data when authenticated
   const isAuthenticated = status === "authenticated";
@@ -128,6 +141,7 @@ export default function LearningRoomContent() {
 
   const { name } = session.user;
   const routine = data?.routine;
+  const allMissions = data?.missions || [];
   const routineData = data ? {
     id: routine?.id || "",
     theme: routine?.theme || "",
@@ -137,10 +151,24 @@ export default function LearningRoomContent() {
     progress: data.progress || 0,
     currentWeek: data.currentWeek || 1,
     currentDay: data.currentDay || 1,
-    todayMission: data.todayMission,
+    todayMission: data.todayMission as Mission | undefined,
+    reviewMission: data.reviewMission as Mission | undefined,
     upcomingSession: data.upcomingSession,
     feedbackSummary: data.feedbackSummary,
   } : null;
+
+  // Mission handlers
+  const handleMissionClick = (mission: Mission) => {
+    setSelectedMission(mission);
+    setShowPracticeModal(true);
+  };
+
+  const handleMissionComplete = async (missionId: string, response: string, score: number) => {
+    // Refetch data to update UI
+    await refetch();
+    setShowPracticeModal(false);
+    setSelectedMission(null);
+  };
 
   // 루틴이 없는 경우
   if (!data?.routine) {
@@ -165,9 +193,17 @@ export default function LearningRoomContent() {
             👋 안녕하세요, {name ?? "ENGZ 회원"}님!
           </h1>
           {routineData && (
-            <p className="text-xs text-gray-600 sm:text-sm">
-              현재 루틴: [{routineData.theme} – {routineData.currentWeek}주차]
-            </p>
+            <div className="flex items-center gap-3">
+              <p className="text-xs text-gray-600 sm:text-sm">
+                현재 루틴: [{routineData.theme} – {routineData.currentWeek}주차]
+              </p>
+              <button
+                onClick={() => setShowAllMissions(!showAllMissions)}
+                className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 transition hover:bg-gray-200"
+              >
+                {showAllMissions ? "간단히 보기" : "전체 커리큘럼 보기"}
+              </button>
+            </div>
           )}
         </div>
 
@@ -188,6 +224,21 @@ export default function LearningRoomContent() {
                 style={{ width: `${routineData.progress}%` }}
               />
             </div>
+            <p className="mt-2 text-xs text-gray-500">
+              {data?.completedCount || 0}개 완료 / {data?.totalCount || 0}개 미션
+            </p>
+          </div>
+        )}
+
+        {/* All Missions View (Expandable) */}
+        {showAllMissions && routineData && (
+          <div className="mb-8">
+            <AllMissionsView
+              missions={allMissions}
+              currentWeek={routineData.currentWeek}
+              currentDay={routineData.currentDay}
+              onMissionClick={handleMissionClick}
+            />
           </div>
         )}
 
@@ -195,22 +246,29 @@ export default function LearningRoomContent() {
           {/* Today's Mission */}
           <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl">
-              오늘의 미션
+              🎯 오늘의 미션
             </h2>
             {routineData?.todayMission ? (
               <div className="space-y-4">
                 <div className="rounded-lg bg-[#FFF7F0] p-4">
-                  <p className="text-xs font-medium text-gray-500">
-                    {routineData.todayMission.week}주차 · {routineData.todayMission.day}일차
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-medium text-gray-500">
+                      {routineData.todayMission.week}주차 · {routineData.todayMission.day}일차
+                    </p>
+                    {routineData.todayMission.completed && (
+                      <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-600">
+                        완료 ✓
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-2 text-sm text-gray-900">
                     {routineData.todayMission.content}
                   </p>
                 </div>
                 {routineData.todayMission.aiFeedback && (
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                    <p className="mb-2 text-xs font-semibold text-gray-700">
-                      AI 피드백:
+                  <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+                    <p className="mb-2 text-xs font-semibold text-green-700">
+                      ✅ AI 피드백:
                     </p>
                     <p className="text-xs text-gray-600">
                       {routineData.todayMission.aiFeedback}
@@ -219,9 +277,16 @@ export default function LearningRoomContent() {
                 )}
                 <button
                   type="button"
-                  className="w-full rounded-full bg-[#F5472C] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:scale-105"
+                  onClick={() => handleMissionClick(routineData.todayMission!)}
+                  className={`w-full rounded-full px-6 py-3 text-sm font-semibold shadow-md transition hover:scale-105 ${
+                    routineData.todayMission.completed
+                      ? "bg-gray-400 text-white"
+                      : "bg-[#F5472C] text-white"
+                  }`}
                 >
-                  🎯 답변 녹음 → AI 피드백 → 90점 이상까지 반복
+                  {routineData.todayMission.completed
+                    ? "🔄 다시 연습하기"
+                    : "🎯 미션 시작하기"}
                 </button>
               </div>
             ) : (
@@ -242,7 +307,7 @@ export default function LearningRoomContent() {
           {/* Feedback Summary */}
           <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl">
-              피드백 요약
+              📊 피드백 요약
             </h2>
             {routineData?.feedbackSummary ? (
               <div className="space-y-4">
@@ -266,30 +331,36 @@ export default function LearningRoomContent() {
                     </p>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="w-full rounded-full border border-[#F5472C] px-6 py-2 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
-                >
-                  🔁 3일 전 미션 복습하기
-                </button>
+                {routineData.reviewMission && (
+                  <button
+                    type="button"
+                    onClick={() => handleMissionClick(routineData.reviewMission!)}
+                    className="w-full rounded-full border border-[#F5472C] px-6 py-2 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
+                  >
+                    🔁 3일 전 미션 복습하기
+                  </button>
+                )}
               </div>
             ) : (
-              <p className="text-sm text-gray-600">
-                첫 번째 미션을 완료하면 AI 피드백 요약을 확인할 수 있습니다.
-              </p>
+              <div className="rounded-lg bg-gray-50 p-6 text-center">
+                <p className="text-2xl">📈</p>
+                <p className="mt-2 text-sm text-gray-600">
+                  첫 번째 미션을 완료하면 AI 피드백 요약을 확인할 수 있습니다.
+                </p>
+              </div>
             )}
           </section>
 
           {/* Upcoming Session */}
           <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl">
-              예정된 수업
+              🗓️ 예정된 수업
             </h2>
             {routineData?.upcomingSession ? (
               <div className="space-y-3">
                 <div className="rounded-lg bg-[#FFF7F0] p-4">
                   <p className="text-sm font-semibold text-gray-900">
-                    🗓️ 1:1 튜터 세션
+                    {routineData.upcomingSession.type}
                   </p>
                   <p className="mt-1 text-xs text-gray-600">
                     {routineData.upcomingSession.date}{" "}
@@ -299,22 +370,26 @@ export default function LearningRoomContent() {
                 </div>
                 <button
                   type="button"
+                  onClick={() => window.open("https://zoom.us", "_blank")}
                   className="w-full rounded-full border border-[#F5472C] px-6 py-2 text-sm font-semibold text-[#F5472C] transition hover:bg-[#F5472C] hover:text-white"
                 >
                   수업 참가하기 →
                 </button>
               </div>
             ) : (
-              <p className="text-sm text-gray-600">
-                예정된 튜터 수업이 없습니다.
-              </p>
+              <div className="rounded-lg bg-gray-50 p-6 text-center">
+                <p className="text-2xl">📅</p>
+                <p className="mt-2 text-sm text-gray-600">
+                  예정된 튜터 수업이 없습니다.
+                </p>
+              </div>
             )}
           </section>
 
           {/* Quick Actions */}
           <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:rounded-3xl sm:p-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl">
-              빠른 메뉴
+              ⚡ 빠른 메뉴
             </h2>
             <div className="space-y-3">
               <Link
@@ -323,6 +398,12 @@ export default function LearningRoomContent() {
               >
                 주간 리포트 보기 →
               </Link>
+              <button
+                onClick={() => setShowAllMissions(true)}
+                className="flex w-full items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#F5472C] hover:text-[#F5472C]"
+              >
+                전체 미션 보기 →
+              </button>
               <Link
                 href="/onboarding"
                 className="flex w-full items-center justify-center rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#F5472C] hover:text-[#F5472C]"
@@ -333,6 +414,19 @@ export default function LearningRoomContent() {
           </section>
         </div>
       </div>
+
+      {/* Mission Practice Modal */}
+      {selectedMission && (
+        <MissionPracticeModal
+          mission={selectedMission}
+          isOpen={showPracticeModal}
+          onClose={() => {
+            setShowPracticeModal(false);
+            setSelectedMission(null);
+          }}
+          onComplete={handleMissionComplete}
+        />
+      )}
     </main>
   );
 }
