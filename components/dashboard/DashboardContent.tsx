@@ -21,7 +21,6 @@ interface DashboardData {
 export default function DashboardContent() {
   const { data: session, status } = useSession({
     required: false,
-    refetchInterval: 5, // Refetch session every 5 seconds if loading
   });
   const router = useRouter();
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
