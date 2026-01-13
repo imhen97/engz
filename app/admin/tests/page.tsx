@@ -1,17 +1,8 @@
 import prisma from "@/lib/prisma";
 import DataTable from "@/components/admin/DataTable";
 import ChartCard from "@/components/admin/ChartCard";
+import ScoreDistributionChart from "@/components/admin/ScoreDistributionChart";
 import { requireAdmin } from "@/lib/admin";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 
 export const dynamic = 'force-dynamic';
 
@@ -59,16 +50,7 @@ export default async function AdminTestsPage() {
 
       {/* Score Distribution Chart */}
       <ChartCard title="점수 분포">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={scoreRanges}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="range" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#FF6B3D" name="사용자 수" />
-          </BarChart>
-        </ResponsiveContainer>
+        <ScoreDistributionChart data={scoreRanges} />
       </ChartCard>
 
       {/* Tests Table */}

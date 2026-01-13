@@ -2,21 +2,8 @@ import { getAdminStats } from "@/lib/admin";
 import StatCard from "@/components/admin/StatCard";
 import ChartCard from "@/components/admin/ChartCard";
 import DataTable from "@/components/admin/DataTable";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import UserGrowthChart from "@/components/admin/UserGrowthChart";
+import TestCompletionChart from "@/components/admin/TestCompletionChart";
 
 export const dynamic = 'force-dynamic';
 
@@ -78,49 +65,11 @@ export default async function AdminDashboardPage() {
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <ChartCard title="사용자 성장 추이">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={userGrowthData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="users"
-                stroke="#FF6B3D"
-                strokeWidth={2}
-                name="신규 사용자"
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <UserGrowthChart data={userGrowthData} />
         </ChartCard>
 
         <ChartCard title="테스트 완료율">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={testCompletionData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) =>
-                  `${name} ${percent ? (percent * 100).toFixed(0) : 0}%`
-                }
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {testCompletionData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+          <TestCompletionChart data={testCompletionData} colors={COLORS} />
         </ChartCard>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -31,7 +31,7 @@ type TestResult = {
   recommendedRoutine: string;
 };
 
-export default function QuickTestResultPage() {
+function QuickTestResultContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const resultId = searchParams.get("id");
@@ -292,5 +292,25 @@ export default function QuickTestResultPage() {
         </motion.div>
       </div>
     </main>
+  );
+}
+
+export default function QuickTestResultPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#FFF8F4]">
+          <NavBar />
+          <div className="flex min-h-screen items-center justify-center">
+            <div className="text-center">
+              <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-[#FF6B3D] border-t-transparent mx-auto"></div>
+              <p className="text-gray-600">결과를 불러오는 중...</p>
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <QuickTestResultContent />
+    </Suspense>
   );
 }
