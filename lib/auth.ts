@@ -16,6 +16,7 @@ if (process.env.GOOGLE_ID && process.env.GOOGLE_SECRET) {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true,
     })
   );
 } else {
@@ -36,27 +37,41 @@ if (process.env.KAKAO_ID && process.env.KAKAO_SECRET) {
     KakaoProvider({
       clientId: process.env.KAKAO_ID!,
       clientSecret: process.env.KAKAO_SECRET!,
+      allowDangerousEmailAccountLinking: true,
       profile(profile) {
-        const kakaoProfile = profile as KakaoProfile;
-        // Return basic user object - NextAuth will extend it with plan, trialActive, etc. in callbacks
-        return {
-          id: kakaoProfile.id.toString(),
-          name:
-            kakaoProfile.kakao_account?.profile?.nickname ||
-            kakaoProfile.kakao_account?.name ||
-            kakaoProfile.properties?.nickname ||
-            null,
-          email: kakaoProfile.kakao_account?.email || null,
-          image:
-            kakaoProfile.kakao_account?.profile?.profile_image_url ||
-            kakaoProfile.properties?.profile_image ||
-            null,
-          plan: "free",
-          trialActive: false,
-          trialEndsAt: null,
-          subscriptionActive: false,
-          role: null,
-        };
+        try {
+          console.log("=== Kakao Profile Data ===");
+          console.log(JSON.stringify(profile, null, 2));
+          
+          const kakaoProfile = profile as KakaoProfile;
+          
+          const userProfile = {
+            id: kakaoProfile.id.toString(),
+            name:
+              kakaoProfile.kakao_account?.profile?.nickname ||
+              kakaoProfile.kakao_account?.name ||
+              kakaoProfile.properties?.nickname ||
+              "카카오 사용자",
+            email: kakaoProfile.kakao_account?.email || `kakao_${kakaoProfile.id}@kakao.placeholder`,
+            image:
+              kakaoProfile.kakao_account?.profile?.profile_image_url ||
+              kakaoProfile.properties?.profile_image ||
+              null,
+            plan: "free",
+            trialActive: false,
+            trialEndsAt: null,
+            subscriptionActive: false,
+            role: null,
+          };
+          
+          console.log("=== Processed Kakao Profile ===");
+          console.log(JSON.stringify(userProfile, null, 2));
+          
+          return userProfile;
+        } catch (error) {
+          console.error("❌ Kakao profile processing error:", error);
+          throw error;
+        }
       },
     })
   );
@@ -244,6 +259,22 @@ export const authOptions: AuthOptions = {
     error: "/signup",
   },
   debug: process.env.NODE_ENV === "development",
+  logger: {
+    error(code, metadata) {
+      console.error("=== NextAuth Error ===");
+      console.error("Code:", code);
+      console.error("Metadata:", JSON.stringify(metadata, null, 2));
+    },
+    warn(code) {
+      console.warn("=== NextAuth Warning ===");
+      console.warn("Code:", code);
+    },
+    debug(code, metadata) {
+      console.log("=== NextAuth Debug ===");
+      console.log("Code:", code);
+      console.log("Metadata:", JSON.stringify(metadata, null, 2));
+    },
+  },
   events: {
     async createUser({ user }) {
       try {
@@ -267,18 +298,19 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       try {
-        console.log("🔵 signIn callback 시작:", {
-          userId: user?.id,
-          email: user?.email,
-          provider: account?.provider,
-        });
+        console.log("=== SignIn Callback ===");
+        console.log("User:", JSON.stringify(user, null, 2));
+        console.log("Account:", JSON.stringify(account, null, 2));
+        console.log("Profile:", JSON.stringify(profile, null, 2));
 
         // Handle Kakao OAuth specifically
         if (account?.provider === "kakao") {
+          console.log("🔵 Processing Kakao OAuth sign-in");
+          
           // For Kakao users without email, generate a placeholder
           if (!user.email && account?.providerAccountId) {
             // Use Kakao ID as unique identifier
-            user.email = `kakao_${account.providerAccountId}@kakao.local`;
+            user.email = `kakao_${account.providerAccountId}@kakao.placeholder`;
             console.log("✅ Kakao 이메일 플레이스홀더 생성:", user.email);
           } else if (profile) {
             // Type assertion for Kakao profile
@@ -296,6 +328,12 @@ export const authOptions: AuthOptions = {
               emailVerified: kakaoProfile?.kakao_account?.is_email_verified,
               hasNickname: !!kakaoProfile?.kakao_account?.profile?.nickname,
             });
+          }
+          
+          // Ensure user has email before proceeding
+          if (!user.email) {
+            console.error("❌ Kakao user has no email and providerAccountId is missing");
+            return false;
           }
         }
 
@@ -406,8 +444,14 @@ export const authOptions: AuthOptions = {
         return `${baseUrl}/learning-room`;
       }
     },
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, account, trigger }) {
       try {
+        console.log("=== JWT Callback ===");
+        console.log("Token:", JSON.stringify(token, null, 2));
+        console.log("User:", JSON.stringify(user, null, 2));
+        console.log("Account:", JSON.stringify(account, null, 2));
+        console.log("Trigger:", trigger);
+        
         if (user) {
           console.log("✅ JWT 토큰 생성 - 사용자:", user.id, user.email);
           token.userId = user.id;
@@ -416,6 +460,12 @@ export const authOptions: AuthOptions = {
           token.trialEndsAt = user.trialEndsAt?.toISOString() ?? null;
           token.subscriptionActive = user.subscriptionActive ?? false;
           token.role = (user.role as UserRole) ?? null;
+          
+          if (account) {
+            token.provider = account.provider;
+          }
+          
+          console.log("✅ Final Token:", JSON.stringify(token, null, 2));
           return token;
         }
         if (trigger === "update") {
@@ -424,12 +474,20 @@ export const authOptions: AuthOptions = {
         return await enrichToken(token);
       } catch (error) {
         console.error("❌ JWT callback 오류:", error);
+        console.error("❌ JWT callback 오류 상세:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
         // 오류가 발생해도 기본 토큰 반환
         return token;
       }
     },
     async session({ session, token }) {
       try {
+        console.log("=== Session Callback ===");
+        console.log("Session:", JSON.stringify(session, null, 2));
+        console.log("Token:", JSON.stringify(token, null, 2));
+        
         if (session.user && token?.userId) {
           session.user.id = token.userId as string;
           session.user.plan = (token.plan as string) ?? "free";
@@ -439,10 +497,16 @@ export const authOptions: AuthOptions = {
             : null;
           session.user.subscriptionActive = Boolean(token.subscriptionActive);
           session.user.role = (token.role as UserRole) ?? null;
+          
+          console.log("✅ Final Session:", JSON.stringify(session, null, 2));
         }
         return session;
       } catch (error) {
         console.error("❌ Session callback 오류:", error);
+        console.error("❌ Session callback 오류 상세:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
         // 오류가 발생해도 기본 세션 반환
         return session;
       }
